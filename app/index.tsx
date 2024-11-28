@@ -1,11 +1,11 @@
+import { PrimaryButton } from '@/globals/primary-button';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { PrimaryButton } from './globals/primary-button';
 
-export const Home = () => {
+export default function Index() {
     return (
-        <View style={styles.view}>
+        <View id='index-wrapper' style={styles.view}>
             <LinearGradient style={styles.background} colors={['#0C3422', '#249A66']}>
                 <View>
                     <Image style={styles.image} source={require('../assets/images/logo-w-name.png')} ></Image>
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     view: {
-        width: '100%'
+        width: '100%',
+        height: '100%',
     },
     subtitles: {
         color: '#fff',

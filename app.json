@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "recoleto--front",
-    "slug": "recoleto--front",
+    "name": "Recoleto",
+    "slug": "Recoleto",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,7 +24,8 @@
     "web": {
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      {"fonts": []}
     ]
   }
 }
