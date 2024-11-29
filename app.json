@@ -24,8 +24,15 @@
     "web": {
     },
     "plugins": [
+     [
       "expo-font",
-      {"fonts": []}
-    ]
+      {
+        "fonts": ["./assets/fonts/Teachers-Regular.ttf", "./assets/fonts/Teachers-Bold.ttf", "./assets/fonts/Teachers-Medium.ttf", "./assets/fonts/Teachers-SemiBold.ttf"]
+      }
+     ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }
