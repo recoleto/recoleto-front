@@ -1,15 +1,18 @@
-import { Pressable, StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { colors, font } from '../../utils/globals';
+import { Link } from 'expo-router';
+import { ComponentProps } from 'react';
 
-type PrimaryButtonType = {
+type PrimaryButtonType = ComponentProps<typeof Link> & {
   title: string;
+  href: string;
 }
 
-export const PrimaryButton = ({ title }: PrimaryButtonType) => {
+export const PrimaryButton = ({ title, href }: PrimaryButtonType) => {
   return (
-    <Pressable  style={styles.button}>
-      <Text style={styles.text}>{title}</Text>
-    </Pressable>
+      <Link  id='link' style={styles.button} href={href}>
+        <Text style={styles.text}>{title}</Text>
+      </Link>
   )
 }
 
@@ -20,10 +23,10 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     boxShadow: '2px 2px 2px rgba(0, 0, 0, 0.25)',
+    textAlign: 'center',
   },
   text: {
     color: colors.white,
-    textAlign: 'center',
     fontSize: font.size.large,
     textTransform: 'uppercase',
     fontFamily: font.family.medium
