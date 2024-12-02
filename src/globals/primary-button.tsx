@@ -1,18 +1,22 @@
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { colors, font } from '../../utils/globals';
-import { Link } from 'expo-router';
+import { Link, RelativePathString, router } from 'expo-router';
 import { ComponentProps } from 'react';
 
-type PrimaryButtonType = ComponentProps<typeof Link> & {
+type PrimaryButtonType = ComponentProps<typeof TouchableOpacity> & {
   title: string;
-  href: string;
+  href?: RelativePathString;
+}
+
+function redirectTo(href: string) {
+  router.navigate(href);
 }
 
 export const PrimaryButton = ({ title, href }: PrimaryButtonType) => {
   return (
-      <Link  id='link' style={styles.button} href={href}>
+      <TouchableOpacity id='link' style={styles.button}>
         <Text style={styles.text}>{title}</Text>
-      </Link>
+      </TouchableOpacity>
   )
 }
 
