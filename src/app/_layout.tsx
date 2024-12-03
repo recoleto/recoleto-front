@@ -2,7 +2,8 @@ import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import '../../globals-sign.css'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +26,12 @@ export default function Layout({ children }: NotAuthenticatedLayoutProps) {
 
     return (
         <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
-            <View id="view-antes-stack">
-                <Stack screenOptions={{ headerShown: false, contentStyle: {backgroundColor: "transparent"}}} />
-            </View>
+            <SafeAreaView style={styles.background}>
+                <Stack screenOptions={{
+                    headerShown: false,
+                    contentStyle: { backgroundColor: "transparent !important", marginHorizontal: 24 }
+                }} />
+            </SafeAreaView>
         </LinearGradient>
 
     );
@@ -37,5 +41,6 @@ const styles = StyleSheet.create({
     background: {
         height: '100%',
         width: '100%',
+
     },
 })

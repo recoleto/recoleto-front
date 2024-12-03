@@ -37,5 +37,10 @@ export const border = {
     radius: {
         medium: 10,
         round: 50
+    },
+    width: {
+        thin: 1,
+        medium: 2,
+        thick: 4
     }
 }
