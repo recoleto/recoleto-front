@@ -27,7 +27,10 @@ export default function Layout({ children }: NotAuthenticatedLayoutProps) {
     return (
         <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
             <SafeAreaView style={styles.background}>
-                <Stack screenOptions={{ headerShown: false, contentStyle: {backgroundColor: "transparent"}}} />
+                <Stack screenOptions={{
+                    headerShown: false,
+                    contentStyle: { backgroundColor: "transparent !important", marginHorizontal: 24 }
+                }} />
             </SafeAreaView>
         </LinearGradient>
 
@@ -38,5 +41,6 @@ const styles = StyleSheet.create({
     background: {
         height: '100%',
         width: '100%',
+
     },
 })

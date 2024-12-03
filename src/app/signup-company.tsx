@@ -1,3 +1,4 @@
+import GoBack from "@/globals/back";
 import { Input } from "@/globals/input";
 import { PrimaryButton } from "@/globals/primary-button";
 import { useState } from "react";
@@ -29,8 +30,9 @@ export default function SignUpCompany() {
 
 
     return (
-        <View>
+        <View style={styles.componentView}>
             <View style={styles.logoView}>
+                <GoBack />
                 <Text style={styles.title}>REGISTRO DE EMPRESA</Text>
                 <Image style={styles.image} source={require('../../assets/images/logo-w-name.png')} />
                 <Text style={styles.text}>Registre-se para usar a plataforma</Text>
@@ -51,19 +53,20 @@ export default function SignUpCompany() {
                     placeholder="Digite o CNPJ da sua empresa"
                     value={company.cnpj}
                     onChangeText={(text) => setCompany({ ...company, cnpj: text })} />
-                
-                <Input color={colors.white}
-                    label="Logradouro"
-                    type="text"
-                    placeholder="Digite o logradouro da sua empresa"
-                    value={company.logradouro}
-                    onChangeText={(text) => setCompany({ ...company, logradouro: text })} />
-                <Input color={colors.white}
-                    label="Número"
-                    type="number"
-                    placeholder="n°012"
-                    value={company.number}
-                    onChangeText={(text) => setCompany({ ...company, number: text })} />
+                <View style={styles.logradouroView}>
+                    <Input viewStyle={{flex: 4}} color={colors.white}
+                        label="Logradouro"
+                        type="text"
+                        placeholder="Digite o logradouro da sua empresa"
+                        value={company.logradouro}
+                        onChangeText={(text) => setCompany({ ...company, logradouro: text })} />
+                    <Input viewStyle={{flex: 1}} color={colors.white}
+                        label="Número"
+                        type="number"
+                        placeholder="n°012"
+                        value={company.number}
+                        onChangeText={(text) => setCompany({ ...company, number: text })} />
+                </View>
                 <Input color={colors.white}
                     label="Telefone"
                     type="text"
@@ -89,27 +92,42 @@ export default function SignUpCompany() {
 }
 
 const styles = StyleSheet.create({
+    componentView: {
+        gap: 20
+    },
     logoView: {
+        marginTop: 50,
         display: 'flex',
         alignItems: 'center',
+        position: 'relative'
     },
     inputsView: {
-        height: '100%',
+        height: 'auto',
         display: 'flex',
-        justifyContent: 'space-evenly'
+        gap: 10,
     },
     title: {
         fontFamily: 'Teachers-Medium',
         color: colors.white,
         fontSize: font.size.large,
-
+        marginBottom: 6
     },
     text: {
-        color: colors.white
+        color: colors.white,
+        fontFamily: 'Teachers-Medium',
     },
     image: {
         width: 180,
         height: 180,
         resizeMode: 'contain'
+    },
+    goBack: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    logradouroView: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 10
     }
 })
