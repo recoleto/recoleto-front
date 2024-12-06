@@ -13,7 +13,7 @@ export default function Index() {
             <View style={styles.buttons} id='button-view'>
                 <PrimaryButton href={'/login' as RelativePathString} title='Entrar'></PrimaryButton>
                 <PrimaryButton href={'/signup-company' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
-                <PrimaryButton href={'/' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
+                <PrimaryButton href={'/signup-user' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
             </View>
         </View>
     );
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Teachers-SemiBold'
     },
     buttons: {
-        marginTop: 200,
         display: 'flex',
         gap: 20,
     }

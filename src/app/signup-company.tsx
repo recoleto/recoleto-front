@@ -5,24 +5,14 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { colors, font } from "utils/globals";
 
-type CompanyType = {
-    name: string;
-    cnpj: string;
-    logradouro: string;
-    number: string;
-    telefone: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-}
 
 export default function SignUpCompany() {
     const [company, setCompany] = useState<CompanyType>({
         name: '',
         cnpj: '',
-        logradouro: '',
+        street: '',
         number: '',
-        telefone: '',
+        telNumber: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -30,15 +20,15 @@ export default function SignUpCompany() {
 
 
     return (
-        <View style={styles.componentView}>
-            <View style={styles.logoView}>
+        <View style={stylesInit.componentView}>
+            <View style={stylesInit.logoView}>
                 <GoBack />
-                <Text style={styles.title}>REGISTRO DE EMPRESA</Text>
-                <Image style={styles.image} source={require('../../assets/images/logo-w-name.png')} />
-                <Text style={styles.text}>Registre-se para usar a plataforma</Text>
+                <Text style={stylesInit.title}>REGISTRO DE EMPRESA</Text>
+                <Image style={stylesInit.image} source={require('../../assets/images/logo-w-name.png')} />
+                <Text style={stylesInit.text}>Registre-se para usar a plataforma</Text>
             </View>
 
-            <View style={styles.inputsView}>
+            <View style={stylesInit.inputsView}>
                 <Input
                     color={colors.white}
                     label="Nome Fantasia"
@@ -53,13 +43,13 @@ export default function SignUpCompany() {
                     placeholder="Digite o CNPJ da sua empresa"
                     value={company.cnpj}
                     onChangeText={(text) => setCompany({ ...company, cnpj: text })} />
-                <View style={styles.logradouroView}>
+                <View style={stylesInit.logradouroView}>
                     <Input viewStyle={{flex: 4}} color={colors.white}
                         label="Logradouro"
                         type="text"
                         placeholder="Digite o logradouro da sua empresa"
-                        value={company.logradouro}
-                        onChangeText={(text) => setCompany({ ...company, logradouro: text })} />
+                        value={company.street}
+                        onChangeText={(text) => setCompany({ ...company, street: text })} />
                     <Input viewStyle={{flex: 1}} color={colors.white}
                         label="Número"
                         type="number"
@@ -71,8 +61,8 @@ export default function SignUpCompany() {
                     label="Telefone"
                     type="text"
                     placeholder="Digite o telefone da sua empresa"
-                    value={company.telefone}
-                    onChangeText={(text) => setCompany({ ...company, telefone: text })} />
+                    value={company.telNumber}
+                    onChangeText={(text) => setCompany({ ...company, telNumber: text })} />
                 <Input color={colors.white}
                     label="E-mail"
                     type="email"
@@ -91,9 +81,9 @@ export default function SignUpCompany() {
     )
 }
 
-const styles = StyleSheet.create({
+export const stylesInit = StyleSheet.create({
     componentView: {
-        gap: 20
+        gap: 20,
     },
     logoView: {
         marginTop: 50,
