@@ -14,7 +14,7 @@ export function Input({ label, type, placeholder, color, viewStyle, ...rest } : 
     return (
         <View style={[viewStyle]}> 
             <Text style={[styles.label, {color: `${color}`}]}> {label} </Text>
-            <TextInput style={styles.input} placeholder={placeholder} {...rest} />
+            <TextInput  style={styles.input} placeholder={placeholder} {...rest} />
         </View>
     )
 }

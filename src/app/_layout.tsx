@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import '../../globals-sign.css'
+import { colors } from "utils/globals";
 
 SplashScreen.preventAutoHideAsync();
 
