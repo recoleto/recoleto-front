@@ -1,13 +1,14 @@
-import { Input } from "@/globals/input";
+import { Input } from "@/components/input";
 import { Image, StyleSheet, View, Text } from "react-native";
-import { colors } from "utils/globals";
+import { colors } from "@/utils/globals";
 import { stylesInit } from "./signup-company";
-import { PrimaryButton } from "@/globals/primary-button";
-import GoBack from "@/globals/back";
+import { PrimaryButton } from "@/components/primary-button";
+import GoBack from "@/components/back";
 import { useState } from "react";
 import { AuthService } from "api/services/AuthService";
 import { ErrorToast, SuccessToast } from 'react-native-toast-message'
 import { StatusCode } from "api/client/IHttpClient";
+import { MessageToast } from "@/components/message-toast";
 
 
 export default function Login() {
@@ -41,9 +42,7 @@ export default function Login() {
                 <PrimaryButton onPress={onSubmit} title="ENTRAR" />
             </View>
 
-            {error ? (
-                <ErrorToast text1={'Algo deu errado.'} text2={error} style={styles.toast}   />
-            ) : null}
+            {error ? <MessageToast message={error} type='error' /> : <MessageToast message={success} type='success' />}
         </View>
     )
 }
@@ -66,12 +65,5 @@ const styles = StyleSheet.create({
         width: 250,
         height: 250,
         resizeMode: 'contain'
-    },
-    toast: {
-        width: '100%',
-        position: 'absolute',
-        bottom: 10,
-        left: 0,
-        borderLeftColor: 'red'
     }
 })
