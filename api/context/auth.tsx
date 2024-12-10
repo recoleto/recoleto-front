@@ -6,6 +6,7 @@ import { CompanyType, UserType } from "@/utils/types";
 interface ContextType {
     signedIn: boolean;
     registerCompany: (data: CompanyType) => Promise<HttpResponse<any>>;
+    registerUser: (data: UserType) => Promise<HttpResponse<any>>;
     token: string | null;
     user: UserType | null;
 }
@@ -30,13 +31,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     }
 
+    async function registerUser({ ...data }: UserType): Promise<HttpResponse<any>> {
+        const response = await authService.registerUser({ ...data });
+        return response
+    }
+
     async function registerCompany({ ...data }: CompanyType): Promise<HttpResponse<any>> {
         const response = await authService.registerCompany({ ...data });
         return response
     }
 
     return (
-        <AuthContext.Provider value={{ signedIn, token, user, registerCompany }}>
+        <AuthContext.Provider value={{ signedIn, token, user, registerCompany, registerUser }}>
             {children}
         </AuthContext.Provider>
     );
