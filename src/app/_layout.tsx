@@ -4,7 +4,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import '../../globals-sign.css'
-import { colors } from "utils/globals";
+import { colors } from "@/utils/globals";
+import { AuthProvider } from "api/context/auth";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,15 +27,16 @@ export default function Layout({ children }: NotAuthenticatedLayoutProps) {
     }
 
     return (
-        <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
-            <SafeAreaView style={styles.background}>
-                <Stack screenOptions={{
-                    headerShown: false,
-                    contentStyle: { backgroundColor: "transparent !important", marginHorizontal: 24 }
-                }} />
-            </SafeAreaView>
-        </LinearGradient>
-
+        <AuthProvider>
+            <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
+                <SafeAreaView style={styles.background}>
+                    <Stack screenOptions={{
+                        headerShown: false,
+                        contentStyle: { backgroundColor: "transparent !important", marginHorizontal: 24 }
+                    }} />
+                </SafeAreaView>
+            </LinearGradient>
+        </AuthProvider>
     );
 }
 
