@@ -1,5 +1,5 @@
 import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { colors, font } from '../../utils/globals';
+import { colors, font } from '../utils/globals';
 import { RelativePathString, router } from 'expo-router';
 import { ComponentProps } from 'react';
 
@@ -29,9 +29,9 @@ export const PrimaryButton = ({ title, href, onPress }: PrimaryButtonType) => {
   };
 
   return (
-      <TouchableOpacity id='button' style={styles.button} onPress={handlePress}>
-        <Text style={styles.text}>{title}</Text>
-      </TouchableOpacity>
+    <TouchableOpacity id='button' style={styles.button} onPress={handlePress}>
+      <Text style={styles.text}>{title}</Text>
+    </TouchableOpacity>
   )
 }
 
