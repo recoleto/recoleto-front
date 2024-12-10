@@ -1,15 +1,19 @@
 import { StyleSheet } from "react-native"
-import { ErrorToast, SuccessToast } from "react-native-toast-message"
+import { BaseToast } from "react-native-toast-message"
 
-export const MessageToast = ({ message, type }: { message: string, type: string }) => {
-    return(
-        <>
-            {type === 'error' && <ErrorToast style={styles.error} text1="Algo deu errado." text2={message} />}
-            {type === 'success' && <SuccessToast style={styles.success} text1="Operação realizada com sucesso." text2={message} />}
-        </>
+type ToastProps = {
+    message: string
+    type: 'error' | 'success' | 'info'
+}
+
+export const MessageToast = ({ message, type }: ToastProps) => {
+    return (
+        <BaseToast text2={message}  />
     )
 }
 
+{/* {type === 'error' && <Toast autoHide={true} position="bottom" type={type}  />} */ }
+{/* {type === 'success' && <SuccessToast style={styles.success} text1="Operação realizada com sucesso." text2={message} />} */ }
 const styles = StyleSheet.create({
     error: {
         width: '100%',

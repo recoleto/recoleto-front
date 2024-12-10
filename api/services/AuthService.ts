@@ -17,7 +17,7 @@ export class AuthService {
     }
 
     async registerUser(data: UserType): Promise<HttpResponse<any>> {
-        const base = '/auth/register';
+        const base = '/auth/user/sign-up';
         const response = await this.client.post({ url: base, body: data })
 
         return response
