@@ -1,4 +1,4 @@
-import { PrimaryButton } from '@/globals/primary-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { RelativePathString } from 'expo-router';
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native';
