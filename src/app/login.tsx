@@ -31,8 +31,6 @@ export default function Login() {
     return (
         <View style={styles.componentView}>
             <View style={styles.logoView}>
-                <GoBack />
-                <Text style={stylesInit.title}>FAÇA SEU LOGIN</Text>
                 <Image style={styles.image} source={require('../../assets/images/logo-w-name.png')} />
                 <Text style={stylesInit.text}>Entre para utilizar a plataforma</Text>
             </View>

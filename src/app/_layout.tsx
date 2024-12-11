@@ -33,12 +33,12 @@ export default function Layout({ children }: NotAuthenticatedLayoutProps) {
                     <Stack screenOptions={{
                         headerTransparent: true,
                         headerTintColor: colors.white,
-                        contentStyle: { backgroundColor: "transparent !important", marginHorizontal: 24 }
+                        contentStyle: { backgroundColor: "transparent", marginHorizontal: 24 }
                     }} >
                         <Stack.Screen name="index" options={{headerShown: false }} />
                         <Stack.Screen name="signup-company" options={{title: 'REGISTRO DA EMPRESA'}} />
                         <Stack.Screen name="signup-user" options={{title: 'REGISTRO DO USUÁRIO'}}/>
-                        <Stack.Screen name="login" options={{title: 'ENTRE'}}/>
+                        <Stack.Screen name="login" options={{title: 'FAÇA SEU LOGIN'}}/>
                     </Stack>
                 </SafeAreaView>
             </LinearGradient>

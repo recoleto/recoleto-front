@@ -61,12 +61,6 @@ export default function SignUpUser() {
 
     return (
             <View style={styles.componentView}>
-                <View style={styles.logoView}>
-                    <GoBack />
-                    <Text style={stylesInit.title}>REGISTRO DO USUÁRIO</Text>
-                    {/* <Image style={stylesInit.image} source={require('../../assets/images/logo-w-name.png')} /> */}
-                    <Text style={stylesInit.text}>Registre-se para usar essa plataforma</Text>
-                </View>
                 <View style={stylesInit.inputsView}>
                     <View style={stylesInit.logradouroView}>
                         <View style={{ flex: 1 }}>
