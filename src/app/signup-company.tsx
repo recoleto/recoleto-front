@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { cnpjApplyMask, telNumberMask } from '@/utils/masks'
 import { MessageToast } from "@/components/message-toast";
 import { useRouter } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignUpCompany() {
     const [success, setSuccess] = useState<string | null>(null)
@@ -60,13 +61,6 @@ export default function SignUpCompany() {
 
     return (
         <View style={stylesInit.componentView}>
-            <View style={stylesInit.logoView}>
-                <GoBack />
-                <Text style={stylesInit.title}>REGISTRO DE EMPRESA</Text>
-                <Image style={stylesInit.image} source={require('../../assets/images/logo-w-name.png')} />
-                <Text style={stylesInit.text}>Registre-se para usar a plataforma</Text>
-            </View>
-
             <View style={stylesInit.inputsView}>
                 <Input
                     color={colors.white}
@@ -88,16 +82,16 @@ export default function SignUpCompany() {
 
                 {/* <View style={stylesInit.logradouroView}>
                     <View style={{ flex: 4 }}>
-                        <Input color={colors.white}
-                            label="Logradouro"
-                            type="text"
+                    <Input color={colors.white}
+                    label="Logradouro"
+                    type="text"
                             placeholder="Digite o logradouro da sua empresa"
                             onChangeText={(text) => setValue('street', text)}
                         />
                         {errors.street && <Text style={{ color: 'red' }}>{errors.street.message}</Text>}
-                    </View>
-
-                    <View style={{ flex: 1 }}>
+                        </View>
+                        
+                        <View style={{ flex: 1 }}>
                         <Input color={colors.white}
                             label="Número"
                             type="number"
@@ -160,6 +154,7 @@ export const stylesInit = StyleSheet.create({
         height: 'auto',
         display: 'flex',
         gap: 10,
+        marginTop: 80
     },
     title: {
         fontFamily: 'Teachers-Medium',
