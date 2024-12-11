@@ -13,7 +13,7 @@ type NotAuthenticatedLayoutProps = {
     children: React.ReactNode;
 }
 
-export default function Layout({ children }: NotAuthenticatedLayoutProps) {
+export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) {
     const [fontsLoaded] = useFonts({
         "Teachers-Bold": require("../../assets/fonts/Teachers-Bold.ttf"),
         "Teachers-Regular": require("../../assets/fonts/Teachers-Regular.ttf"),
@@ -29,16 +29,17 @@ export default function Layout({ children }: NotAuthenticatedLayoutProps) {
     return (
         <AuthProvider>
             <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
-                <SafeAreaView style={styles.background}>
+                <SafeAreaView id="root-safe-area" style={styles.background}>
                     <Stack screenOptions={{
                         headerTransparent: true,
                         headerTintColor: colors.white,
                         contentStyle: { backgroundColor: "transparent", marginHorizontal: 24 }
                     }} >
-                        <Stack.Screen name="index" options={{headerShown: false }} />
-                        <Stack.Screen name="signup-company" options={{title: 'REGISTRO DA EMPRESA'}} />
-                        <Stack.Screen name="signup-user" options={{title: 'REGISTRO DO USUÁRIO'}}/>
-                        <Stack.Screen name="login" options={{title: 'FAÇA SEU LOGIN'}}/>
+                        <Stack.Screen name="index" options={{ headerShown: false }} />
+                        <Stack.Screen name="signup-company" options={{ title: 'REGISTRO DA EMPRESA' }} />
+                        <Stack.Screen name="signup-user" options={{ title: 'REGISTRO DO USUÁRIO' }} />
+                        <Stack.Screen name="login" options={{ title: 'FAÇA SEU LOGIN' }} />
+                        <Stack.Screen name="(app)" options={{ headerShown: false }} />
                     </Stack>
                 </SafeAreaView>
             </LinearGradient>
