@@ -1,24 +1,25 @@
 import { HttpResponse } from "api/client/IHttpClient";
 import { AuthService } from "api/services/AuthService";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { CompanyType, UserType } from "@/utils/types";
+import { CompanyType, LoginType, UserType } from "@/utils/types";
 
 interface ContextType {
-    signedIn: boolean;
     registerCompany: (data: CompanyType) => Promise<HttpResponse<any>>;
     registerUser: (data: UserType) => Promise<HttpResponse<any>>;
+    login: (data: LoginType) => Promise<HttpResponse<any>>;
     token: string | null;
     user: UserType | null;
+    isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<ContextType>({} as ContextType);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
     const authService = new AuthService();
-    console.log(!!!authService)
-    const [signedIn, setSignedIn] = useState<boolean>(false);
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<UserType | null>(null);
+    const [expiresIn, setExpiresIn] = useState<number | null>(null);
+    const isAuthenticated = !!token;
 
     useEffect(() => {
         const loadingSession = async () => {
@@ -26,8 +27,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     })
 
+    async function login({ email, password }: LoginType): Promise<HttpResponse<any>> {
+        const response = await authService.loginUser({ email, password });
+        if (response.statusCode === 200) {
+            const { token, expiresIn } = response.body;
+            setToken(token);
+            setExpiresIn(expiresIn);
+            console.log(token, expiresIn)
+            localStorage.setItem('@Auth:token', token);
+        }
+        return response;
+    }
+
     async function checkAuth() {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('@Auth:token');
+        if (token) return setToken(token);
 
     }
 
@@ -42,7 +56,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ signedIn, token, user, registerCompany, registerUser }}>
+        <AuthContext.Provider value={{ token, user, registerCompany, registerUser, login, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );

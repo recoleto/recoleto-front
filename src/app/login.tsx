@@ -3,28 +3,27 @@ import { Image, StyleSheet, View, Text } from "react-native";
 import { colors } from "@/utils/globals";
 import { stylesInit } from "./signup-company";
 import { PrimaryButton } from "@/components/primary-button";
-import GoBack from "@/components/back";
-import { useState } from "react";
-import { AuthService } from "api/services/AuthService";
-import { ErrorToast, SuccessToast } from 'react-native-toast-message'
+import { useContext, useState } from "react";
 import { StatusCode } from "api/client/IHttpClient";
 import { MessageToast } from "@/components/message-toast";
-
+import { AuthContext } from "api/context/auth";
+import { router } from "expo-router";
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const auth = useContext(AuthContext)
 
     async function onSubmit() {
-        const authService = new AuthService()
-        const response = await authService.loginUser({ password, email })
+        const response = await auth.login({ password, email })
 
         if (response.statusCode === StatusCode.NotFound) {
             setError(response.reject)
         } else if (response.statusCode === StatusCode.Accepted || StatusCode.Ok) {
             setSuccess(response.resolve)
+            router.replace('/(app)')
         }
     }
 
@@ -40,7 +39,7 @@ export default function Login() {
                 <PrimaryButton onPress={onSubmit} title="ENTRAR" />
             </View>
 
-            {error ? <MessageToast message={error} type='error' /> : <MessageToast message={success} type='success' />}
+            {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
         </View>
     )
 }

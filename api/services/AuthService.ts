@@ -12,7 +12,6 @@ export class AuthService {
     async loginUser({ email, password }: LoginType): Promise<HttpResponse<any>> {
         const base = '/auth/login';
         const response = await this.client.post({ url: base, body: { email, password } })
-
         return response
     }
 
