@@ -31,9 +31,15 @@ export default function Layout({ children }: NotAuthenticatedLayoutProps) {
             <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
                 <SafeAreaView style={styles.background}>
                     <Stack screenOptions={{
-                        headerShown: false,
+                        headerTransparent: true,
+                        headerTintColor: colors.white,
                         contentStyle: { backgroundColor: "transparent !important", marginHorizontal: 24 }
-                    }} />
+                    }} >
+                        <Stack.Screen name="index" options={{headerShown: false }} />
+                        <Stack.Screen name="signup-company" options={{title: 'REGISTRO DA EMPRESA'}} />
+                        <Stack.Screen name="signup-user" options={{title: 'REGISTRO DO USUÁRIO'}}/>
+                        <Stack.Screen name="login" options={{title: 'ENTRE'}}/>
+                    </Stack>
                 </SafeAreaView>
             </LinearGradient>
         </AuthProvider>
