@@ -12,7 +12,9 @@ export class AuthService {
     async loginUser({ email, password }: LoginType): Promise<HttpResponse<any>> {
         const base = '/auth/login';
         const response = await this.client.post({ url: base, body: { email, password } })
-        return response
+        return { ...response, 
+            resolve: 'Login efetuado com sucesso!',
+        }
     }
 
     async registerUser(data: UserType): Promise<HttpResponse<any>> {
@@ -26,7 +28,18 @@ export class AuthService {
     async registerCompany({ ...data }: CompanyType): Promise<HttpResponse<any>> {
         const base = '/auth/company/sign-up';
         const response = await this.client.post({ url: base, body: data })
-        console.log('chegou')
+        return response
+    }
+    
+    async getUserAuthenticated(): Promise<HttpResponse<any>> {
+        const base = '/user/me';
+        const response = await this.client.get({ url: base })
+        return response
+    }
+
+    async getCompanyAuthenticated(): Promise<HttpResponse<any>> {
+        const base = '/company/me';
+        const response = await this.client.get({ url: base })
         return response
     }
 }
