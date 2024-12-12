@@ -21,9 +21,9 @@ export default function Login() {
 
         if (response.statusCode === StatusCode.NotFound) {
             setError(response.reject)
-        } else if (response.statusCode === StatusCode.Accepted || StatusCode.Ok) {
+        } else if (response.statusCode === StatusCode.Ok) {
             setSuccess(response.resolve)
-            router.replace('/(app)')
+            router.replace('/(app)/profile')
         }
     }
 

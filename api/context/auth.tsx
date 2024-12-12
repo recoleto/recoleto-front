@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             checkAuth();
             const storageToken = localStorage.getItem('@Auth:token');
             if (storageToken) {
-                router.replace('/(app)')
+                router.replace('/profile')
             } else {
                 router.replace('/login')
             }
@@ -38,11 +38,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     async function login({ email, password }: LoginType): Promise<HttpResponse<any>> {
         const response = await authService.loginUser({ email, password });
         if (response.statusCode === 200) {
-            const { token, expiresIn } = response.body;
+            const { token, expiresIn, role } = response.body;
             setToken(token);
             setExpiresIn(expiresIn);
-            console.log(token, expiresIn)
             localStorage.setItem('@Auth:token', token);
+            localStorage.setItem('@Auth:expiresIn', expiresIn);
+            localStorage.setItem('@Auth:role', role);
         }
         return response;
     }
