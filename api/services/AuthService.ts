@@ -12,7 +12,8 @@ export class AuthService {
     async loginUser({ email, password }: LoginType): Promise<HttpResponse<any>> {
         const base = '/auth/login';
         const response = await this.client.post({ url: base, body: { email, password } })
-        return { ...response, 
+        return {
+            ...response,
             resolve: 'Login efetuado com sucesso!',
         }
     }
@@ -21,7 +22,10 @@ export class AuthService {
         const base = '/auth/user/sign-up';
         const response = await this.client.post({ url: base, body: data })
 
-        return response
+        return {
+            ...response,
+            resolve: 'Cadastro efetuado com sucesso!',
+        }
 
     }
 
@@ -30,7 +34,7 @@ export class AuthService {
         const response = await this.client.post({ url: base, body: data })
         return response
     }
-    
+
     async getUserAuthenticated(): Promise<HttpResponse<any>> {
         const base = '/user/me';
         const response = await this.client.get({ url: base })

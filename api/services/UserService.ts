@@ -1,7 +1,8 @@
+import { UserType } from "@/utils/types";
 import { HttpResponse } from "api/client/IHttpClient";
 import { RecoletoHttpClient } from "api/client/RecoletoHttpClient";
 
-export class CompanyService {
+export class UserService {
     private client: RecoletoHttpClient;
 
     constructor() {
@@ -9,13 +10,13 @@ export class CompanyService {
     }
 
     async disableAccount(): Promise<HttpResponse<any>> {
-        const base = '/company/disable';
+        const base = '/user/disable';
         const response = await this.client.put({ url: base })
         return response
     }
 
-    async updateCompany({...data}): Promise<HttpResponse<any>> {
-        const base = '/company/update';
+    async updateUser({...data}: UserType): Promise<HttpResponse<any>> {
+        const base = '/user/update';
         const response = await this.client.put({ url: base, body: data })
         return response
     }

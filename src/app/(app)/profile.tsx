@@ -1,52 +1,105 @@
-import { BaseDialog } from "@/components/dialog";
 import { EditableInput } from "@/components/editable-input";
+import { MessageToast } from "@/components/message-toast";
 import { PrimaryButton } from "@/components/primary-button";
 import { colors, font } from "@/utils/globals";
 import { useGetUser } from "api/hooks/useGetUser";
 import { CompanyService } from "api/services/CompanyService";
-import { useState } from "react";
+import { router } from "expo-router";
+import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 export default function ProfileScreen() {
-    const { user, role } = useGetUser();
+    const { user, role, disableAccount, updateUser, refetchUser } = useGetUser();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
 
+    // Adicionando estados locais para os dados editáveis
+    const [name, setName] = useState(user?.name || "");
+    const [email, setEmail] = useState(user?.email || "");
+    const [document, setDocument] = useState(role === 'EMPRESA' ? user?.cnpj : user?.cpf);
+
+    // Atualizando os estados quando os dados do usuário mudam
+    useEffect(() => {
+        if (user) {
+            setName(user.name);
+            setEmail(user.email);
+            setDocument(role === 'EMPRESA' ? user.cnpj : user.cpf);
+        }
+    }, [user, role]);
+
     const handleModal = () => setIsOpen(!isOpen);
 
     const handleDisableAccount = async () => {
-        const companyService = new CompanyService();
-        const response = await companyService.disableAccount();
-        if (response.statusCode > 200 && response.statusCode < 300) {
+        const response = await disableAccount();
+        if (response && response.statusCode > 200 && response.statusCode < 300) {
             setError(response.reject);
         } else {
             setSuccess("Conta desativada com sucesso");
+            handleLogout();
+            router.replace('/');
         }
-    }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('@Auth:token');
+        localStorage.removeItem('@Auth:role');
+        localStorage.removeItem('@Auth:expiresIn');
+        router.replace('/');
+    };
+
+    // Função para salvar as alterações feitas
+    const handleSave = () => {
+        if(user) {
+            const response = updateUser({
+                ...user,
+                name,
+                email,
+            })
+        }
+        refetchUser();
+    };
 
     return (
         <View style={styles.container}>
             <View id="header" style={styles.header}>
                 <Text style={styles.headerText}>Foto de Perfil</Text>
                 <Image source={require('../../../assets/images/user-mock.png')} />
+                <Text style={styles.headerText}>Olá {user?.name} </Text>
             </View>
             <View style={styles.content}>
                 <Text style={styles.title}>Informações do usuário:</Text>
-                <Text style={styles.contentText}>
-                    <EditableInput value={user?.name} label={role === 'EMPRESA' ? 'Nome Fantasia' : 'Nome'} type="text" placeholder="nome" color={colors.black} />
-                    <EditableInput value={user?.email} label="E-mail" type="e-mail" placeholder="email" color={colors.black} />
-                    <EditableInput value={
-                        role === 'EMPRESA' ? user?.cnpj : user?.cpf
-                    } readOnly={true} label={
-                        role === 'EMPRESA' ? "CNPJ" : "CPF"
-                    } type="text" placeholder="cpf" color={colors.black} />
-                </Text>
+                <EditableInput 
+                    value={name} 
+                    onChangeText={setName} 
+                    label={role === 'EMPRESA' ? 'Nome Fantasia' : 'Nome'} 
+                    type="text" 
+                    placeholder="nome" 
+                    color={colors.black} 
+                />
+                <EditableInput 
+                    value={email} 
+                    onChangeText={setEmail} 
+                    label="E-mail" 
+                    type="email" 
+                    placeholder="email" 
+                    color={colors.black} 
+                />
+                <EditableInput 
+                    value={document} 
+                    readOnly={true} 
+                    label={role === 'EMPRESA' ? "CNPJ" : "CPF"} 
+                    type="text" 
+                    placeholder="cpf" 
+                    color={colors.black} 
+                />
                 <View style={styles.buttons}>
-                    <PrimaryButton title="SALVAR" />
+                    <PrimaryButton title="SALVAR" onPress={handleSave} />
                     <PrimaryButton onPress={handleDisableAccount} title="EXCLUIR CONTA" />
+                    <PrimaryButton onPress={handleLogout} title="SAIR" />
                 </View>
             </View>
+            {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
         </View>
     );
 }
