@@ -2,6 +2,7 @@ import { HttpResponse } from "api/client/IHttpClient";
 import { AuthService } from "api/services/AuthService";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { CompanyType, LoginType, UserType } from "@/utils/types";
+import { router } from "expo-router";
 
 interface ContextType {
     registerCompany: (data: CompanyType) => Promise<HttpResponse<any>>;
@@ -24,8 +25,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const loadingSession = async () => {
             checkAuth();
-        }
-    })
+            const storageToken = localStorage.getItem('@Auth:token');
+            if (storageToken) {
+                router.replace('/(app)')
+            } else {
+                router.replace('/login')
+            }
+        };
+        loadingSession();
+    }, [])
 
     async function login({ email, password }: LoginType): Promise<HttpResponse<any>> {
         const response = await authService.loginUser({ email, password });
