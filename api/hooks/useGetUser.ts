@@ -4,28 +4,30 @@ import { AuthService } from "api/services/AuthService"
 import { CompanyService } from "api/services/CompanyService"
 import { UserService } from "api/services/UserService"
 import { useEffect, useState } from "react"
+import {getData} from "@/utils/store-data";
 
 export function useGetUser() {
     const [user, setUser] = useState<CompanyType & UserType | null>(null)
+    const [role, setRole] = useState<string | null>(null)
     const service = new AuthService()
-    const role = localStorage.getItem('@Auth:role')
 
     const fetchUser = async () => {
+      setRole(await getData('@Auth:role') as string)
        if(role === 'EMPRESA') {
-              const response = await service.getCompanyAuthenticated()
-              if(response.statusCode === StatusCode.Ok) {
-                setUser(response.body)
-              } else {
-                setUser(null)
-              }
-       } 
+          const response = await service.getCompanyAuthenticated()
+          if(response.statusCode === StatusCode.Ok) {
+            setUser(response.body)
+          } else {
+            setUser(null)
+          }
+       }
        if (role === 'USUARIO') {
-              const response = await service.getUserAuthenticated()
-              if(response.statusCode === StatusCode.Ok) {
-                setUser(response.body)
-              } else {
-                setUser(null)
-              }
+          const response = await service.getUserAuthenticated()
+          if(response.statusCode === StatusCode.Ok) {
+            setUser(response.body)
+          } else {
+            setUser(null)
+          }
        }
     }
   

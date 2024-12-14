@@ -7,9 +7,10 @@ import { CompanyService } from "api/services/CompanyService";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
+import {removeData} from "@/utils/store-data";
 
 export default function ProfileScreen() {
-    const { user, role, disableAccount, updateUser, refetchUser } = useGetUser();
+    const { user, refetchUser, updateUser, role, disableAccount } = useGetUser();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
@@ -41,10 +42,10 @@ export default function ProfileScreen() {
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('@Auth:token');
-        localStorage.removeItem('@Auth:role');
-        localStorage.removeItem('@Auth:expiresIn');
+    const handleLogout = async () => {
+        await removeData('@Auth:token');
+        await removeData('@Auth:role');
+        await removeData('@Auth:expiresIn');
         router.replace('/');
     };
 
