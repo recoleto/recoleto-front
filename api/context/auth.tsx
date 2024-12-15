@@ -30,7 +30,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             if (storageToken) {
                 router.replace('/profile')
             } else {
-                router.replace('/login')
+                router.replace('/')
             }
         };
         loadingSession();

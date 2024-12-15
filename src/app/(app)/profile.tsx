@@ -3,7 +3,6 @@ import { MessageToast } from "@/components/message-toast";
 import { PrimaryButton } from "@/components/primary-button";
 import { colors, font } from "@/utils/globals";
 import { useGetUser } from "api/hooks/useGetUser";
-import { CompanyService } from "api/services/CompanyService";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
@@ -37,7 +36,7 @@ export default function ProfileScreen() {
             setError(response.reject);
         } else {
             setSuccess("Conta desativada com sucesso");
-            handleLogout();
+            await handleLogout();
             router.replace('/');
         }
     };
@@ -52,18 +51,18 @@ export default function ProfileScreen() {
     // Função para salvar as alterações feitas
     const handleSave = () => {
         if(user) {
-            const response = updateUser({
+            updateUser({
                 ...user,
                 name,
                 email,
-            })
+            });
         }
         refetchUser();
     };
 
     return (
         <View style={styles.container}>
-            <View id="header" style={styles.header}>
+            {/* <View id="header" style={styles.header}>
                 <Text style={styles.headerText}>Foto de Perfil</Text>
                 <Image source={require('../../../assets/images/user-mock.png')} />
                 <Text style={styles.headerText}>Olá {user?.name} </Text>
@@ -100,7 +99,7 @@ export default function ProfileScreen() {
                     <PrimaryButton onPress={handleLogout} title="SAIR" />
                 </View>
             </View>
-            {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
+            {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null} */}
         </View>
     );
 }

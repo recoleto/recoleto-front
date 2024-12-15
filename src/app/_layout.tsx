@@ -33,6 +33,7 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
                     <Stack screenOptions={{
                         headerTransparent: true,
                         headerTintColor: colors.white,
+                        headerBlurEffect: 'regular',
                         contentStyle: { backgroundColor: "transparent", marginHorizontal: 24 }
                     }} >
                         <Stack.Screen name="index" options={{ headerShown: false }} />
