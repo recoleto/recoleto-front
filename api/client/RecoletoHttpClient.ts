@@ -1,6 +1,6 @@
-import axios, { AxiosInstance } from "axios";
-import { HttpRequest, HttpResponse } from "./IHttpClient";
-import { IHttpClient } from "./IHttpClient";
+import axios, {AxiosInstance} from "axios";
+import {HttpRequest, HttpResponse, IHttpClient} from "./IHttpClient";
+import {getData} from "@/utils/store-data";
 
 export class RecoletoHttpClient implements IHttpClient {
   private axiosInstance: AxiosInstance;
@@ -12,10 +12,12 @@ export class RecoletoHttpClient implements IHttpClient {
     });
 
     this.axiosInstance.interceptors.request.use((config) => {
-      const token = localStorage.getItem('@Auth:token');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+       getData('@Auth:token').then(token => {
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+         return token
+       });
       return config;
     })
 
@@ -29,6 +31,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data,
         };
       }).catch(error => {
+        console.log(JSON.stringify(error));
         if (error.response?.status >= 500){
           return {
             statusCode: 500,
@@ -49,6 +52,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data
         };
       }).catch(error => {
+        console.log(JSON.stringify(error));
         if (error.response?.status >= 500){
           return {
             statusCode: 500,
@@ -71,6 +75,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data,
         };
       }).catch(error => {
+        console.log(JSON.stringify(error));
         if (error.response?.status >= 500){
           return {
             statusCode: 500,
@@ -91,6 +96,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data,
         };
       }).catch(error => {
+        console.log(JSON.stringify(error));
         if (error.response?.status >= 500){
           return {
             statusCode: 500,

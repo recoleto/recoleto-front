@@ -12,6 +12,7 @@ import { User, userSchema } from "@/utils/types";
 import { cpfApplyMask, telNumberMask } from "@/utils/masks";
 import { useRouter } from "expo-router";
 import { AuthContext } from "api/context/auth";
+import FormLayout from "../components/form-layout";
 
 export default function SignUpUser() {
     const [success, setSuccess] = useState<string | null>(null)
@@ -52,7 +53,9 @@ export default function SignUpUser() {
         if (response.statusCode === 201) {
             setError(null)
             setSuccess('Usuário cadastrado com sucesso.')
-            router.replace('/login')
+            setTimeout(() => {
+                router.replace('/')
+            }, 2000)
         } else {
             setSuccess(null)
             setError(response.reject)
@@ -60,6 +63,7 @@ export default function SignUpUser() {
     }
 
     return (
+        <FormLayout>
             <View style={styles.componentView}>
                 <View style={stylesInit.inputsView}>
                     <View style={stylesInit.logradouroView}>
@@ -137,6 +141,7 @@ export default function SignUpUser() {
                 </View>
                 {error ? <MessageToast message={error} type="error" /> : success ? <MessageToast message={success} type="success" /> : null}
             </View>
+        </FormLayout>
     )
 }
 
@@ -152,7 +157,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'relative'
     },
-    button:{
+    button: {
         marginBottom: 500
     }
 })

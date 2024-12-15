@@ -1,8 +1,9 @@
-import { HttpResponse } from "api/client/IHttpClient";
-import { AuthService } from "api/services/AuthService";
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { CompanyType, LoginType, UserType } from "@/utils/types";
-import { router } from "expo-router";
+import {HttpResponse} from "api/client/IHttpClient";
+import {AuthService} from "api/services/AuthService";
+import {createContext, ReactNode, useEffect, useState} from "react";
+import {CompanyType, LoginType, UserType} from "@/utils/types";
+import {router} from "expo-router";
+import {getData, storeData} from "@/utils/store-data";
 
 interface ContextType {
     registerCompany: (data: CompanyType) => Promise<HttpResponse<any>>;
@@ -24,12 +25,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         const loadingSession = async () => {
-            checkAuth();
-            const storageToken = localStorage.getItem('@Auth:token');
+            await checkAuth();
+            const storageToken = await getData('@Auth:token');
             if (storageToken) {
                 router.replace('/profile')
             } else {
-                router.replace('/login')
+                router.replace('/')
             }
         };
         loadingSession();
@@ -41,27 +42,24 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             const { token, expiresIn, role } = response.body;
             setToken(token);
             setExpiresIn(expiresIn);
-            localStorage.setItem('@Auth:token', token);
-            localStorage.setItem('@Auth:expiresIn', expiresIn);
-            localStorage.setItem('@Auth:role', role);
+            await storeData({key: '@Auth:token', value: token});
+            await storeData({key: '@Auth:expiresIn', value: expiresIn});
+            await storeData({key: '@Auth:role', value: role});
         }
         return response;
     }
 
     async function checkAuth() {
-        const token = localStorage.getItem('@Auth:token');
-        if (token) return setToken(token);
-
+        const token = await getData('@Auth:token');
+        if (token) return setToken(token as string);
     }
 
     async function registerUser({ ...data }: UserType): Promise<HttpResponse<any>> {
-        const response = await authService.registerUser({ ...data });
-        return response
+        return await authService.registerUser({...data})
     }
 
     async function registerCompany({ ...data }: CompanyType): Promise<HttpResponse<any>> {
-        const response = await authService.registerCompany({ ...data });
-        return response
+        return await authService.registerCompany({...data})
     }
 
     return (

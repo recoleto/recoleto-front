@@ -1,4 +1,3 @@
-import GoBack from "@/components/back";
 import { Input } from "@/components/input";
 import { PrimaryButton } from "@/components/primary-button";
 import { useContext, useState } from "react";
@@ -12,6 +11,7 @@ import { cnpjApplyMask, telNumberMask } from '@/utils/masks'
 import { MessageToast } from "@/components/message-toast";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import FormLayout from "@/components/form-layout";
 
 export default function SignUpCompany() {
     const [success, setSuccess] = useState<string | null>(null)
@@ -47,12 +47,13 @@ export default function SignUpCompany() {
             email: watch('email'),
             password: watch('password')
         }
-        const response = await auth.registerCompany({...data})
-        console.log(response)   
+        const response = await auth.registerCompany({ ...data })
         if (response.statusCode === 201) {
             setError(null)
             setSuccess('Empresa cadastrada com sucesso.')
-            router.replace('/login')
+            setTimeout(() => {
+                router.replace('/login')
+            }, 2000)
         } else {
             setSuccess(null)
             setError(response.reject)
@@ -60,27 +61,28 @@ export default function SignUpCompany() {
     }
 
     return (
-        <View style={stylesInit.componentView}>
-            <View style={stylesInit.inputsView}>
-                <Input
-                    color={colors.white}
-                    label="Nome Fantasia"
-                    type="text"
-                    placeholder="Digite o nome da sua empresa"
-                    onChangeText={(text) => setValue('name', text)}
-                />
-                {errors.name && <Text style={{ color: 'red' }}>{errors.name.message}</Text>}
+        <FormLayout>
+            <View style={stylesInit.componentView}>
+                <View style={stylesInit.inputsView}>
+                    <Input
+                        color={colors.white}
+                        label="Nome Fantasia"
+                        type="text"
+                        placeholder="Digite o nome da sua empresa"
+                        onChangeText={(text) => setValue('name', text)}
+                    />
+                    {errors.name && <Text style={{ color: 'red' }}>{errors.name.message}</Text>}
 
-                <Input
-                    color={colors.white}
-                    label="CNPJ"
-                    type="text"
-                    placeholder="Digite o CNPJ da sua empresa"
-                    value={watch('cnpj')}
-                    onChangeText={(value) => applyMask(value, 'cnpj')} />
-                {errors.cnpj && <Text style={{ color: 'red' }}>{errors.cnpj.message}</Text>}
+                    <Input
+                        color={colors.white}
+                        label="CNPJ"
+                        type="text"
+                        placeholder="Digite o CNPJ da sua empresa"
+                        value={watch('cnpj')}
+                        onChangeText={(value) => applyMask(value, 'cnpj')} />
+                    {errors.cnpj && <Text style={{ color: 'red' }}>{errors.cnpj.message}</Text>}
 
-                {/* <View style={stylesInit.logradouroView}>
+                    {/* <View style={stylesInit.logradouroView}>
                     <View style={{ flex: 4 }}>
                     <Input color={colors.white}
                     label="Logradouro"
@@ -102,40 +104,41 @@ export default function SignUpCompany() {
                     </View>
                 </View> */}
 
-                <Input color={colors.white}
-                    label="Telefone"
-                    type="text"
-                    placeholder="Digite o telefone da sua empresa"
-                    onChangeText={(value) => applyMask(value, 'telNumber')}
-                    value={watch('telNumber')} />
-                {errors.telNumber && <Text style={{ color: 'red' }}>{errors.telNumber.message}</Text>}
+                    <Input color={colors.white}
+                        label="Telefone"
+                        type="text"
+                        placeholder="Digite o telefone da sua empresa"
+                        onChangeText={(value) => applyMask(value, 'telNumber')}
+                        value={watch('telNumber')} />
+                    {errors.telNumber && <Text style={{ color: 'red' }}>{errors.telNumber.message}</Text>}
 
-                <Input color={colors.white}
-                    label="E-mail"
-                    type="email"
-                    placeholder="Digite o e-mail da sua empresa"
-                    onChangeText={(text) => setValue('email', text)} />
-                {errors.email && <Text style={{ color: 'red' }}>{errors.email.message}</Text>}
+                    <Input color={colors.white}
+                        label="E-mail"
+                        type="email"
+                        placeholder="Digite o e-mail da sua empresa"
+                        onChangeText={(text) => setValue('email', text)} />
+                    {errors.email && <Text style={{ color: 'red' }}>{errors.email.message}</Text>}
 
-                <Input color={colors.white}
-                    label="Senha"
-                    type="password"
-                    secureTextEntry={true}
-                    placeholder="Digite a senha da sua empresa"
-                    onChangeText={(text) => setValue('password', text)} />
-                {errors.password && <Text style={{ color: 'red' }}>{errors.password.message}</Text>}
+                    <Input color={colors.white}
+                        label="Senha"
+                        type="password"
+                        secureTextEntry={true}
+                        placeholder="Digite a senha da sua empresa"
+                        onChangeText={(text) => setValue('password', text)} />
+                    {errors.password && <Text style={{ color: 'red' }}>{errors.password.message}</Text>}
 
-                <Input color={colors.white}
-                    label="Confirmação de senha"
-                    type="password"
-                    secureTextEntry={true}
-                    placeholder="Confirme sua senha"
-                    onChangeText={(text) => setValue('confirmPassword', text)} />
-                {errors.confirmPassword && <Text style={{ color: 'red' }}>{errors.confirmPassword.message}</Text>}
+                    <Input color={colors.white}
+                        label="Confirmação de senha"
+                        type="password"
+                        secureTextEntry={true}
+                        placeholder="Confirme sua senha"
+                        onChangeText={(text) => setValue('confirmPassword', text)} />
+                    {errors.confirmPassword && <Text style={{ color: 'red' }}>{errors.confirmPassword.message}</Text>}
+                </View>
+                <PrimaryButton onPress={handleSubmit(onSubmit)} title="CADASTRAR" />
+                {error ? <MessageToast message={error} type="error" /> : success ? <MessageToast message={success} type="success" /> : null}
             </View>
-            <PrimaryButton onPress={handleSubmit(onSubmit)} title="CADASTRAR" />
-            {error ? <MessageToast message={error} type="error"  /> : success ? <MessageToast message={success} type="success" /> : null}
-        </View>
+        </FormLayout>
     )
 }
 
