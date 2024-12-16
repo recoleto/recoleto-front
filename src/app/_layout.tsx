@@ -34,7 +34,7 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
                         headerTransparent: true,
                         headerTintColor: colors.white,
                         headerBlurEffect: 'regular',
-                        contentStyle: { backgroundColor: "transparent", marginHorizontal: 24 }
+                        contentStyle: { backgroundColor: "transparent" }
                     }} >
                         <Stack.Screen name="index" options={{ headerShown: false }} />
                         <Stack.Screen name="signup-company" options={{ title: 'REGISTRO DA EMPRESA' }} />
