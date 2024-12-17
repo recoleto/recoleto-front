@@ -3,13 +3,13 @@ import { MessageToast } from "@/components/message-toast";
 import { PrimaryButton } from "@/components/primary-button";
 import { colors, font } from "@/utils/globals";
 import { useGetUser } from "api/hooks/useGetUser";
-import { router } from "expo-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import {removeData} from "@/utils/store-data";
+import { AuthContext } from "api/context/auth";
 
 export default function ProfileScreen() {
     const { user, refetchUser, updateUser, role, disableAccount } = useGetUser();
+    const { logOut } = useContext(AuthContext)
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
@@ -21,6 +21,8 @@ export default function ProfileScreen() {
 
     // Atualizando os estados quando os dados do usuário mudam
     useEffect(() => {
+        // console.log('chegou aqiu papai')
+        // console.log('passou do refetch papai')
         if (user) {
             setName(user.name);
             setEmail(user.email);
@@ -36,18 +38,9 @@ export default function ProfileScreen() {
             setError(response.reject);
         } else {
             setSuccess("Conta desativada com sucesso");
-            await handleLogout();
-            router.replace('/');
+            logOut();
         }
     };
-
-    const handleLogout = async () => {
-        await removeData('@Auth:token');
-        await removeData('@Auth:role');
-        await removeData('@Auth:expiresIn');
-        router.replace('/');
-    };
-
     // Função para salvar as alterações feitas
     const handleSave = () => {
         if(user) {
@@ -62,14 +55,14 @@ export default function ProfileScreen() {
 
     return (
         <View style={styles.container}>
-            {/* <View id="header" style={styles.header}>
+            <View id="header" style={styles.header}>
                 <Text style={styles.headerText}>Foto de Perfil</Text>
                 <Image source={require('../../../assets/images/user-mock.png')} />
                 <Text style={styles.headerText}>Olá {user?.name} </Text>
             </View>
             <View style={styles.content}>
                 <Text style={styles.title}>Informações do usuário:</Text>
-                <EditableInput 
+                {/* <EditableInput 
                     value={name} 
                     onChangeText={setName} 
                     label={role === 'EMPRESA' ? 'Nome Fantasia' : 'Nome'} 
@@ -84,7 +77,7 @@ export default function ProfileScreen() {
                     type="email" 
                     placeholder="email" 
                     color={colors.black} 
-                />
+                /> */}
                 <EditableInput 
                     value={document} 
                     readOnly={true} 
@@ -96,10 +89,10 @@ export default function ProfileScreen() {
                 <View style={styles.buttons}>
                     <PrimaryButton title="SALVAR" onPress={handleSave} />
                     <PrimaryButton onPress={handleDisableAccount} title="EXCLUIR CONTA" />
-                    <PrimaryButton onPress={handleLogout} title="SAIR" />
+                    <PrimaryButton onPress={logOut} title="SAIR" />
                 </View>
             </View>
-            {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null} */}
+            {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
         </View>
     );
 }

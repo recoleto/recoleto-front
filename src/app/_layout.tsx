@@ -31,7 +31,7 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
             <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
                 <SafeAreaView id="root-safe-area" style={styles.background}>
                     <Stack screenOptions={{
-                        headerTransparent: true,
+                        headerStyle: { backgroundColor: "#0C3422"},
                         headerTintColor: colors.white,
                         headerBlurEffect: 'regular',
                         contentStyle: { backgroundColor: "transparent" }
