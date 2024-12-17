@@ -8,6 +8,7 @@ import { StatusCode } from "api/client/IHttpClient";
 import { MessageToast } from "@/components/message-toast";
 import { AuthContext } from "api/context/auth";
 import { router } from "expo-router";
+import FormLayout from "@/components/form-layout";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -23,24 +24,28 @@ export default function Login() {
             setError(response.reject)
         } else if (response.statusCode === StatusCode.Ok) {
             setSuccess(response.resolve)
-            router.replace('/(app)/profile')
+            setTimeout(() => {
+                router.replace('/profile')
+            }, 2000)
         }
     }
 
     return (
-        <View style={styles.componentView}>
-            <View style={styles.logoView}>
-                <Image style={styles.image} source={require('../../assets/images/logo-w-name.png')} />
-                <Text style={stylesInit.text}>Entre para utilizar a plataforma</Text>
-            </View>
-            <View style={styles.inputsView}>
-                <Input onChangeText={(email) => setEmail(email)} label='Email' type='email' placeholder='Digite seu email' color={colors.white} />
-                <Input onChangeText={(password) => setPassword(password)} label='Senha' type='password' placeholder='Digite sua senha' color={colors.white} secureTextEntry={true} />
-                <PrimaryButton onPress={onSubmit} title="ENTRAR" />
-            </View>
+        <FormLayout>
+            <View style={styles.componentView}>
+                <View style={styles.logoView}>
+                    <Image style={styles.image} source={require('../../assets/images/logo-w-name.png')} />
+                    <Text style={stylesInit.text}>Entre para utilizar a plataforma</Text>
+                </View>
+                <View style={styles.inputsView}>
+                    <Input onChangeText={(email) => setEmail(email)} label='Email' type='email' placeholder='Digite seu email' color={colors.white} />
+                    <Input onChangeText={(password) => setPassword(password)} label='Senha' type='password' placeholder='Digite sua senha' color={colors.white} secureTextEntry={true} />
+                    <PrimaryButton onPress={onSubmit} title="ENTRAR" />
+                </View>
 
-            {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
-        </View>
+                {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
+            </View>
+        </FormLayout>
     )
 }
 

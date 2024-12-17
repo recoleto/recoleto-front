@@ -63,85 +63,87 @@ export default function SignUpUser() {
     }
 
     return (
-        <FormLayout>
-            <View style={styles.componentView}>
-                <View style={stylesInit.inputsView}>
-                    <View style={stylesInit.logradouroView}>
-                        <View style={{ flex: 1 }}>
-                            <Input
-                                onChangeText={(value) => setValue('name', value)}
-                                label="Nome Completo"
-                                type="text"
-                                placeholder="Digite seu nome"
-                                color={colors.white} />
-                            {errors.name && <Text style={{ color: colors.white }}>{errors.name.message}</Text>}
+        <ScrollView>
+            <FormLayout>
+                <View style={styles.componentView}>
+                    <View style={stylesInit.inputsView}>
+                        <View style={stylesInit.logradouroView}>
+                            <View style={{ flex: 1 }}>
+                                <Input
+                                    onChangeText={(value) => setValue('name', value)}
+                                    label="Nome Completo"
+                                    type="text"
+                                    placeholder="Digite seu nome"
+                                    color={colors.white} />
+                                {errors.name && <Text style={{ color: colors.white }}>{errors.name.message}</Text>}
+                            </View>
+
+                            <View style={{ flex: 1 }}>
+                                <Input
+                                    onChangeText={(value) => setValue('lastName', value)}
+                                    label="Sobrenome"
+                                    type="text"
+                                    placeholder="Digite seu sobrenome"
+                                    color={colors.white} />
+                                {errors.lastName && <Text style={{ color: colors.white }}>{errors.lastName.message}</Text>}
+                            </View>
                         </View>
 
-                        <View style={{ flex: 1 }}>
-                            <Input
-                                onChangeText={(value) => setValue('lastName', value)}
-                                label="Sobrenome"
-                                type="text"
-                                placeholder="Digite seu sobrenome"
-                                color={colors.white} />
-                            {errors.lastName && <Text style={{ color: colors.white }}>{errors.lastName.message}</Text>}
-                        </View>
-                    </View>
-
-                    <Input
-                        onChangeText={(value) => applyMask(value, 'cpf')}
-                        label="CPF"
-                        value={watch('cpf')}
-                        type="text"
-                        placeholder="123.456.789-00"
-                        color={colors.white} />
-                    {errors.cpf && <Text style={{ color: colors.white }}>{errors.cpf.message}</Text>}
-                    {/* <View style={stylesInit.logradouroView}>
+                        <Input
+                            onChangeText={(value) => applyMask(value, 'cpf')}
+                            label="CPF"
+                            value={watch('cpf')}
+                            type="text"
+                            placeholder="123.456.789-00"
+                            color={colors.white} />
+                        {errors.cpf && <Text style={{ color: colors.white }}>{errors.cpf.message}</Text>}
+                        {/* <View style={stylesInit.logradouroView}>
                     <Input label="Logradouro" type="text" placeholder="Digite seu logradouro" viewStyle={{ flex: 4 }} color={colors.white} />
                     <Input label="Número" type="text" placeholder="n°012" viewStyle={{ flex: 1 }} color={colors.white} />
                     </View> */}
-                    <Input
-                        onChangeText={(value) => setValue('email', value)}
-                        value={watch('email')}
-                        label="E-mail"
-                        type="email"
-                        placeholder="Digite seu e-mail"
-                        color={colors.white} />
-                    {errors.email && <Text style={{ color: colors.white }}>{errors.email.message}</Text>}
+                        <Input
+                            onChangeText={(value) => setValue('email', value)}
+                            value={watch('email')}
+                            label="E-mail"
+                            type="email"
+                            placeholder="Digite seu e-mail"
+                            color={colors.white} />
+                        {errors.email && <Text style={{ color: colors.white }}>{errors.email.message}</Text>}
 
-                    <Input
-                        onChangeText={(value) => applyMask(value, 'telNumber')}
-                        value={watch('telNumber')}
-                        label="Telefone"
-                        type="text"
-                        placeholder="(00) 00000-0000"
-                        color={colors.white} />
+                        <Input
+                            onChangeText={(value) => applyMask(value, 'telNumber')}
+                            value={watch('telNumber')}
+                            label="Telefone"
+                            type="text"
+                            placeholder="(00) 00000-0000"
+                            color={colors.white} />
 
-                    <Input
-                        onChangeText={(value) => setValue('password', value)}
-                        secureTextEntry={true}
-                        value={watch('password')}
-                        label="Senha"
-                        type="password"
-                        placeholder="Digite sua senha"
-                        color={colors.white} />
-                    {errors.password && <Text style={{ color: colors.white }}>{errors.password.message}</Text>}
+                        <Input
+                            onChangeText={(value) => setValue('password', value)}
+                            secureTextEntry={true}
+                            value={watch('password')}
+                            label="Senha"
+                            type="password"
+                            placeholder="Digite sua senha"
+                            color={colors.white} />
+                        {errors.password && <Text style={{ color: colors.white }}>{errors.password.message}</Text>}
 
-                    <Input
-                        onChangeText={(value) => setValue('confirmPassword', value)}
-                        secureTextEntry={true}
-                        value={watch('confirmPassword')}
-                        label="Confirme a senha"
-                        type="password"
-                        placeholder="Confirme sua senha"
-                        color={colors.white} />
-                    {errors.confirmPassword && <Text style={{ color: colors.white }}>{errors.confirmPassword.message}</Text>}
+                        <Input
+                            onChangeText={(value) => setValue('confirmPassword', value)}
+                            secureTextEntry={true}
+                            value={watch('confirmPassword')}
+                            label="Confirme a senha"
+                            type="password"
+                            placeholder="Confirme sua senha"
+                            color={colors.white} />
+                        {errors.confirmPassword && <Text style={{ color: colors.white }}>{errors.confirmPassword.message}</Text>}
 
-                    <PrimaryButton style={styles.button} onPress={handleSubmit(onSubmit)} title="REGISTRAR" />
+                        <PrimaryButton style={styles.button} onPress={handleSubmit(onSubmit)} title="REGISTRAR" />
+                    </View>
+                    {error ? <MessageToast message={error} type="error" /> : success ? <MessageToast message={success} type="success" /> : null}
                 </View>
-                {error ? <MessageToast message={error} type="error" /> : success ? <MessageToast message={success} type="success" /> : null}
-            </View>
-        </FormLayout>
+            </FormLayout>
+        </ScrollView>
     )
 }
 

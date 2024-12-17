@@ -8,17 +8,28 @@ type StoreDataProps = {
 export async function storeData({ key, value }: StoreDataProps) {
     try {
       await AsyncStorage.setItem(key, value);
-    } catch (error) { return error; }
+      return value;
+    } catch (error) { 
+      console.error(error);
+      return error;
+     }
 }
 
 export async function getData(key: string) {
   try {
-    await AsyncStorage.getItem(key);
-  } catch (error) { return error; }
+    const value = await AsyncStorage.getItem(key);
+    return value;
+  } catch (error) { 
+    console.error(error);
+    return error;
+   }
 }
 
 export async function removeData(key: string) {
   try {
     await AsyncStorage.removeItem(key);
-  } catch (error) { return error; }
+  } catch (error) { 
+    console.error(error);
+    return error;
+   }
 }

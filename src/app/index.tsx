@@ -1,5 +1,5 @@
 import { PrimaryButton } from '@/components/primary-button';
-import { RelativePathString } from 'expo-router';
+import { RelativePathString, router } from 'expo-router';
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native';
 
@@ -14,6 +14,7 @@ export default function Index() {
                 <PrimaryButton href={'/login' as RelativePathString} title='Entrar'></PrimaryButton>
                 <PrimaryButton href={'/signup-company' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
                 <PrimaryButton href={'/signup-user' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
+                <PrimaryButton onPress={() => router.navigate("/(app)/profile")} title="perfil"/>
             </View>
         </View>
     );
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
         width: '100%',
         display: 'flex',
         justifyContent: 'space-around',
+      paddingHorizontal: 24
     },
     image: {
         width: 200,

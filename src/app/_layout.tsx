@@ -31,10 +31,10 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
             <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
                 <SafeAreaView id="root-safe-area" style={styles.background}>
                     <Stack screenOptions={{
-                        headerTransparent: true,
+                        headerStyle: { backgroundColor: "#0C3422"},
                         headerTintColor: colors.white,
                         headerBlurEffect: 'regular',
-                        contentStyle: { backgroundColor: "transparent", marginHorizontal: 24 }
+                        contentStyle: { backgroundColor: "transparent" }
                     }} >
                         <Stack.Screen name="index" options={{ headerShown: false }} />
                         <Stack.Screen name="signup-company" options={{ title: 'REGISTRO DA EMPRESA' }} />
