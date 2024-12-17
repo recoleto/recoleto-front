@@ -21,13 +21,13 @@ export default function ProfileScreen() {
 
     // Atualizando os estados quando os dados do usuário mudam
     useEffect(() => {
-        // refetchUser();
+        refetchUser();
         if (user) {
             setName(user.name);
             setEmail(user.email);
             setDocument(role === 'EMPRESA' ? user.cnpj : user.cpf);
         }
-    }, [user]);
+    }, []);
 
     const handleModal = () => setIsOpen(!isOpen);
 
