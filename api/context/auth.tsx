@@ -46,13 +46,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     async function logOut() {
         await removeData('@Auth:token');
         await removeData('@Auth:expiresIn');
-        await removeData('@Auth:role');
+        await removeData('@Auth:role'); 
         router.navigate('/');
     }
 
     async function checkAuth() {
         const token = await getData('@Auth:token');
-        console.log(token)
         if (token) return true;
         if(expiresIn && expiresIn < new Date().getTime()) {
             await logOut();

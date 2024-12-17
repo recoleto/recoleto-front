@@ -9,7 +9,7 @@ type InputType = ComponentProps<typeof TextInput> & {
     placeholder: string;
     color: string;
     viewStyle?: ViewStyle;
-    readonly?: boolean;
+    readOnly?: boolean;
 }
 
 export function EditableInput({ label, type, placeholder, color, viewStyle, readOnly, ...rest }: InputType) {
@@ -22,7 +22,6 @@ export function EditableInput({ label, type, placeholder, color, viewStyle, read
                     borderColor: readOnly ? colors.grey100 : colors.grey200,
                  }
             ]} placeholder={placeholder} {...rest} />
-            {!readOnly && <EditRoundedIcon style={styles.icon} />}
         </View>
     )
 }
@@ -35,15 +34,9 @@ const styles = StyleSheet.create({
         padding: 16,
         marginTop: 6,
         width: '100%',
-        position: 'relative',
     },
     label: {
         fontFamily: 'Teachers-Medium',
         fontSize: font.size.medium
     },
-    icon: {
-        position: 'absolute',
-        right: 10,
-        top: 38,
-    }
 })

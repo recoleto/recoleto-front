@@ -11,13 +11,16 @@ export class RecoletoHttpClient implements IHttpClient {
       headers: { "Content-Type": "application/json" },
     });
 
-    this.axiosInstance.interceptors.request.use((config) => {
-       getData('@Auth:token').then(token => {
-          if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-          }
-         return token
-       });
+    this.axiosInstance.interceptors.request.use(async (config) => {
+       try {
+        const token = await getData('@Auth:token');
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (error) {
+        console.error("Error retrieving data:", error);
+        return config;
+      }
       return config;
     })
 
@@ -31,7 +34,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data,
         };
       }).catch(error => {
-        console.log(JSON.stringify(error));
+        console.log(error);
         if (error.response?.status >= 500){
           return {
             statusCode: 500,
@@ -52,7 +55,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data
         };
       }).catch(error => {
-        console.log(JSON.stringify(error));
+        console.log(error);
         if (error.response?.status >= 500){
           return {
             statusCode: 500,
@@ -75,7 +78,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data,
         };
       }).catch(error => {
-        console.log(JSON.stringify(error));
+        console.log(error);
         if (error.response?.status >= 500){
           return {
             statusCode: 500,
@@ -96,7 +99,7 @@ export class RecoletoHttpClient implements IHttpClient {
           body: response.data,
         };
       }).catch(error => {
-        console.log(JSON.stringify(error));
+        console.log(error);
         if (error.response?.status >= 500){
           return {
             statusCode: 500,
