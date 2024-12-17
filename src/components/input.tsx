@@ -1,8 +1,8 @@
 import { ComponentProps } from "react";
 import { View, TextInput, StyleSheet, Text, ViewStyle } from "react-native";
-import { border, colors, font } from "utils/globals";
+import { border, colors, font } from "@/utils/globals";
 
-type InputType  = ComponentProps<typeof TextInput> & {
+type InputType = ComponentProps<typeof TextInput> & {
     label: string;
     type: string;
     placeholder: string;
@@ -10,11 +10,11 @@ type InputType  = ComponentProps<typeof TextInput> & {
     viewStyle?: ViewStyle;
 }
 
-export function Input({ label, type, placeholder, color, viewStyle, ...rest } : InputType) {
+export function Input({ label, type, placeholder, color, viewStyle, ...rest }: InputType) {
     return (
-        <View style={[viewStyle]}> 
-            <Text style={[styles.label, {color: `${color}`}]}> {label} </Text>
-            <TextInput style={styles.input} placeholder={placeholder} {...rest} />
+        <View style={[viewStyle]}>
+            <Text style={[styles.label, { color: `${color}` }]}> {label} </Text>
+                    <TextInput placeholderTextColor={colors.grey300} style={styles.input} placeholder={placeholder} {...rest} />
         </View>
     )
 }

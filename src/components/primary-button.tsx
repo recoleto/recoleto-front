@@ -1,24 +1,37 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { colors, font } from '../../utils/globals';
+import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { colors, font } from '../utils/globals';
 import { RelativePathString, router } from 'expo-router';
 import { ComponentProps } from 'react';
 
 type PrimaryButtonType = ComponentProps<typeof TouchableOpacity> & {
   title: string;
   href?: RelativePathString;
+  onPress?: () => void;
 }
 
 
-export const PrimaryButton = ({ title, href }: PrimaryButtonType) => {
+export const PrimaryButton = ({ title, href, onPress }: PrimaryButtonType) => {
 
   function redirectTo(href: RelativePathString) {
     router.navigate(href);
   }
 
+  const handlePress = (event: any) => {
+    // Executa a função onPress, se fornecida
+    if (onPress) {
+      onPress(event);
+    }
+
+    // Executa o redirecionamento, se href estiver presente
+    if (href) {
+      redirectTo(href);
+    }
+  };
+
   return (
-      <TouchableOpacity id='button' style={styles.button} onPress={() => href && redirectTo(href)}>
-        <Text style={styles.text}>{title}</Text>
-      </TouchableOpacity>
+    <TouchableOpacity id='button' style={styles.button} onPress={handlePress}>
+      <Text style={styles.text}>{title}</Text>
+    </TouchableOpacity>
   )
 }
 
