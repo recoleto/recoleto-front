@@ -5,23 +5,22 @@ type DialogProps = {
     isOpen: boolean;
     setIsOpen: () => void;
     onPressAction: () => void;
-    // message: string;
+    message: string;
     title: string
 }
 
-export function BaseDialog({ isOpen, setIsOpen, onPressAction, title }: DialogProps) {
+export function BaseDialog({ isOpen, setIsOpen, onPressAction, title, message }: DialogProps) {
     return (
         <View>
-            <Dialog.Container>
-                {/* <Dialog.Title>Account delete
+            <Dialog.Container visible={isOpen}>
+                <Dialog.Title>
                     {title}
                 </Dialog.Title>
                 <Dialog.Description>
-                    Do you want to delete this account? You cannot undo this action.
+                   {message}
                 </Dialog.Description>
-                <Dialog.Button onPress={setIsOpen} label="Cancel" />
-                <Dialog.Button onPress={onPressAction} label="Delete" /> */}
-                
+                <Dialog.Button onPress={setIsOpen} label="Cancelar" />
+                <Dialog.Button onPress={onPressAction} label="Sim" />
             </Dialog.Container>
         </View>
     )

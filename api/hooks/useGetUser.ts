@@ -80,5 +80,5 @@ export function useGetUser() {
     fetchUser();
   }, []);
 
-  return { user, role, refetchUser: fetchUser, disableAccount, updateUser }
+  return { user, role, fetchUser, disableAccount, updateUser }
 }   

@@ -6,9 +6,10 @@ import { useGetUser } from "api/hooks/useGetUser";
 import { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { AuthContext } from "api/context/auth";
+import { BaseDialog } from "@/components/dialog";
 
 export default function ProfileScreen() {
-    const { user, refetchUser, updateUser, role, disableAccount } = useGetUser();
+    const { user, fetchUser, updateUser, role, disableAccount } = useGetUser();
     const { logOut } = useContext(AuthContext)
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -21,12 +22,13 @@ export default function ProfileScreen() {
 
     // Atualizando os estados quando os dados do usuário mudam
     useEffect(() => {
-        refetchUser();
-        if (user) {
+        if(!user) {
+            fetchUser();
+        } else if (user) {
             setName(user.name);
             setEmail(user.email);
             setDocument(role === 'EMPRESA' ? user.cnpj : user.cpf);
-        }
+        } 
     }, []);
 
     const handleModal = () => setIsOpen(!isOpen);
@@ -35,21 +37,30 @@ export default function ProfileScreen() {
         const response = await disableAccount();
         if (response && response.statusCode > 200 && response.statusCode < 300) {
             setError(response.reject);
+            setTimeout(() => setError(null), 2000);
         } else {
             setSuccess("Conta desativada com sucesso");
+            setTimeout(() => setSuccess(null), 2000);
             logOut();
         }
     };
     // Função para salvar as alterações feitas
-    const handleSave = () => {
+    const handleSave = async () => {
         if (user) {
-            updateUser({
+            const response = await updateUser({
                 ...user,
                 name,
                 email,
             });
+            if (response && response.statusCode > 200 && response.statusCode < 300) {
+                setError(response.reject);
+                setTimeout(() => setError(null), 2000);
+            } else {
+                setSuccess("Dados atualizados com sucesso");
+                setTimeout(() => setSuccess(null), 2000);
+            }
         }
-        refetchUser();
+        fetchUser();
     };
 
     return (
@@ -89,12 +100,13 @@ export default function ProfileScreen() {
                     />
                     <View style={styles.buttons}>
                         <PrimaryButton title="SALVAR" onPress={handleSave} />
-                        <PrimaryButton onPress={handleDisableAccount} title="EXCLUIR CONTA" />
+                        <PrimaryButton onPress={handleModal} title="EXCLUIR CONTA" />
                         <PrimaryButton onPress={logOut} title="SAIR" />
                     </View>
                 </View>
                 {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
             </View>
+            <BaseDialog isOpen={isOpen} setIsOpen={handleModal} onPressAction={handleDisableAccount} title="Desativar conta." message="Você tem certeza que deseja desativar sua conta?" />
         </ScrollView>
     );
 }
