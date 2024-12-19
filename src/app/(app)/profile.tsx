@@ -9,7 +9,7 @@ import { AuthContext } from "api/context/auth";
 import { BaseDialog } from "@/components/dialog";
 
 export default function ProfileScreen() {
-    const { user, refetchUser, updateUser, role, disableAccount } = useGetUser();
+    const { user, fetchUser, updateUser, role, disableAccount } = useGetUser();
     const { logOut } = useContext(AuthContext)
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -22,13 +22,13 @@ export default function ProfileScreen() {
 
     // Atualizando os estados quando os dados do usuário mudam
     useEffect(() => {
-        if (user) {
+        if(!user) {
+            fetchUser();
+        } else if (user) {
             setName(user.name);
             setEmail(user.email);
             setDocument(role === 'EMPRESA' ? user.cnpj : user.cpf);
-        } if(!user) {
-            refetchUser();
-        }
+        } 
     }, []);
 
     const handleModal = () => setIsOpen(!isOpen);
@@ -37,8 +37,10 @@ export default function ProfileScreen() {
         const response = await disableAccount();
         if (response && response.statusCode > 200 && response.statusCode < 300) {
             setError(response.reject);
+            setTimeout(() => setError(null), 2000);
         } else {
             setSuccess("Conta desativada com sucesso");
+            setTimeout(() => setSuccess(null), 2000);
             logOut();
         }
     };
@@ -58,7 +60,7 @@ export default function ProfileScreen() {
                 setTimeout(() => setSuccess(null), 2000);
             }
         }
-        refetchUser();
+        fetchUser();
     };
 
     return (
