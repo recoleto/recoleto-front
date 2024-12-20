@@ -9,12 +9,13 @@ export default function ProtectedLayout() {
         <SafeAreaProvider id="child-safe-area-provider" style={{ height: '100%', width: '100%' }}>
             <SafeAreaView id="child-safe-area-view" style={{ height: '100%' }}>
                 <View style={styles.container}>
-                    <Tabs screenOptions={{ 
+                    <Tabs screenOptions={{
                         headerShown: false,
                         tabBarActiveTintColor: colors.white,
                         tabBarActiveBackgroundColor: colors.green200,
                         tabBarHideOnKeyboard: true,
-                        }} >
+                    }} >
+                        <Tabs.Screen options={{ title: 'Pontos de Coleta' }} name="pontos-coleta" />
                         <Tabs.Screen
                             options={{
                                 title: 'Perfil',
