@@ -7,6 +7,9 @@ import { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { AuthContext } from "api/context/auth";
 import { BaseDialog } from "@/components/dialog";
+import { router } from "expo-router";
+import { MainLayout } from "@/components/main-layout";
+import { globalsStyles } from "./globals-styles";
 
 export default function ProfileScreen() {
     const { user, fetchUser, updateUser, role, disableAccount } = useGetUser();
@@ -17,18 +20,16 @@ export default function ProfileScreen() {
 
     // Adicionando estados locais para os dados editáveis
     const [name, setName] = useState(user?.name || "");
-    const [email, setEmail] = useState(user?.email || "");
     const [document, setDocument] = useState(role === 'EMPRESA' ? user?.cnpj : user?.cpf);
 
     // Atualizando os estados quando os dados do usuário mudam
     useEffect(() => {
-        if(!user) {
+        if (!user) {
             fetchUser();
         } else if (user) {
             setName(user.name);
-            setEmail(user.email);
             setDocument(role === 'EMPRESA' ? user.cnpj : user.cpf);
-        } 
+        }
     }, []);
 
     const handleModal = () => setIsOpen(!isOpen);
@@ -50,7 +51,6 @@ export default function ProfileScreen() {
             const response = await updateUser({
                 ...user,
                 name,
-                email,
             });
             if (response && response.statusCode > 200 && response.statusCode < 300) {
                 setError(response.reject);
@@ -65,48 +65,41 @@ export default function ProfileScreen() {
 
     return (
         <ScrollView>
-
-            <View style={styles.container}>
-                <View id="header" style={styles.header}>
-                    <Text style={styles.headerText}>Foto de Perfil</Text>
-                    <Image source={require('../../../assets/images/user-mock.png')} />
-                    <Text style={styles.headerText}>Olá {user?.name} </Text>
-                </View>
-                <View style={styles.content}>
-                    <Text style={styles.title}>Informações do usuário:</Text>
-                    <EditableInput
-                        value={name}
-                        onChangeText={setName}
-                        label={role === 'EMPRESA' ? 'Nome Fantasia' : 'Nome'}
-                        type="text"
-                        placeholder="nome"
-                        color={colors.black}
-                    />
-                    <EditableInput
-                        value={email}
-                        onChangeText={setEmail}
-                        label="E-mail"
-                        type="email"
-                        placeholder="email"
-                        color={colors.black}
-                    />
-                    <EditableInput
-                        value={document}
-                        readOnly={true}
-                        label={role === 'EMPRESA' ? "CNPJ" : "CPF"}
-                        type="text"
-                        placeholder="cpf"
-                        color={colors.black}
-                    />
-                    <View style={styles.buttons}>
-                        <PrimaryButton title="SALVAR" onPress={handleSave} />
-                        <PrimaryButton onPress={handleModal} title="EXCLUIR CONTA" />
-                        <PrimaryButton onPress={logOut} title="SAIR" />
-                    </View>
+            <MainLayout>
+                <Text style={globalsStyles.title}>Informações do usuário:</Text>
+                <EditableInput
+                    value={name}
+                    onChangeText={setName}
+                    label={role === 'EMPRESA' ? 'Nome Fantasia' : 'Nome'}
+                    type="text"
+                    placeholder="nome"
+                    color={colors.black}
+                />
+                <EditableInput
+                    value={user?.email}
+                    readOnly={true}
+                    label="E-mail"
+                    type="email"
+                    placeholder="email"
+                    color={colors.black}
+                />
+                <EditableInput
+                    value={document}
+                    readOnly={true}
+                    label={role === 'EMPRESA' ? "CNPJ" : "CPF"}
+                    type="text"
+                    placeholder="cpf"
+                    color={colors.black}
+                />
+                <View style={styles.buttons}>
+                    <PrimaryButton title="SALVAR" onPress={handleSave} />
+                    <PrimaryButton onPress={handleModal} title="EXCLUIR CONTA" />
+                    <PrimaryButton onPress={logOut} title="SAIR" />
+                    <PrimaryButton onPress={() => router.navigate('/(app)/pontos-coleta')} title="TESTE" />
                 </View>
                 {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
-            </View>
-            <BaseDialog isOpen={isOpen} setIsOpen={handleModal} onPressAction={handleDisableAccount} title="Desativar conta." message="Você tem certeza que deseja desativar sua conta?" />
+                <BaseDialog isOpen={isOpen} setIsOpen={handleModal} onPressAction={handleDisableAccount} title="Desativar conta." message="Você tem certeza que deseja desativar sua conta?" />
+            </MainLayout>
         </ScrollView>
     );
 }
@@ -126,11 +119,6 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontSize: font.size.large,
         fontFamily: font.family.semiBold,
-    },
-    title: {
-        fontFamily: font.family.semiBold,
-        textDecorationLine: 'underline',
-        fontSize: font.size.mediumX,
     },
     content: {
         flex: 3.5, // Proporção para o conteúdo
