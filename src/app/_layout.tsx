@@ -2,10 +2,11 @@ import { Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from "expo-linear-gradient";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import '../../globals-sign.css'
 import { colors } from "@/utils/globals";
 import { AuthProvider } from "api/context/auth";
+import { StrictMode } from "react";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,24 +28,26 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
     }
 
     return (
-        <AuthProvider>
-            <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
-                <SafeAreaView id="root-safe-area" style={styles.background}>
-                    <Stack screenOptions={{
-                        headerStyle: { backgroundColor: "#0C3422"},
-                        headerTintColor: colors.white,
-                        headerBlurEffect: 'regular',
-                        contentStyle: { backgroundColor: "transparent" }
-                    }} >
-                        <Stack.Screen name="index" options={{ headerShown: false }} />
-                        <Stack.Screen name="signup-company" options={{ title: 'REGISTRO DA EMPRESA' }} />
-                        <Stack.Screen name="signup-user" options={{ title: 'REGISTRO DO USUÁRIO' }} />
-                        <Stack.Screen name="login" options={{ title: 'FAÇA SEU LOGIN' }} />
-                        <Stack.Screen name="(app)" options={{ headerShown: false }} />
-                    </Stack>
-                </SafeAreaView>
-            </LinearGradient>
-        </AuthProvider>
+        <StrictMode>
+            <AuthProvider>
+                <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
+                    <SafeAreaView id="root-safe-area" style={styles.background}>
+                        <Stack screenOptions={{
+                            headerStyle: { backgroundColor: "#0C3422" },
+                            headerTintColor: colors.white,
+                            headerBlurEffect: 'regular',
+                            contentStyle: { backgroundColor: "transparent" }
+                        }} >
+                            <Stack.Screen name="index" options={{ headerShown: false }} />
+                            <Stack.Screen name="signup-company" options={{ title: 'REGISTRO DA EMPRESA' }} />
+                            <Stack.Screen name="signup-user" options={{ title: 'REGISTRO DO USUÁRIO' }} />
+                            <Stack.Screen name="login" options={{ title: 'FAÇA SEU LOGIN' }} />
+                            <Stack.Screen name="(app)" options={{ headerShown: false }} />
+                        </Stack>
+                    </SafeAreaView>
+                </LinearGradient>
+            </AuthProvider>
+        </StrictMode>
     );
 }
 

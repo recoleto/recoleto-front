@@ -1,17 +1,18 @@
 import React, { ReactNode} from 'react'
-import { View, StyleSheet, FlatList, Dimensions } from 'react-native'
+import { View, StyleSheet, FlatList, Dimensions, KeyboardAvoidingView } from 'react-native'
 
 type FormLayoutProps = {
   children: ReactNode
+  isFlatList?: boolean
 }
 
-const FormLayout: React.FC<FormLayoutProps> = ({ children }) => {
+const FormLayout: React.FC<FormLayoutProps> = ({ children, isFlatList }) => {
 
-  const renderContent = <View style={styles.container}>
+  const renderContent = <KeyboardAvoidingView style={styles.container}>
     {children}
-  </View>
+  </KeyboardAvoidingView>
 
-  return <FlatList
+  return isFlatList && <FlatList
     data={[]}
     ListHeaderComponent={renderContent}
     showsVerticalScrollIndicator={false}
