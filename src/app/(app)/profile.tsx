@@ -4,10 +4,9 @@ import { PrimaryButton } from "@/components/primary-button";
 import { colors, font } from "@/utils/globals";
 import { useGetUser } from "api/hooks/useGetUser";
 import { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { AuthContext } from "api/context/auth";
 import { BaseDialog } from "@/components/dialog";
-import { router } from "expo-router";
 import { MainLayout } from "@/components/main-layout";
 import { globalsStyles } from "./globals-styles";
 
@@ -21,7 +20,6 @@ export default function ProfileScreen() {
     // Adicionando estados locais para os dados editáveis
     const [name, setName] = useState(user?.name || "");
     const [document, setDocument] = useState(role === 'EMPRESA' ? user?.cnpj : user?.cpf);
-
     // Atualizando os estados quando os dados do usuário mudam
     useEffect(() => {
         if (!user) {
@@ -30,7 +28,7 @@ export default function ProfileScreen() {
             setName(user.name);
             setDocument(role === 'EMPRESA' ? user.cnpj : user.cpf);
         }
-    }, []);
+    }, [user, role]);
 
     const handleModal = () => setIsOpen(!isOpen);
 
@@ -95,7 +93,6 @@ export default function ProfileScreen() {
                     <PrimaryButton title="SALVAR" onPress={handleSave} />
                     <PrimaryButton onPress={handleModal} title="EXCLUIR CONTA" />
                     <PrimaryButton onPress={logOut} title="SAIR" />
-                    <PrimaryButton onPress={() => router.navigate('/(app)/pontos-coleta')} title="TESTE" />
                 </View>
                 {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
                 <BaseDialog isOpen={isOpen} setIsOpen={handleModal} onPressAction={handleDisableAccount} title="Desativar conta." message="Você tem certeza que deseja desativar sua conta?" />
