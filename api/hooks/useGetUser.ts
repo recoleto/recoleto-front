@@ -25,7 +25,6 @@ export function useGetUser() {
       }
     }
     if (role === 'USUARIO') {
-      console.log('entrou')
       const response = await service.getUserAuthenticated()
       if (response.statusCode === StatusCode.Ok) {
         setUser(response.body)
