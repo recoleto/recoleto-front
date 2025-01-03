@@ -15,13 +15,24 @@ export default function ProtectedLayout() {
                         tabBarActiveBackgroundColor: colors.green200,
                         tabBarHideOnKeyboard: true,
                     }} >
-                        <Tabs.Screen options={{ title: 'Pontos de Coleta' }} name="pontos-coleta" />
+                        <Tabs.Screen
+                            options={{
+                                title: 'Home',
+                                tabBarIcon: ({ color, size }) => <MaterialIcons name="home" style={{ color, fontSize: size }} />
+                            }}
+                            name="home" />
+                        <Tabs.Screen
+                            options={{
+                                title: 'Pontos de Coleta'
+                            }}
+                            name="pontos-coleta" />
                         <Tabs.Screen
                             options={{
                                 title: 'Perfil',
                                 tabBarIcon: ({ color, size }) => <MaterialIcons name="person" style={{ color, fontSize: size }} />
                             }}
                             name="profile" />
+
                     </Tabs>
                 </View>
             </SafeAreaView>
