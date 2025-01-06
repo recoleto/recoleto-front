@@ -28,7 +28,6 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
     }
 
     return (
-        <StrictMode>
             <AuthProvider>
                 <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
                     <SafeAreaView id="root-safe-area" style={styles.background}>
@@ -47,7 +46,6 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
                     </SafeAreaView>
                 </LinearGradient>
             </AuthProvider>
-        </StrictMode>
     );
 }
 
