@@ -25,7 +25,15 @@ export default function ProtectedLayout() {
                             options={{
                                 title: 'Pontos de Coleta'
                             }}
-                            name="pontos-coleta" />
+                            name="collect-point" />
+
+                        <Tabs.Screen
+                            options={{
+                                title: 'Notificações',
+                                tabBarIcon: ({ color, size }) => <MaterialIcons name="notifications" style={{ color, fontSize: size }} />
+                            }}
+                            name="notification" />
+
                         <Tabs.Screen
                             options={{
                                 title: 'Perfil',
