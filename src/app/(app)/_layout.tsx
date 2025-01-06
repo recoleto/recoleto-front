@@ -2,7 +2,7 @@ import { colors } from "@/utils/globals";
 import { Tabs } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function ProtectedLayout() {
@@ -25,7 +25,8 @@ export default function ProtectedLayout() {
                                 name="home" />
                             <Tabs.Screen
                                 options={{
-                                    title: 'Pontos de Coleta'
+                                    title: 'Pontos de Coleta',
+                                    tabBarIcon: ({color, size}) => <Feather name="map-pin" style={{color, fontSize: size}} />
                                 }}
                                 name="collect-point" />
 
