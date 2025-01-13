@@ -8,8 +8,10 @@ import { StatusCode } from "api/client/IHttpClient";
 import { MessageToast } from "@/components/message-toast";
 import { AuthContext } from "api/context/auth";
 import { router } from "expo-router";
+import { useForm } from "react-hook-form";
 
 export default function Login() {
+    const { control } = useForm();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -38,8 +40,29 @@ export default function Login() {
                         <Text style={stylesInit.text}>Entre para utilizar a plataforma</Text>
                     </View>
                     <View style={styles.inputsView}>
-                        <Input onChangeText={(email) => setEmail(email)} label='Email' type='email' placeholder='Digite seu email' color={colors.white} />
-                        <Input onChangeText={(password) => setPassword(password)} label='Senha' type='password' placeholder='Digite sua senha' color={colors.white} secureTextEntry={true} />
+                        <Input
+                            icon='mail'
+                            inputProps={{ placeholder: 'Digite seu e-mail', onChangeText: setEmail, keyboardType: 'email-address' }}
+                            formProps={{ name: 'email', control }}
+                            error={error}
+                        // onChangeText={(email) => setEmail(email)} 
+                        // label='Email' 
+                        // type='email' 
+                        // placeholder='Digite seu email' 
+                        // color={colors.white}
+                        />
+                        <Input
+                            icon='lock'
+                            inputProps={{ placeholder: 'Digite sua senha', onChangeText: setPassword, secureTextEntry: true }}
+                            formProps={{ name: 'password', control }}
+                            error={error}
+                        // onChangeText={(password) => setPassword(password)} 
+                        // label='Senha' 
+                        // type='password' 
+                        // placeholder='Digite sua senha' 
+                        // color={colors.white} 
+                        // secureTextEntry={true} 
+                        />
                         <PrimaryButton onPress={onSubmit} title="ENTRAR" />
                     </View>
 

@@ -1,34 +1,115 @@
-import { ComponentProps } from "react";
-import { View, TextInput, StyleSheet, Text, ViewStyle } from "react-native";
+import { View, TextInput, StyleSheet, TextInputProps, Text } from "react-native";
 import { border, colors, font } from "@/utils/globals";
+import { Controller, UseControllerProps } from "react-hook-form";
+import { Feather } from "@expo/vector-icons";
+import { forwardRef } from "react";
+import clsx from "clsx";
 
-type InputType = ComponentProps<typeof TextInput> & {
-    label: string;
-    type: string;
-    placeholder: string;
-    color: string;
-    viewStyle?: ViewStyle;
-}
+type InputType = {
+    label?: string;
+    icon: keyof typeof Feather.glyphMap;
+    inputProps: TextInputProps;
+    formProps: UseControllerProps;
+    error?: string;
+    theme?: "light" | "dark"; // Define os temas disponíveis
+};
 
-export function Input({ label, type, placeholder, color, viewStyle, ...rest }: InputType) {
-    return (
-        <View style={[viewStyle]}>
-            <Text style={[styles.label, { color: `${color}` }]}> {label} </Text>
-                    <TextInput placeholderTextColor={colors.grey300} style={styles.input} placeholder={placeholder} {...rest} />
-        </View>
-    )
-}
+export const Input = forwardRef<TextInput, InputType>(
+    ({ icon, inputProps, formProps, error, label, theme = "light" }: InputType, ref) => {
+        const isDark = theme === "dark";
+        const isEditable = inputProps.editable !== false; // Verifica se o input está editável
+
+        return (
+            <Controller
+                render={({ field }) => (
+                    <View style={{ gap: 4 }}>
+                        {label && <Text style={[styles.label, isDark && styles.labelDark]}>{label}</Text>}
+                        <View
+                            style={[
+                                styles.inputWrapper,
+                                isDark && styles.inputWrapperDark,
+                                !isEditable && styles.inputWrapperDisabled,
+                            ]}
+                        >
+                            <View
+                                style={[
+                                    styles.iconWrapper,
+                                    isDark && styles.iconWrapperDark,
+                                ]}
+                            >
+                                <Feather
+                                    name={icon}
+                                    size={24}
+                                    color={clsx({
+                                        ["red"]: error && error.length > 0,
+                                        [colors.grey300]: !field.value && error?.length === 0,
+                                        [colors.green300]: String(field.value ?? "").length > 0,
+                                    })}
+                                />
+                            </View>
+                            <TextInput
+                                {...field}
+                                style={[
+                                    styles.input,
+                                    isDark && styles.inputDark,
+                                    !isEditable && styles.inputDisabled,
+                                ]}
+                                placeholderTextColor={
+                                    !isEditable ? colors.grey400 : isDark ? colors.grey300 : colors.grey400
+                                }
+                                {...inputProps}
+                            />
+                        </View>
+                        {error && <Text style={styles.error}>{error}</Text>}
+                    </View>
+                )}
+                {...formProps}
+            />
+        );
+    }
+);
 
 const styles = StyleSheet.create({
     input: {
-        backgroundColor: colors.white,
-        borderWidth: border.width.medium,
-        borderRadius: border.radius.medium,
-        padding: 16,
-        marginTop: 6,
+        flex: 1,
+        color: colors.black,
+    },
+    inputDark: {
+        color: colors.white,
+    },
+    inputDisabled: {
+        color: colors.grey400,
     },
     label: {
-        fontFamily: 'Teachers-Medium',
-        fontSize: font.size.medium
-    }
-})
+        fontFamily: font.family.medium,
+        fontSize: font.size.small,
+        color: colors.white,
+    },
+    labelDark: {
+        color: colors.black,
+    },
+    inputWrapper: {
+        backgroundColor: colors.white,
+        flexDirection: "row",
+        padding: 4,
+        borderRadius: border.radius.medium,
+    },
+    inputWrapperDark: {
+        backgroundColor: colors.black,
+    },
+    inputWrapperDisabled: {
+        backgroundColor: colors.grey200,
+        borderColor: colors.grey300,
+        borderWidth: 1,
+    },
+    iconWrapper: {
+        padding: 6,
+    },
+    iconWrapperDark: {
+        backgroundColor: colors.black,
+    },
+    error: {
+        color: "red",
+        fontSize: font.size.xsmall,
+    },
+});
