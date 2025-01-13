@@ -10,3 +10,7 @@ export function haversine(lat1: number, lon1: number, lat2: number, lon2: number
     const distance = R * c;
     return Math.floor(distance * 100) / 100;
 }
+
+export function removeBlankSpaces(value: string): string {
+    return value.replace(/\s/g, '');
+}
