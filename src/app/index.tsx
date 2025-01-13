@@ -13,8 +13,8 @@ export default function Index() {
             <View style={styles.buttons} id='button-view'>
                 <PrimaryButton href={'/login' as RelativePathString} title='Entrar'></PrimaryButton>
                 <PrimaryButton href={'/signup-company' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
-                <PrimaryButton href={'/signup-user' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
-                <PrimaryButton onPress={() => router.navigate("/(app)/profile")} title="perfil"/>
+                <PrimaryButton href={'/user-register' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
+                <PrimaryButton onPress={() => router.navigate("/(app)/profile")} title="perfil" />
             </View>
         </View>
     );
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         width: '100%',
         display: 'flex',
         justifyContent: 'space-around',
-      paddingHorizontal: 24
+        paddingHorizontal: 24
     },
     image: {
         width: 200,
