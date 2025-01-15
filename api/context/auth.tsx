@@ -1,9 +1,9 @@
-import {HttpResponse, StatusCode} from "api/client/IHttpClient";
-import {AuthService} from "api/services/AuthService";
-import {createContext, ReactNode, useEffect, useState} from "react";
-import {CompanyType, LoginType, UserType} from "@/utils/types";
-import {router} from "expo-router";
-import {getData, removeData, storeData} from "@/utils/store-data";
+import { HttpResponse, StatusCode } from "api/client/IHttpClient";
+import { AuthService } from "api/services/AuthService";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { CompanyType, LoginType, UserType } from "@/utils/types";
+import { router } from "expo-router";
+import { getData, removeData, storeData } from "@/utils/store-data";
 
 interface ContextType {
     registerCompany: (data: CompanyType) => Promise<HttpResponse<any>>;
@@ -36,9 +36,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (response.statusCode === StatusCode.Ok) {
             const { token, expiresIn, role } = response.body;
             setExpiresIn(new Date().getTime() + expiresIn);
-            await storeData({key: '@Auth:token', value: token});
-            await storeData({key: '@Auth:expiresIn', value: String(expiresIn)});
-            await storeData({key: '@Auth:role', value: role});
+            await storeData({ key: '@Auth:token', value: token });
+            await storeData({ key: '@Auth:expiresIn', value: String(expiresIn) });
+            await storeData({ key: '@Auth:role', value: role });
         }
         return response;
     }
@@ -46,25 +46,26 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     async function logOut() {
         await removeData('@Auth:token');
         await removeData('@Auth:expiresIn');
-        await removeData('@Auth:role'); 
+        await removeData('@Auth:role');
         router.navigate('/');
     }
 
     async function checkAuth() {
         const token = await getData('@Auth:token');
         if (token) return true;
-        if(expiresIn && expiresIn < new Date().getTime()) {
+        if (expiresIn && expiresIn < new Date().getTime()) {
             await logOut();
             return false;
         }
     }
 
     async function registerUser({ ...data }: UserType): Promise<HttpResponse<any>> {
-        return await authService.registerUser({...data})
+        return await authService.registerUser({ ...data })
     }
 
-    async function registerCompany({ ...data }: CompanyType): Promise<HttpResponse<any>> {
-        return await authService.registerCompany({...data})
+    async function registerCompany(data: CompanyType): Promise<HttpResponse<any>> {
+        console.log('data no provider: ', data)
+        return await authService.registerCompany(data)
     }
 
     return (
