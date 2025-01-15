@@ -29,8 +29,9 @@ export class AuthService {
 
     }
 
-    async registerCompany({ ...data }: CompanyType): Promise<HttpResponse<any>> {
+    async registerCompany(data : CompanyType): Promise<HttpResponse<any>> {
         const base = '/auth/company/sign-up';
+        console.log('data no service: ', data)
         const response = await this.client.post({ url: base, body: data })
         return response
     }
