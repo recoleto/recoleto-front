@@ -64,7 +64,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     async function registerCompany(data: CompanyType): Promise<HttpResponse<any>> {
-        console.log('data no provider: ', data)
         return await authService.registerCompany(data)
     }
 

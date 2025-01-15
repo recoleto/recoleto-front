@@ -62,7 +62,6 @@ export default function RegisterCompanyStepTwo() {
     }, [cep]);
 
     const onSubmit: SubmitHandler<Address> = async (data: Address) => {
-        console.log('\n\n\n dados recebidos no submit: \n\n\n\n', data)
         updateFormData({
             cep: data.cep,
             street: data.street,
