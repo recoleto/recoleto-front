@@ -4,19 +4,20 @@ import * as yup from "yup";
 export type CompanyType = {
     name: string;
     cnpj: string;
-    // street: string;
-    // number: number;
-    telNumber: string;
+    phone: string;
     email: string;
     password: string;
 }
 export type UserType = {
     name: string;
     lastName: string;
-    telNumber: string;
+    phone: string;
     cpf: string;
-    // street: string;
-    // number: string;
+    email: string;
+    password: string;
+}
+
+export type LoginType = {
     email: string;
     password: string;
 }
@@ -44,7 +45,7 @@ export const addressBaseSchema = object({
 // Schema para Usuário Final
 export const userSchema = userBaseSchema.shape({
     lastName: string().required('Sobrenome é obrigatório.'),
-    telNumber: string().required('Telefone é obrigatório.'),
+    phone: string().required('Telefone é obrigatório.'),
     cpf: string()
         .required('CPF é obrigatório.')
         .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido.'),
@@ -52,8 +53,8 @@ export const userSchema = userBaseSchema.shape({
 
 // Schema para Empresas
 export const companySchema = userBaseSchema.shape({
-    name: string().required('Nome Fantasia é obrigatório.'),
-    telNumber: string().required('Telefone é obrigatório.'),
+    name: string().required('Nome Fantasia é obrigatório.').min(3, 'Nome Fantasia deve conter no mínimo 3 caracteres.'),
+    phone: string().required('Telefone é obrigatório.'),
     cnpj: string()
         .required('CNPJ é obrigatório.')
         .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.'),
