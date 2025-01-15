@@ -14,7 +14,6 @@ export default function Index() {
                 <PrimaryButton href={'/login' as RelativePathString} title='Entrar'></PrimaryButton>
                 <PrimaryButton href={'/company-register' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
                 <PrimaryButton href={'/user-register' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
-                <PrimaryButton onPress={() => router.navigate("/(app)/profile")} title="perfil" />
             </View>
         </View>
     );
