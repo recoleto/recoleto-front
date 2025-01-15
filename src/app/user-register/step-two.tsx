@@ -70,7 +70,6 @@ export default function RegisterUserStepTwo() {
         });
 
         const response = await registerUser({ ...registerFormData } as UserType);
-        console.log(response.reject);
         if (response.statusCode === 201) {
             setError(null);
             setSuccess("Usuário cadastrado com sucesso.");
