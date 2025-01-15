@@ -7,6 +7,7 @@ import '../../globals-sign.css'
 import { colors } from "@/utils/globals";
 import { AuthProvider } from "api/context/auth";
 import { StrictMode } from "react";
+import Toast from "react-native-toast-message";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,13 +39,14 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
                         contentStyle: { backgroundColor: "transparent" }
                     }} >
                         <Stack.Screen name="index" options={{ headerShown: false }} />
-                        <Stack.Screen name="signup-company" options={{ title: 'REGISTRO DA EMPRESA' }} />
+                        <Stack.Screen name="company-register" options={{ headerShown: false }} />
                         <Stack.Screen name="user-register" options={{ headerShown: false }} />
                         <Stack.Screen name="login" options={{ title: 'FAÇA SEU LOGIN' }} />
                         <Stack.Screen name="(app)" options={{ headerShown: false }} />
                     </Stack>
                 </SafeAreaView>
             </LinearGradient>
+            <Toast />
         </AuthProvider>
     );
 }

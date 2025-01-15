@@ -12,7 +12,7 @@ export default function Index() {
             </View>
             <View style={styles.buttons} id='button-view'>
                 <PrimaryButton href={'/login' as RelativePathString} title='Entrar'></PrimaryButton>
-                <PrimaryButton href={'/signup-company' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
+                <PrimaryButton href={'/company-register' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
                 <PrimaryButton href={'/user-register' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
                 <PrimaryButton onPress={() => router.navigate("/(app)/profile")} title="perfil" />
             </View>
