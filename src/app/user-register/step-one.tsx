@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { stylesInit } from "../signup-company";
+import { stylesInit } from "../company-register/step-one";
 import { Input } from "@/components/input";
 import { PrimaryButton } from "@/components/primary-button";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ import { cpfApplyMask, telNumberMask } from "@/utils/masks";
 import { useRouter } from "expo-router";
 import { useRegisterForm } from "api/hooks/useRegisterForm";
 import { useState } from "react";
-import { validate } from "json-schema";
 
 
 export default function RegisterUserStepOne() {
@@ -23,14 +22,14 @@ export default function RegisterUserStepOne() {
         resolver: yupResolver(userSchema)
     })
 
-    function applyMask(value: string, fieldName: 'cpf' | 'telNumber') {
+    function applyMask(value: string, fieldName: 'cpf' | 'phone') {
         const onlyNumbers = value.replace(/[^\d]/g, '')
         if (fieldName === 'cpf') {
             const cpf = cpfApplyMask(onlyNumbers)
             return setValue('cpf', cpf)
-        } else if (fieldName === 'telNumber') {
+        } else if (fieldName === 'phone') {
             const tel = telNumberMask(onlyNumbers)
-            return setValue('telNumber', tel)
+            return setValue('phone', tel)
         }
     }
 
@@ -41,7 +40,6 @@ export default function RegisterUserStepOne() {
 
     const onSubmit: SubmitHandler<User> = async (data: any) => {
         const { confirmPassword, ...rest } = data
-        console.log(rest)
         updateFormData({ ...rest });
         router.navigate('/user-register/step-two')
     }
@@ -98,13 +96,13 @@ export default function RegisterUserStepOne() {
 
                     <Input
                         label="Telefone"
-                        {...register('telNumber')}
-                        error={errors.telNumber?.message}
+                        {...register('phone')}
+                        error={errors.phone?.message}
                         icon="phone"
                         inputProps={{
                             placeholder: 'Digite seu telefone',
-                            onChangeText: (value) => applyMask(value, 'telNumber'),
-                            value: watch('telNumber'),
+                            onChangeText: (value) => applyMask(value, 'phone'),
+                            value: watch('phone'),
                             keyboardType: 'phone-pad'
                         }}
                         formProps={{ name: 'telNumber', control: control as any }} />

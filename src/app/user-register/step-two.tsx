@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { stylesInit } from "../signup-company";
+import { stylesInit } from "../company-register/step-one";
 import { Input } from "@/components/input";
 import { PrimaryButton } from "@/components/primary-button";
 import { MessageToast } from "@/components/message-toast";
@@ -11,11 +11,9 @@ import axios from "axios";
 import { useRegisterForm } from "api/hooks/useRegisterForm";
 import { AuthContext } from "api/context/auth";
 import { router } from "expo-router";
+import Toast from "react-native-toast-message";
 
 export default function RegisterUserStepTwo() {
-    const [success, setSuccess] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
-
     const [city, setCity] = useState<string | null>(null);
     const [state, setState] = useState<string | null>(null);
     const [neighborhood, setNeighborhood] = useState<string | null>(null);
@@ -35,17 +33,19 @@ export default function RegisterUserStepTwo() {
         if (cep.length === 8) {
             try {
                 const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-                if (response.data.erro) {
-                    setError("CEP não encontrado.");
-                    return;
-                }
-
                 setCity(response.data.localidade);
                 setState(response.data.uf);
                 setNeighborhood(response.data.bairro);
                 setValue("street", response.data.logradouro);
             } catch (error) {
-                setError("Não foi possível buscar o endereço.");
+                Toast.show({
+                    autoHide: true,
+                    type: "error",
+                    text1: "CEP inválido",
+                    text2: "Verifique o CEP e tente novamente.",
+                    position: "top",
+                    visibilityTime: 2000,
+                })
             }
         }
     };
@@ -71,14 +71,26 @@ export default function RegisterUserStepTwo() {
 
         const response = await registerUser({ ...registerFormData } as UserType);
         if (response.statusCode === 201) {
-            setError(null);
-            setSuccess("Usuário cadastrado com sucesso.");
+            Toast.show({
+                autoHide: true,
+                type: "success",
+                text1: "Cadastro realizado com sucesso!",
+                text2: "Você será redirecionado para a tela de login.",
+                position: "top",
+                visibilityTime: 200
+            })
             setTimeout(() => {
                 router.replace("/");
             }, 2000);
         } else {
-            setSuccess(null);
-            setError(response.reject);
+            Toast.show({
+                autoHide: true,
+                type: "error",
+                text1: "Erro ao cadastrar",
+                text2: "Verifique os dados e tente novamente.",
+                position: "top",
+                visibilityTime: 2000,
+            })
         }
 
     };
@@ -161,11 +173,6 @@ export default function RegisterUserStepTwo() {
                         title="REGISTRAR"
                     />
                 </View>
-                {error ? (
-                    <MessageToast message={error} type="error" />
-                ) : success ? (
-                    <MessageToast message={success} type="success" />
-                ) : null}
             </View>
         </ScrollView>
     );
