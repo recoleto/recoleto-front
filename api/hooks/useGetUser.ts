@@ -17,7 +17,6 @@ export function useGetUser() {
     })
     if (role === 'EMPRESA') {
       const response = await service.getCompanyAuthenticated()
-      console.log(response)
       if (response.statusCode === StatusCode.Ok) {
         setUser(response.body)
       } else {

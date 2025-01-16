@@ -8,6 +8,7 @@ import { AuthContext } from "api/context/auth";
 import { router } from "expo-router";
 import { useForm } from "react-hook-form";
 import Toast from "react-native-toast-message";
+import { redirectRole } from "@/utils/utils";
 
 export default function Login() {
     const { control } = useForm();
@@ -15,14 +16,15 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const auth = useContext(AuthContext)
 
+    
+
     async function onSubmit() {
         const response = await auth.login({ password, email })
-
         if (response.statusCode === StatusCode.NotFound) {
             Toast.show({
                 type: 'error',
                 text1: 'Erro',
-                text2: 'Usuário não encontrado.',
+                text2: `${response.reject}`,
                 autoHide: true,
                 visibilityTime: 2000
             })
@@ -30,12 +32,12 @@ export default function Login() {
             Toast.show({
                 type: 'success',
                 text1: 'Sucesso',
-                text2: 'Usuário logado com sucesso.',
+                text2: `${response.resolve}`,
                 autoHide: true,
                 visibilityTime: 2000
             })
             setTimeout(() => {
-                router.replace('/profile')
+                redirectRole(response.body.role)
             }, 2000)
         }
     }

@@ -1,50 +1,30 @@
 import { colors } from "@/utils/globals";
-import { Tabs } from "expo-router";
+import { Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useGetUser } from "api/hooks/useGetUser"
 
 export default function ProtectedLayout() {
+    const { role } = useGetUser();
+    var redirectRoute = "";
+    if (role === "EMPRESA") {
+        redirectRoute = "company";
+    } else if (role === "admin") {
+        redirectRoute = "ADMIN";
+    } else {
+        redirectRoute = "user";
+    }
     return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
+        <GestureHandlerRootView>
             <SafeAreaProvider id="child-safe-area-provider" style={{ height: '100%', width: '100%' }}>
                 <SafeAreaView id="child-safe-area-view" style={{ height: '100%' }}>
                     <View style={styles.container}>
-                        <Tabs screenOptions={{
-                            headerShown: false,
-                            tabBarActiveTintColor: colors.white,
-                            tabBarActiveBackgroundColor: colors.green200,
-                            tabBarHideOnKeyboard: true,
-                        }} >
-                            <Tabs.Screen
-                                options={{
-                                    title: 'Home',
-                                    tabBarIcon: ({ color, size }) => <MaterialIcons name="home" style={{ color, fontSize: size }} />
-                                }}
-                                name="home" />
-                            <Tabs.Screen
-                                options={{
-                                    title: 'Pontos de Coleta',
-                                    tabBarIcon: ({color, size}) => <Feather name="map-pin" style={{color, fontSize: size}} />
-                                }}
-                                name="collect-point" />
-
-                            <Tabs.Screen
-                                options={{
-                                    title: 'Notificações',
-                                    tabBarIcon: ({ color, size }) => <MaterialIcons name="notifications" style={{ color, fontSize: size }} />
-                                }}
-                                name="notification" />
-
-                            <Tabs.Screen
-                                options={{
-                                    title: 'Perfil',
-                                    tabBarIcon: ({ color, size }) => <MaterialIcons name="person" style={{ color, fontSize: size }} />
-                                }}
-                                name="profile" />
-
-                        </Tabs>
+                        <Stack screenOptions={{ headerShown: false }}>
+                            <Stack.Screen name='user' />
+                            <Stack.Screen name='company' />
+                            {/* <Stack.Screen name='admin' /> */}
+                        </Stack>
                     </View>
                 </SafeAreaView>
             </SafeAreaProvider>

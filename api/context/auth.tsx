@@ -4,6 +4,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { CompanyType, LoginType, UserType } from "@/utils/types";
 import { router } from "expo-router";
 import { getData, removeData, storeData } from "@/utils/store-data";
+import { redirectRole } from "@/utils/utils";
 
 interface ContextType {
     registerCompany: (data: CompanyType) => Promise<HttpResponse<any>>;
@@ -22,8 +23,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         const loadingSession = async () => {
             await checkAuth();
             const storageToken = await getData('@Auth:token');
+            const role = await getData('@Auth:role');
             if (storageToken) {
-                router.replace('/profile')
+                redirectRole(String(role));
             } else {
                 router.replace('/')
             }
@@ -64,7 +66,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     async function registerCompany(data: CompanyType): Promise<HttpResponse<any>> {
-        console.log('data no provider: ', data)
         return await authService.registerCompany(data)
     }
 
