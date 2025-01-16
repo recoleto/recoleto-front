@@ -69,7 +69,7 @@ export default function PontosDeColeta() {
                             
                             onPress={() => setSelectedLocation(loc)}
                             key={index}
-                            image={require('../../../assets/icons/marker.png')}
+                            image={require('../../../../assets/icons/marker.png')}
                             coordinate={{
                                 latitude: loc.latitude,
                                 longitude: loc.longitude
