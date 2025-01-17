@@ -1,7 +1,7 @@
 import { Card } from "@/components/card";
 import { MainLayout } from "@/components/main-layout";
 import { StyleSheet, Text, View } from "react-native";
-import { globalsStyles } from "../globals-styles";
+import { globalsStyles } from "../../../utils/globals-styles";
 
 export default function Home() {
     return (
