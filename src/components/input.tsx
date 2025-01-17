@@ -44,6 +44,7 @@ export const Input = forwardRef<TextInput, InputType>(
                                         ["red"]: error && error.length > 0,
                                         [colors.grey300]: !field.value && error?.length === 0,
                                         [colors.green300]: String(field.value ?? "").length > 0,
+                                        [colors.white]: theme === "dark",
                                     })}
                                 />
                             </View>

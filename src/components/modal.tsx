@@ -1,11 +1,13 @@
+import { colors } from "@/utils/globals";
 import { Modal as RModal, View, ModalProps, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 type ModalTypeProps = ModalProps & {
     isOpen: boolean;
+    children?: React.ReactNode;
 }
 
-export function Modal({ isOpen, ...props }: ModalTypeProps) {
+export function Modal({ isOpen, children, ...props }: ModalTypeProps) {
     return (
         <SafeAreaProvider >
             <SafeAreaView>
@@ -14,7 +16,7 @@ export function Modal({ isOpen, ...props }: ModalTypeProps) {
                     visible={isOpen}
                     animationType="fade">
                     <View id="modal-view" style={styles.view}>
-
+                        {children}
                     </View>
                 </RModal>
             </SafeAreaView>
@@ -24,9 +26,9 @@ export function Modal({ isOpen, ...props }: ModalTypeProps) {
 
 const styles = StyleSheet.create({
     view: {
-        backgroundColor: 'red', 
-        height: '50%', 
-        width: '80%',
+        backgroundColor: colors.white,
+        height: '90%',
+        width: '100%',
         alignSelf: 'center',
         justifyContent: 'center',
     }
