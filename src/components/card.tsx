@@ -2,6 +2,7 @@ import { border, colors, font } from "@/utils/globals";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { globalsStyles } from "@/globals-styles";
 
 type CardProps = {
     children?: React.ReactNode;
@@ -21,7 +22,7 @@ export const Card = ({ type, icon, text, onPress}: CardProps) => {
                             require('../../assets/icons/marker-outline.png') :
                             require('../../assets/icons/about-outline.png')} />
                 }
-                <Text style={styles.text} >{
+                <Text style={globalsStyles.text} >{
                     type === 'ponto-coleta' && !text ?
                         'Ver pontos de Coleta' :
                         type === 'info' && !text ?
@@ -54,8 +55,4 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         gap: 16
     },
-    text: {
-        fontFamily: font.family.medium,
-        fontSize: font.size.medium,
-    }
 })
