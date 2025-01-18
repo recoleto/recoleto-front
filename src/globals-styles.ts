@@ -15,6 +15,6 @@ export const globalsStyles = StyleSheet.create({
     },
     text: {
       fontFamily: font.family.medium,
-      fontSize: font.size.medium,
+      fontSize: font.size.regular,
   }
 })
