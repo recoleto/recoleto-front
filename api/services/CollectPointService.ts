@@ -10,7 +10,7 @@ export class CollectPointService {
   }
 
   async createCollectPoint(data: CollectPointType): Promise<HttpResponse<any>> {
-    const base = '/collect-point';
+    const base = '/collection-point';
     const response = await this.client.post({ url: base, body: data })
     return response
   }
