@@ -34,19 +34,19 @@ export function SelectedMapSheet({ collectPoint, userLocation, ...props }: Selec
         <BottomSheet ref={bottomSheetRef} {...props} index={-1} snapPoints={[200]} enablePanDownToClose>
             <BottomSheetView>
                 {collectPoint &&
-                    <View style={style.wrapper}>
-                        <View style={style.content}>
-                            <View style={style.titleDistanceView}>
-                                <Text style={style.title}>{collectPoint.name}</Text>
-                                <Text style={style.distance}>{distance}km</Text>
+                    <View style={MapsheetStyle.wrapper}>
+                        <View style={MapsheetStyle.content}>
+                            <View style={MapsheetStyle.titleDistanceView}>
+                                <Text style={MapsheetStyle.title}>{collectPoint.name}</Text>
+                                <Text style={MapsheetStyle.distance}>{distance}km</Text>
                             </View>
-                            <Text style={style.address}>{collectPoint.address}</Text>
-                            <Text style={style.text}>Categoria: {collectPoint.category}</Text>
-                            <Text style={style.text}>Contato:{collectPoint.contact}</Text>
+                            <Text style={MapsheetStyle.address}>{collectPoint.address}</Text>
+                            <Text style={MapsheetStyle.text}>Categoria: {collectPoint.category}</Text>
+                            <Text style={MapsheetStyle.text}>Contato:{collectPoint.contact}</Text>
                         </View>
 
-                        <TouchableOpacity style={style.button}>
-                            <Text style={style.buttonText}> SOLICITAR DESCARTE </Text>
+                        <TouchableOpacity style={MapsheetStyle.button}>
+                            <Text style={MapsheetStyle.buttonText}> SOLICITAR DESCARTE </Text>
                         </TouchableOpacity>
                     </View>
                 }
@@ -55,7 +55,7 @@ export function SelectedMapSheet({ collectPoint, userLocation, ...props }: Selec
     )
 }
 
-const style = StyleSheet.create({
+export const MapsheetStyle = StyleSheet.create({
     wrapper: {
         padding: 16,
         display: 'flex',
