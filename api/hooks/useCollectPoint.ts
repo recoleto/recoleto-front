@@ -22,6 +22,11 @@ export function useCollectPointRegister() {
     return response;
   }
 
+  const updateCollectPoint = async (pointUUID: string, data: CollectPointType) => {
+    const response = await service.updateCollectPoint(pointUUID, data);
+    return response;
+  }
+
   useEffect(() => {
     fetchCollectPoints();
   })
@@ -30,6 +35,7 @@ export function useCollectPointRegister() {
     registerCollectPoint, 
     collectPoints,
     deleteCollectPoint,
-    fetchCollectPoints
+    fetchCollectPoints,
+    updateCollectPoint
   }
 }

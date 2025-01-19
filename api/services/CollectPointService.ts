@@ -26,4 +26,10 @@ export class CollectPointService {
     const response = await this.client.put({ url: base })
     return response
   }
+
+  async updateCollectPoint(pointUUID: string, data: CollectPointType): Promise<HttpResponse<any>> {
+    const base = `/collection-point/update/${pointUUID}`;
+    const response = await this.client.put({ url: base, body: data })
+    return response
+  }
 }

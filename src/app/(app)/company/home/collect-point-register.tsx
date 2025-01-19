@@ -8,17 +8,21 @@ import { RadioGroup } from "react-native-radio-buttons-group"
 import { PrimaryButton } from "@/components/primary-button"
 import { ScrollView } from "react-native-gesture-handler"
 import { useCollectPointRegister } from "api/hooks/useCollectPoint"
-import { CollectPoint, collectPointSchema } from "@/utils/types"
+import { CollectPoint, collectPointSchema, UrbanSolidWasteCategory } from "@/utils/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { StatusCode } from "api/client/IHttpClient"
 import Toast from "react-native-toast-message"
 import { router } from "expo-router"
 import { telNumberMask } from "@/utils/masks"
-
+import { useLocalSearchParams } from "expo-router"
+import { formatUrbanSolidWasteCategory } from "@/utils/utils"
 
 export default function CollectPointRegister() {
+  const { mode, initialData } = useLocalSearchParams();
+  const isEditMode = mode === 'edit';
+  const parsedData = initialData ? JSON.parse(initialData as string) : undefined;
+
   const {
-    watch,
     formState: { errors },
     setValue,
     handleSubmit,
@@ -26,61 +30,86 @@ export default function CollectPointRegister() {
     control } = useForm<CollectPoint>({
       mode: 'all',
       reValidateMode: 'onChange',
-      resolver: yupResolver(collectPointSchema)
+      resolver: yupResolver(collectPointSchema),
+      defaultValues: parsedData
     })
   const [selectedId, setSelectedId] = useState<string>();
-  const { registerCollectPoint } = useCollectPointRegister();
+  const { registerCollectPoint, updateCollectPoint } = useCollectPointRegister();
 
   const radioButtons = useMemo(() => ([
     {
       id: '1', // acts as primary key, should be unique and non-empty string
-      label: 'Lixo Eletrônico',
-      value: 'LIXO_ELETRONICO'
+      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.LIXO_ELETRONICO),
+      value: UrbanSolidWasteCategory.LIXO_ELETRONICO
     },
     {
       id: '2',
-      label: 'Lixo contaminante',
-      value: 'RESIDUOS_CONTAMINANTES'
+      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.RESIDUOS_CONTAMINANTES),
+      value: UrbanSolidWasteCategory.RESIDUOS_CONTAMINANTES
     },
     {
       id: '3',
-      label: 'Lixo perfurante',
-      value: 'RESIDUOS_CORTANTES'
+      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.RESIDUOS_CORTANTES),
+      value: UrbanSolidWasteCategory.RESIDUOS_CORTANTES
     },
     {
       id: '4',
-      label: 'Óleo de cozinha',
-      value: 'OLEO_DE_COZINHA'
+      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.OLEO_DE_COZINHA),
+      value: UrbanSolidWasteCategory.OLEO_DE_COZINHA
     }
   ]), []);
 
 
   const onSubmit: SubmitHandler<CollectPoint> = async (data: any) => {
-    const response = await registerCollectPoint(data);
-    if (response.statusCode === StatusCode.Created) {
-      Toast.show({
-        type: 'success',
-        text1: 'Ponto de coleta cadastrado com sucesso.',
-        position: 'top',
-        visibilityTime: 2000
-      })
-      setTimeout(() => {
-        router.back()
-      }, 2000)
+    if (!isEditMode) {
+      const response = await registerCollectPoint(data);
+      if (response.statusCode === StatusCode.Created) {
+        Toast.show({
+          type: 'success',
+          text1: 'Ponto de coleta cadastrado com sucesso.',
+          position: 'top',
+          visibilityTime: 2000
+        })
+        setTimeout(() => {
+          router.back()
+        }, 2000)
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: `${response.reject}`,
+          position: 'top',
+          visibilityTime: 2000
+        })
+      }
     } else {
-      Toast.show({
-        type: 'error',
-        text1: `${response.reject}`,
-        position: 'top',
-        visibilityTime: 2000
-      })
+      if (parsedData.pointUUID) {
+        const response = await updateCollectPoint(parsedData.pointUUID, data);
+        if (response.statusCode === StatusCode.Ok) {
+          Toast.show({
+            type: 'success',
+            text1: 'Ponto de coleta atualizado com sucesso.',
+            position: 'top',
+            visibilityTime: 2000
+          })
+          setTimeout(() => {
+            router.back()
+          }, 2000)
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: `${response.reject}`,
+            position: 'top',
+            visibilityTime: 2000
+          })
+        }
+      }
     }
   }
 
   return (
     <ScrollView>
       <View style={style.container}>
-        <Text style={globalsStyles.titlePrimaty}>CADASTRO DO PONTO DE COLETA</Text>
+        <Text style={globalsStyles.titlePrimaty}> {isEditMode ? 'EDITAR PONTO DE COLETA' : 'CADASTRO DO PONTO DE COLETA'}</Text>
 
         <View style={style.formView}>
           <View style={style.inputView}>
@@ -152,7 +181,7 @@ export default function CollectPointRegister() {
           </View>
 
           <View style={style.inputView}>
-            <Text style={globalsStyles.text}>Selecione a categoria do item a ser descartado</Text>
+            <Text style={globalsStyles.text}>Selecione a categoria de resíduos que o ponto de coleta irá receber.</Text>
             <Controller
               name="urbanSolidWaste"
               control={control}
@@ -174,7 +203,7 @@ export default function CollectPointRegister() {
           </View>
         </View>
 
-        <PrimaryButton onPress={handleSubmit(onSubmit)} title="Cadastrar" />
+        <PrimaryButton onPress={handleSubmit(onSubmit)} title={isEditMode ? 'ATUALIZAR' : 'CADASTRAR'} />
       </View>
     </ScrollView>
   )

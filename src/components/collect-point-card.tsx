@@ -1,6 +1,6 @@
 import { StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { MapsheetStyle } from "./selected-map-sheet";
-import { border, colors } from "@/utils/globals";
+import { colors } from "@/utils/globals";
 import { Feather } from "@expo/vector-icons";
 import { CollectPointType } from "@/utils/types";
 import { formatUrbanSolidWasteCategory } from "@/utils/utils";
@@ -9,6 +9,7 @@ import { StatusCode } from "api/client/IHttpClient";
 import Toast from "react-native-toast-message";
 import { useState } from "react";
 import { BaseDialog } from "./dialog";
+import { router } from "expo-router";
 
 export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum, phone, cep, number }: CollectPointType) {
   const { deleteCollectPoint, fetchCollectPoints } = useCollectPointRegister();
@@ -33,6 +34,17 @@ export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum,
     }
   }
 
+  async function handleEdit() {
+    router.push({
+      pathname: '/company/home/collect-point-register',
+      params: {
+        mode: 'edit',
+        initialData: JSON.stringify({ pointUUID, name, street, urbanSolidWasteEnum, phone, cep, number }),
+        pointUUID: pointUUID
+      }
+    })
+  }
+
   return (
     <View style={styles.cardWrapepr}>
       <View style={styles.collectPointCard}>
@@ -43,7 +55,7 @@ export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum,
       </View>
 
       <View style={styles.iconsWrapper}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleEdit}>
           <Feather name="edit-3" size={30} />
         </TouchableOpacity>
 
