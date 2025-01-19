@@ -12,7 +12,7 @@ export default function ManageCollectPointsScreen() {
       <MainLayout>
         <Text style={globalsStyles.title}>Pontos de Coleta:</Text>
         <Text> Aqui você pode visualizar e gerenciar todos os seus pontos de coleta</Text>
-        {collectPoints.map((point) => (
+        { collectPoints && collectPoints.length > 0 ? collectPoints.map((point) => (
             <CollectPointCard
                 key={point.pointUUID}
                 pointUUID={point.pointUUID}
@@ -23,7 +23,7 @@ export default function ManageCollectPointsScreen() {
                 urbanSolidWasteEnum={point.urbanSolidWasteEnum}
                 phone={point.phone}
             />
-        ))}
+        )): <Text>Nenhum ponto de coleta cadastrado.</Text>}
       </MainLayout>
     </ScrollView>
   );
