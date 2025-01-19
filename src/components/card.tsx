@@ -1,27 +1,34 @@
 import { border, colors, font } from "@/utils/globals";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { globalsStyles } from "@/globals-styles";
 
 type CardProps = {
     children?: React.ReactNode;
-    // icon?: ImageSourcePropType;
-    type: 'ponto-coleta' | 'info';
-}
+    icon?: keyof typeof Feather.glyphMap;
+    type?: 'ponto-coleta' | 'info';
+    text?: string;
+    onPress?: () => void;
+} & TouchableOpacityProps;
 
-export const Card = ({ type }: CardProps) => {
+export const Card = ({ type, icon, text, onPress}: CardProps) => {
     return (
-        <TouchableOpacity activeOpacity={0.6} style={styles.card}>
+        <TouchableOpacity activeOpacity={0.6} style={styles.card} onPress={onPress && onPress}>
             <View style={styles.cardView}>
-                {type === 'ponto-coleta' &&
-                    <>
-                        <Image source={require('../../assets/icons/marker-outline.png')} />
-                        <Text style={styles.text} >Ver pontos de coleta</Text>
-                    </>}
-                {type === 'info' &&
-                    <>
-                        <Image source={require('../../assets/icons/about-outline.png')} />
-                        <Text style={styles.text} >O que reciclar</Text>
-                    </>}
+                {icon ? <Feather name={icon} size={35} color={colors.lemon100} /> :
+                    <Image source={
+                        type === 'ponto-coleta' ?
+                            require('../../assets/icons/marker-outline.png') :
+                            require('../../assets/icons/about-outline.png')} />
+                }
+                <Text style={globalsStyles.text} >{
+                    type === 'ponto-coleta' && !text ?
+                        'Ver pontos de Coleta' :
+                        type === 'info' && !text ?
+                            'O que reciclar' :
+                            text}
+                </Text>
             </View>
         </TouchableOpacity>
     )
@@ -30,7 +37,7 @@ export const Card = ({ type }: CardProps) => {
 const styles = StyleSheet.create({
     card: {
         backgroundColor: colors.white,
-        width: '35%',
+        width: '40%',
         padding: 10,
         borderRadius: border.radius.medium,
         shadowColor: "#000",
@@ -48,8 +55,4 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         gap: 16
     },
-    text: {
-        fontFamily: font.family.medium,
-        fontSize: font.size.medium,
-    }
 })

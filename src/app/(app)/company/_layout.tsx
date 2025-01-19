@@ -11,7 +11,7 @@ export default function CompanyLayout() {
                         title: 'Home',
                         tabBarIcon: ({ color, size }) => <Feather name="home" style={{ color, fontSize: size }} />
                     }}
-                    name="index" />
+                    name="home" />
                 <Tabs.Screen
                     options={{
                         title: 'Pontos de Coleta',

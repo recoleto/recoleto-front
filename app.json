@@ -23,6 +23,7 @@
     },
     "web": {
     },
+    "scheme": "recoleto",
     "plugins": [
      [
       "expo-font",

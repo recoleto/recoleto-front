@@ -8,7 +8,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { AuthContext } from "api/context/auth";
 import { BaseDialog } from "@/components/dialog";
 import { MainLayout } from "@/components/main-layout";
-import { globalsStyles } from "./globals-styles";
+import { globalsStyles } from "../../utils/globals-styles";
 
 export default function ProfileScreen() {
     const { user, fetchUser, updateUser, role, disableAccount } = useGetUser();

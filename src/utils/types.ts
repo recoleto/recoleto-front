@@ -2,63 +2,90 @@ import { object, ref, string } from "yup";
 import * as yup from "yup";
 
 export type CompanyType = {
-    name: string;
-    cnpj: string;
-    phone: string;
-    email: string;
-    password: string;
+  name: string;
+  cnpj: string;
+  phone: string;
+  email: string;
+  password: string;
 }
 export type UserType = {
-    name: string;
-    lastName: string;
-    phone: string;
-    cpf: string;
-    email: string;
-    password: string;
+  name: string;
+  lastName: string;
+  phone: string;
+  cpf: string;
+  email: string;
+  password: string;
 }
 
 export type LoginType = {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
+}
+
+export type CollectPointType = {
+  name: string;
+  phone: string;
+  street: string;
+  number: number;
+  cep: string;
+  urbanSolidWaste: UrbanSolidWaste;
+}
+
+export enum UrbanSolidWaste {
+  OLEO_DE_COZINHA = 'OLEO_DE_COZINHA',
+  LIXO_ELETRONICO = 'LIXO_ELETRONICO',
+  LIXO_CONTAMINANTE = 'LIXO_CONTAMINANTE',
+  LIXO_PERFURANTE = 'LIXO_PERFURANTE',
 }
 
 // Schemas Base
 export const userBaseSchema = object({
-    name: string().required('Nome é obrigatório.'),
-    email: string()
-        .email('E-mail inválido.')
-        .required('E-mail é obrigatório.'),
-    password: string()
-        .min(8, 'Senha deve conter no mínimo 8 caracteres.')
-        .required('Senha é obrigatória.')
-        .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Senha deve conter no mínimo 8 caracteres, uma letra e um número.'),
+  name: string().required('Nome é obrigatório.'),
+  email: string()
+    .email('E-mail inválido.')
+    .required('E-mail é obrigatório.'),
+  password: string()
+    .min(8, 'Senha deve conter no mínimo 8 caracteres.')
+    .required('Senha é obrigatória.')
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Senha deve conter no mínimo 8 caracteres, uma letra e um número.'),
 });
 
 export const addressBaseSchema = object({
-    street: string().required('Logradouro é obrigatório.'),
-    number: string().required('Número é obrigatório.'),
-    cep: string()
-        .required('CEP é obrigatório.')
-        .matches(/^\d{8}$/, 'CEP inválido.'),
+  street: string().required('Logradouro é obrigatório.'),
+  number: string().required('Número é obrigatório.'),
+  cep: string()
+    .required('CEP é obrigatório.')
+    .matches(/^\d{8}$/, 'CEP inválido.'),
 });
 
 // Schema para Usuário Final
 export const userSchema = userBaseSchema.shape({
-    lastName: string().required('Sobrenome é obrigatório.'),
-    phone: string().required('Telefone é obrigatório.'),
-    cpf: string()
-        .required('CPF é obrigatório.')
-        .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido.'),
+  lastName: string().required('Sobrenome é obrigatório.'),
+  phone: string().required('Telefone é obrigatório.'),
+  cpf: string()
+    .required('CPF é obrigatório.')
+    .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido.'),
 });
 
 // Schema para Empresas
 export const companySchema = userBaseSchema.shape({
-    name: string().required('Nome Fantasia é obrigatório.').min(3, 'Nome Fantasia deve conter no mínimo 3 caracteres.'),
-    phone: string().required('Telefone é obrigatório.'),
-    cnpj: string()
-        .required('CNPJ é obrigatório.')
-        .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.'),
+  name: string().required('Nome Fantasia é obrigatório.').min(3, 'Nome Fantasia deve conter no mínimo 3 caracteres.'),
+  phone: string().required('Telefone é obrigatório.'),
+  cnpj: string()
+    .required('CNPJ é obrigatório.')
+    .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.'),
 });
+
+export const collectPointSchema = object({
+    name: string().required('Nome é obrigatório.'),
+    phone: string().required('Contato é obrigatório.'),
+    street: string().required('Logradouro é obrigatório.'),
+    number: yup.number().required('Número é obrigatório.'),
+    cep: string()
+        .required('CEP é obrigatório.')
+        .matches(/^\d{8}$/, 'CEP inválido.'),
+    urbanSolidWaste: string().required('Tipo de resíduo é obrigatório.'),
+})
 
 export const addressWithUserSchema = userSchema.concat(addressBaseSchema);
 export const addressWithCompanySchema = companySchema.concat(addressBaseSchema);
@@ -67,5 +94,5 @@ export const addressWithCompanySchema = companySchema.concat(addressBaseSchema);
 export type User = yup.InferType<typeof userSchema>;
 export type Address = yup.InferType<typeof addressBaseSchema>;
 export type Company = yup.InferType<typeof companySchema>;
-
+export type CollectPoint = yup.InferType<typeof collectPointSchema>;
 
