@@ -109,7 +109,7 @@ export default function CollectPointRegister() {
   return (
     <ScrollView>
       <View style={style.container}>
-        <Text style={globalsStyles.titlePrimaty}> {isEditMode ? 'EDITAR PONTO DE COLETA' : 'CADASTRO DO PONTO DE COLETA'}</Text>
+        <Text style={globalsStyles.titlePrimary}> {isEditMode ? 'EDITAR PONTO DE COLETA' : 'CADASTRO DO PONTO DE COLETA'}</Text>
 
         <View style={style.formView}>
           <View style={style.inputView}>
