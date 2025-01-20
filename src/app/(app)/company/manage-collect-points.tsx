@@ -1,6 +1,6 @@
 import { MainLayout } from "@/components/main-layout";
 import { ScrollView } from "react-native-gesture-handler";
-import { globalsStyles } from "../../../../utils/globals-styles";
+import { globalsStyles } from "../../../utils/globals-styles";
 import { Text } from "react-native";
 import { CollectPointCard } from "@/components/collect-point-card";
 import { useCollectPointRegister } from "api/hooks/useCollectPoint";
