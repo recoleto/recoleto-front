@@ -8,6 +8,7 @@ export default function HomeStack() {
         <Stack.Screen name="index" />
         <Stack.Screen name="collect-point-register" options={{ headerShown: true, headerTitle: '', headerBackVisible: true, headerTransparent: true }} />
         <Stack.Screen name="urban-solid-waste-info" options={{ headerShown: true, headerTitle: '', headerBackVisible: true, headerTransparent: true }} />
+        <Stack.Screen name="urban-solid-waste-register" options={{ headerShown: true, headerTitle: '', headerBackVisible: true, headerTransparent: true }}  />
       </Stack>
     </View>
   )

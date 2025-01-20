@@ -26,7 +26,10 @@ export default function Home() {
             <View style={styles.carroussel}>
                 <Text style={globalsStyles.title}>Resíduos</Text>
                 <View style={styles.cardContainer}>
-                    <Card text="Cadastrar Resíduo" icon="plus-circle" />
+                    <Card 
+                    text="Cadastrar Resíduo" 
+                    icon="plus-circle"
+                    onPress={() => router.navigate('/(app)/company/home/urban-solid-waste-register')} />
                     <Card 
                     text="Ver resíduos cadastrados" 
                     type="info"
