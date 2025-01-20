@@ -40,6 +40,7 @@ export type CollectPointMapType = {
 } & CollectPointType;
 
 export type UrbanSolidWasteType = {
+  id: string; 
   name: string;
   points: number;
   type: UrbanSolidWasteCategory;
