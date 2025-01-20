@@ -39,19 +39,11 @@ export type CollectPointMapType = {
   companyUUID: string;
 } & CollectPointType;
 
-// {
-//     "pointUUID": "21333cf6-681e-444d-8126-eade989dd264",
-//     "name": "Ponto de Coleta 2 ",
-//     "phone": "45554553322",
-//     "cep": "85875000",
-//     "street": "Avenida Primeiro de Maio",
-//     "number": "77",
-//     "latitude": "-25.4476056",
-//     "longitude": "-54.3965521",
-//     "urbanSolidWasteEnum": "RESIDUOS_CONTAMINANTES",
-//     "companyName": "Jejdjdhd",
-//     "companyUUID": "ed733f89-da1d-4c0a-95e6-f0f0eea3ef5b"
-// }
+export type UrbanSolidWasteType = {
+  name: string;
+  points: number;
+  type: UrbanSolidWasteCategory;
+}
 
 export enum UrbanSolidWasteCategory {
   OLEO_DE_COZINHA = 'OLEO_DE_COZINHA',
@@ -109,6 +101,12 @@ export const collectPointSchema = object({
   urbanSolidWaste: string().required('Tipo de resíduo é obrigatório.'),
 })
 
+export const urbanSolidWasteSchema = object({
+  name: string().required('Nome é obrigatório.'),
+  points: yup.number().required('Pontos é obrigatório.').min(1, 'Pontos deve ser maior que 0.'),
+  type: string().required('Categoria é obrigatória.').equals(Object.values(UrbanSolidWasteCategory), 'Categoria inválida.')
+})
+
 export const addressWithUserSchema = userSchema.concat(addressBaseSchema);
 export const addressWithCompanySchema = companySchema.concat(addressBaseSchema);
 
@@ -117,4 +115,5 @@ export type User = yup.InferType<typeof userSchema>;
 export type Address = yup.InferType<typeof addressBaseSchema>;
 export type Company = yup.InferType<typeof companySchema>;
 export type CollectPoint = yup.InferType<typeof collectPointSchema>;
+export type UrbanSolidWaste = yup.InferType<typeof urbanSolidWasteSchema>;
 
