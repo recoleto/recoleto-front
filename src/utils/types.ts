@@ -23,19 +23,41 @@ export type LoginType = {
 }
 
 export type CollectPointType = {
+  pointUUID: string;
   name: string;
   phone: string;
   street: string;
   number: number;
   cep: string;
-  urbanSolidWaste: UrbanSolidWaste;
+  urbanSolidWasteEnum: UrbanSolidWasteCategory;
 }
 
-export enum UrbanSolidWaste {
+export type CollectPointMapType = {
+  latitude: string;
+  longitude: string;
+  companyName: string;
+  companyUUID: string;
+} & CollectPointType;
+
+// {
+//     "pointUUID": "21333cf6-681e-444d-8126-eade989dd264",
+//     "name": "Ponto de Coleta 2 ",
+//     "phone": "45554553322",
+//     "cep": "85875000",
+//     "street": "Avenida Primeiro de Maio",
+//     "number": "77",
+//     "latitude": "-25.4476056",
+//     "longitude": "-54.3965521",
+//     "urbanSolidWasteEnum": "RESIDUOS_CONTAMINANTES",
+//     "companyName": "Jejdjdhd",
+//     "companyUUID": "ed733f89-da1d-4c0a-95e6-f0f0eea3ef5b"
+// }
+
+export enum UrbanSolidWasteCategory {
   OLEO_DE_COZINHA = 'OLEO_DE_COZINHA',
   LIXO_ELETRONICO = 'LIXO_ELETRONICO',
-  LIXO_CONTAMINANTE = 'LIXO_CONTAMINANTE',
-  LIXO_PERFURANTE = 'LIXO_PERFURANTE',
+  RESIDUOS_CONTAMINANTES = 'RESIDUOS_CONTAMINANTES',
+  RESIDUOS_CORTANTES = 'RESIDUOS_CORTANTES',
 }
 
 // Schemas Base
@@ -77,14 +99,14 @@ export const companySchema = userBaseSchema.shape({
 });
 
 export const collectPointSchema = object({
-    name: string().required('Nome é obrigatório.'),
-    phone: string().required('Contato é obrigatório.'),
-    street: string().required('Logradouro é obrigatório.'),
-    number: yup.number().required('Número é obrigatório.'),
-    cep: string()
-        .required('CEP é obrigatório.')
-        .matches(/^\d{8}$/, 'CEP inválido.'),
-    urbanSolidWaste: string().required('Tipo de resíduo é obrigatório.'),
+  name: string().required('Nome é obrigatório.'),
+  phone: string().required('Contato é obrigatório.'),
+  street: string().required('Logradouro é obrigatório.'),
+  number: yup.number().required('Número é obrigatório.'),
+  cep: string()
+    .required('CEP é obrigatório.')
+    .matches(/^\d{8}$/, 'CEP inválido.'),
+  urbanSolidWaste: string().required('Tipo de resíduo é obrigatório.'),
 })
 
 export const addressWithUserSchema = userSchema.concat(addressBaseSchema);

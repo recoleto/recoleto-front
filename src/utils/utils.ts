@@ -28,3 +28,16 @@ export function redirectRole(role: string) {
             return router.push('/(app)/user');
     }
 }
+
+export function formatUrbanSolidWasteCategory(category: string): string  | undefined {
+    switch (category) {
+        case 'OLEO_DE_COZINHA':
+            return 'Óleo de Cozinha';
+        case 'LIXO_ELETRONICO':
+            return 'Lixo Eletrônico';
+        case 'RESIDUOS_CONTAMINANTES':
+            return 'Resíduos Contaminantes';
+        case 'RESIDUOS_CORTANTES':
+            return 'Resíduos Cortantes';
+    }
+}
