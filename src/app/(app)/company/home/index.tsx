@@ -30,7 +30,10 @@ export default function Home() {
                     text="Cadastrar Resíduo" 
                     icon="plus-circle"
                     onPress={() => router.navigate('/(app)/company/home/urban-solid-waste-register')} />
-                    <Card text="Ver resíduos cadastrados" type="info" />
+                    <Card 
+                    text="Ver resíduos cadastrados" 
+                    type="info"
+                    onPress={() => router.navigate('/(app)/company/home/urban-solid-waste-info')} />
                 </View>
             </View>
         </MainLayout>
