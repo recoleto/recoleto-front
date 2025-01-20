@@ -7,10 +7,10 @@ export const globalsStyles = StyleSheet.create({
         textDecorationLine: 'underline',
         fontSize: font.size.mediumX,
     },
-    titlePrimaty: {
+    titlePrimary: {
       fontFamily: font.family.bold,
       fontSize: font.size.mediumX,
-      alignSelf: 'center',
+      textAlign: 'center',
       padding: 12,
     },
     text: {
