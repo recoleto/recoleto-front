@@ -1,4 +1,4 @@
-import { CollectPointType } from "@/utils/types";
+import { CollectPointType, UrbanSolidWasteCategory } from "@/utils/types";
 import { HttpResponse } from "api/client/IHttpClient";
 import { RecoletoHttpClient } from "api/client/RecoletoHttpClient";
 
@@ -15,8 +15,20 @@ export class CollectPointService {
     return response
   }
 
-  async fetchCollectPoints(): Promise<HttpResponse<any>> {
+  async fetchCollectPointsCompany(): Promise<HttpResponse<any>> {
     const base = '/collection-point/company';
+    const response = await this.client.get({ url: base })
+    return response
+  }
+
+  async fetchCollectPoints(): Promise<HttpResponse<any>> {
+    const base = '/collection-point';
+    const response = await this.client.get({ url: base })
+    return response
+  }
+
+  async fetchCollectPointsByCategory(category: UrbanSolidWasteCategory): Promise<HttpResponse<any>> {
+    const base = `/collection-point/usw/${category}`;
     const response = await this.client.get({ url: base })
     return response
   }
@@ -32,4 +44,5 @@ export class CollectPointService {
     const response = await this.client.put({ url: base, body: data })
     return response
   }
+
 }
