@@ -21,10 +21,10 @@ export function removeBlankSpaces(value: string): string {
 export function redirectRole(role: string) {
     switch (role) {
         case 'EMPRESA':
-            return router.push('/(app)/company');
+            return router.push('/(app)/company/home');
         case 'ADMIN':
             // router.push('/admin');
-        case 'USER':
+        case 'USUARIO':
             return router.push('/(app)/user');
     }
 }

@@ -33,8 +33,8 @@ export type CollectPointType = {
 }
 
 export type CollectPointMapType = {
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   companyName: string;
   companyUUID: string;
 } & CollectPointType;

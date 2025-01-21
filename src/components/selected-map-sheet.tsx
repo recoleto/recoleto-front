@@ -3,18 +3,11 @@ import { useEffect, useRef, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { colors, font } from "@/utils/globals";
-import { haversine } from "@/utils/utils";
+import { formatUrbanSolidWasteCategory, haversine } from "@/utils/utils";
+import { CollectPointMapType } from "@/utils/types";
 
 type SelectedMapSheetProps = {
-    collectPoint: {
-        id: number;
-        name: string;
-        address: string;
-        category: string;
-        contact: string;
-        longitude: number;
-        latitude: number;
-    },
+    collectPoint: CollectPointMapType | null,
     userLocation: any
 }
 
@@ -40,9 +33,9 @@ export function SelectedMapSheet({ collectPoint, userLocation, ...props }: Selec
                                 <Text style={MapsheetStyle.title}>{collectPoint.name}</Text>
                                 <Text style={MapsheetStyle.distance}>{distance}km</Text>
                             </View>
-                            <Text style={MapsheetStyle.address}>{collectPoint.address}</Text>
-                            <Text style={MapsheetStyle.text}>Categoria: {collectPoint.category}</Text>
-                            <Text style={MapsheetStyle.text}>Contato:{collectPoint.contact}</Text>
+                            <Text style={MapsheetStyle.address}>{collectPoint.street}, {collectPoint.number} - {collectPoint.cep}</Text>
+                            <Text style={MapsheetStyle.text}>Categoria: {formatUrbanSolidWasteCategory(collectPoint.urbanSolidWasteEnum)}</Text>
+                            <Text style={MapsheetStyle.text}>Contato:{collectPoint.phone}</Text>
                         </View>
 
                         <TouchableOpacity style={MapsheetStyle.button}>

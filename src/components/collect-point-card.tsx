@@ -4,7 +4,7 @@ import { colors } from "@/utils/globals";
 import { Feather } from "@expo/vector-icons";
 import { CollectPointType } from "@/utils/types";
 import { formatUrbanSolidWasteCategory } from "@/utils/utils";
-import { useCollectPointRegister } from "api/hooks/useCollectPoint";
+import { useCollectPointRegister } from "api/hooks/useCollectPointComapny";
 import { StatusCode } from "api/client/IHttpClient";
 import Toast from "react-native-toast-message";
 import { useState } from "react";
