@@ -2,7 +2,7 @@ import { CollectPointType } from "@/utils/types";
 import { CollectPointService } from "api/services/CollectPointService";
 import { useEffect, useState } from "react";
 
-export function useCollectPointRegister() {
+export function useCollectPointCompany() {
   const service = new CollectPointService();
   const [collectPoints, setCollectPoints] = useState<CollectPointType[]>([]);
 
@@ -18,7 +18,6 @@ export function useCollectPointRegister() {
 
   const deleteCollectPoint = async (pointUUID: string) => {
     const response = await service.deleteCollectPoint(pointUUID);
-    console.log(response);
     return response;
   }
 
@@ -32,10 +31,10 @@ export function useCollectPointRegister() {
   })
 
   return {
-    registerCollectPoint, 
+    registerCollectPoint,
     collectPoints,
     deleteCollectPoint,
     fetchCollectPoints,
-    updateCollectPoint
+    updateCollectPoint,
   }
 }

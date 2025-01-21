@@ -7,7 +7,7 @@ import { useMemo, useState } from "react"
 import { RadioGroup } from "react-native-radio-buttons-group"
 import { PrimaryButton } from "@/components/primary-button"
 import { ScrollView } from "react-native-gesture-handler"
-import { useCollectPointRegister } from "api/hooks/useCollectPoint"
+import { useCollectPointCompany } from "api/hooks/useCollectPointComapny"
 import { CollectPoint, collectPointSchema, UrbanSolidWasteCategory } from "@/utils/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { StatusCode } from "api/client/IHttpClient"
@@ -34,7 +34,7 @@ export default function CollectPointRegister() {
       defaultValues: parsedData
     })
   const [selectedId, setSelectedId] = useState<string>();
-  const { registerCollectPoint, updateCollectPoint } = useCollectPointRegister();
+  const { registerCollectPoint, updateCollectPoint } = useCollectPointCompany();
 
   const radioButtons = useMemo(() => ([
     {
