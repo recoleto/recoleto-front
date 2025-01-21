@@ -8,6 +8,7 @@ import { colors } from "@/utils/globals";
 import { AuthProvider } from "api/context/auth";
 import { StrictMode } from "react";
 import Toast from "react-native-toast-message";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,6 +32,7 @@ export default function PublicLayout({ children }: NotAuthenticatedLayoutProps) 
     return (
         <AuthProvider>
             <LinearGradient id="gradient" style={styles.background} colors={["#0C3422", "#249A66"]}>
+                <StatusBar />
                 <SafeAreaView id="root-safe-area" style={styles.background}>
                     <Stack screenOptions={{
                         headerStyle: { backgroundColor: "#0C3422" },

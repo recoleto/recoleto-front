@@ -1,42 +1,20 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject, watchPositionAsync } from 'expo-location';
 import { useEffect, useState } from "react";
 import { SelectedMapSheet } from "@/components/selected-map-sheet";
+import { useCollectPointsUser } from "api/hooks/useCollectPointsUser";
+import { useLocalSearchParams } from "expo-router";
+import { UrbanSolidWasteCategory } from "@/utils/types";
+import Toast from "react-native-toast-message";
+import { MapFilterChip } from "@/components/map-filter-chip";
 
 export default function PontosDeColeta() {
     const [location, setLocation] = useState<LocationObject | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<any>();
-
-    const locMock = [
-        {
-            id: 1,
-            name: 'Ponto de Coleta 1',
-            address: 'Rua das Flores, 123, Bairro das Flores - 85875-000',
-            category: 'Lixo Eletrônico',
-            contact: '(12)3456789',
-            longitude: -54.5748775,
-            latitude: -25.5190413
-        },
-        {
-            id: 2,
-            name: 'Ponto de Coleta 2',
-            address: 'Rua das Flores, 233, Bairro das Flores - 85875-000',
-            category: 'Óleo de Cozinha',
-            contact: '(12)3456789',
-            longitude: -54.5918385,
-            latitude: -25.4570113
-        },
-        {
-            id: 3,
-            name: 'Ponto de Coleta 3',
-            address: 'Rua das Flores, 333, Bairro das Flores - 85875-000',
-            category: 'Material Contaminado',
-            contact: '(12)3456789',
-            longitude: -54.5518385,
-            latitude: -25.4910113
-        },
-    ]
+    const [loading, setLoading] = useState<boolean>(false);
+    const { category } = useLocalSearchParams();
+    const { filteredCollectPoints, fetchCollectPointsByCategory } = useCollectPointsUser();
 
     async function getLocation() {
         const { granted } = await requestForegroundPermissionsAsync();
@@ -49,6 +27,30 @@ export default function PontosDeColeta() {
     useEffect(() => {
         getLocation();
     }, []);
+
+    useEffect(() => {
+        async function fetchData() {
+            if (category) {
+                setLoading(true); // Inicia o carregamento
+                await fetchCollectPointsByCategory(category as UrbanSolidWasteCategory);
+                setLoading(false); // Finaliza o carregamento
+            }
+        }
+        fetchData();
+    }, [category]);
+
+    useEffect(() => {
+        if (!loading && category) {
+            if (filteredCollectPoints && filteredCollectPoints.length === 0) {
+                Toast.show({
+                    type: 'info',
+                    text1: 'Nenhum ponto de coleta encontrado.',
+                    position: 'top',
+                    visibilityTime: 3000,
+                });
+            }
+        }
+    }, [filteredCollectPoints, loading]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -64,19 +66,19 @@ export default function PontosDeColeta() {
                         latitudeDelta: 0.0922,
                         longitudeDelta: 0.0421
                     }}>
-                    {locMock.map((loc, index) => (
+                    {filteredCollectPoints && filteredCollectPoints.length > 0 ? filteredCollectPoints.map((loc, index) => (
                         <Marker
-                            
                             onPress={() => setSelectedLocation(loc)}
                             key={index}
                             image={require('../../../../assets/icons/marker.png')}
                             coordinate={{
-                                latitude: loc.latitude,
-                                longitude: loc.longitude
+                                latitude: Number(loc.latitude),
+                                longitude: Number(loc.longitude)
                             }}
-                        />))}
+                        />)) : null}
                 </MapView>}
             <SelectedMapSheet userLocation={location} collectPoint={selectedLocation} />
+            <MapFilterChip />
         </View>
     )
 }
@@ -84,16 +86,7 @@ export default function PontosDeColeta() {
 const styles = StyleSheet.create({
     map: {
         flex: 1,
-        width: '100%'
+        width: '100%',
+        position: 'relative'
     },
-    bubble: {
-        flexDirection: 'column',
-        alignSelf: 'flex-start',
-        backgroundColor: '#fff',
-        borderRadius: 6,
-        borderColor: '#ccc',
-        borderWidth: 0.5,
-        padding: 15,
-        width: 150
-    }
 })
