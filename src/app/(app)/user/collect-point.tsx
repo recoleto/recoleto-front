@@ -1,21 +1,20 @@
 import { StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject, watchPositionAsync } from 'expo-location';
+import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from 'expo-location';
 import { useEffect, useState } from "react";
 import { SelectedMapSheet } from "@/components/selected-map-sheet";
 import { useCollectPointsUser } from "api/hooks/useCollectPointsUser";
-import { useLocalSearchParams } from "expo-router";
 import { UrbanSolidWasteCategory } from "@/utils/types";
 import Toast from "react-native-toast-message";
 import { MapFilterChip } from "@/components/map-filter-chip";
+import { useCategory } from "@/contexts/map-filter-context";
 
 export default function PontosDeColeta() {
     const [location, setLocation] = useState<LocationObject | null>(null);
     const [selectedLocation, setSelectedLocation] = useState<any>();
+    const { selectedCategory } = useCategory();
     const [loading, setLoading] = useState<boolean>(false);
-    const { category } = useLocalSearchParams();
-    const { filteredCollectPoints, fetchCollectPointsByCategory } = useCollectPointsUser();
-
+    const { filteredCollectPoints, fetchCollectPointsByCategory, fetchAllCollectPoints } = useCollectPointsUser();
     async function getLocation() {
         const { granted } = await requestForegroundPermissionsAsync();
         if (granted) {
@@ -30,17 +29,19 @@ export default function PontosDeColeta() {
 
     useEffect(() => {
         async function fetchData() {
-            if (category) {
-                setLoading(true); // Inicia o carregamento
-                await fetchCollectPointsByCategory(category as UrbanSolidWasteCategory);
-                setLoading(false); // Finaliza o carregamento
+            setLoading(true);
+            if (selectedCategory && selectedCategory !== UrbanSolidWasteCategory.TODOS) {
+                await fetchCollectPointsByCategory(selectedCategory as UrbanSolidWasteCategory);
+            } else {
+                await fetchAllCollectPoints();
             }
+            setLoading(false);
         }
         fetchData();
-    }, [category]);
+    }, [selectedCategory]);
 
     useEffect(() => {
-        if (!loading && category) {
+        if (!loading && selectedCategory) {
             if (filteredCollectPoints && filteredCollectPoints.length === 0) {
                 Toast.show({
                     type: 'info',

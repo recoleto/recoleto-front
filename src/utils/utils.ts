@@ -39,5 +39,7 @@ export function formatUrbanSolidWasteCategory(category: string): string  | undef
             return 'Resíduos Contaminantes';
         case 'RESIDUOS_CORTANTES':
             return 'Resíduos Cortantes';
+        case 'TODOS':
+            return 'Todos';
     }
 }

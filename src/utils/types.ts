@@ -47,6 +47,7 @@ export type UrbanSolidWasteType = {
 }
 
 export enum UrbanSolidWasteCategory {
+  TODOS = 'TODOS',
   OLEO_DE_COZINHA = 'OLEO_DE_COZINHA',
   LIXO_ELETRONICO = 'LIXO_ELETRONICO',
   RESIDUOS_CONTAMINANTES = 'RESIDUOS_CONTAMINANTES',
