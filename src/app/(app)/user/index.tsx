@@ -4,8 +4,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "../../../utils/globals-styles";
 import { router } from "expo-router";
 import { UrbanSolidWasteCategory } from "@/utils/types";
+import { useCategory } from "@/contexts/map-filter-context";
 
 export default function Home() {
+    const { setSelectedCategory } = useCategory();
     return (
         <MainLayout>
             <View style={styles.carroussel}>
@@ -13,11 +15,10 @@ export default function Home() {
                 <View style={styles.cardContainer}>
                     <Card
                         type={'ponto-coleta'}
-                        onPress={() => router.navigate({
-                            pathname: '/user/collect-point',
-                            params: { category: UrbanSolidWasteCategory.LIXO_ELETRONICO }
-                        }
-                        )} />
+                        onPress={() => {
+                            router.replace('/(app)/user/collect-point');
+                            setSelectedCategory(UrbanSolidWasteCategory.LIXO_ELETRONICO);
+                        }} />
                     <Card type={'info'} />
                 </View>
             </View>
@@ -27,10 +28,10 @@ export default function Home() {
                 <View style={styles.cardContainer}>
                     <Card
                         type={'ponto-coleta'}
-                        onPress={() => router.navigate({
-                            pathname: '/user/collect-point',
-                            params: { category: UrbanSolidWasteCategory.RESIDUOS_CONTAMINANTES }
-                        })} />
+                        onPress={() => {
+                            router.replace('/(app)/user/collect-point');
+                            setSelectedCategory(UrbanSolidWasteCategory.RESIDUOS_CONTAMINANTES);
+                        }} />
                     <Card type={'info'} />
                 </View>
             </View>
@@ -40,10 +41,10 @@ export default function Home() {
                 <View style={styles.cardContainer}>
                     <Card
                         type={'ponto-coleta'}
-                        onPress={() => router.navigate({
-                            pathname: '/user/collect-point',
-                            params: { category: UrbanSolidWasteCategory.RESIDUOS_CORTANTES }
-                        })} />
+                        onPress={() => {
+                            router.replace('/(app)/user/collect-point');
+                            setSelectedCategory(UrbanSolidWasteCategory.RESIDUOS_CORTANTES);
+                        }} />
                     <Card type={'info'} />
                 </View>
             </View>
@@ -53,10 +54,10 @@ export default function Home() {
                 <View style={styles.cardContainer}>
                     <Card
                         type={'ponto-coleta'}
-                        onPress={() => router.navigate({
-                            pathname: '/user/collect-point',
-                            params: { category: UrbanSolidWasteCategory.OLEO_DE_COZINHA }
-                        })} />
+                        onPress={() => {
+                            router.replace('/(app)/user/collect-point');
+                            setSelectedCategory(UrbanSolidWasteCategory.OLEO_DE_COZINHA);
+                        }} />
                     <Card type={'info'} />
                 </View>
             </View>
