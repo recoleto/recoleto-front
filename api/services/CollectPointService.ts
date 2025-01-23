@@ -22,7 +22,7 @@ export class CollectPointService {
   }
 
   async fetchCollectPoints(): Promise<HttpResponse<any>> {
-    const base = '/collection-point';
+    const base = '/collection-point/all';
     const response = await this.client.get({ url: base })
     return response
   }

@@ -12,8 +12,15 @@ export function useCollectPointsUser() {
         return response;
     }
 
+    const fetchAllCollectPoints = async () => {
+        const response = await service.fetchCollectPoints();
+        setFilteredCollectPoints(response.body);
+        return response;
+    }
+
     return {
         filteredCollectPoints,
-        fetchCollectPointsByCategory
+        fetchCollectPointsByCategory,
+        fetchAllCollectPoints,
     }
 }
