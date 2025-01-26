@@ -109,6 +109,23 @@ export const urbanSolidWasteSchema = object({
   type: string().required('Categoria é obrigatória.').equals(Object.values(UrbanSolidWasteCategory), 'Categoria inválida.')
 })
 
+export const userProfileSchema = object({
+    name: string().required('Nome é obrigatório.'),
+    lastName: string().required('Sobrenome é obrigatório.'),
+    email: string()
+        .email('E-mail inválido.')
+        .required('E-mail é obrigatório.'),
+    phone: string().required('Telefone é obrigatório.'),
+    cpf: string()
+        .required('CPF é obrigatório.')
+        .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido.'),
+    street: string().required('Logradouro é obrigatório.'),
+    number: string().required('Número é obrigatório.'),
+    cep: string()
+        .required('CEP é obrigatório.')
+        .matches(/^\d{8}$/, 'CEP inválido.'),
+})
+
 export const addressWithUserSchema = userSchema.concat(addressBaseSchema);
 export const addressWithCompanySchema = companySchema.concat(addressBaseSchema);
 
@@ -118,4 +135,5 @@ export type Address = yup.InferType<typeof addressBaseSchema>;
 export type Company = yup.InferType<typeof companySchema>;
 export type CollectPoint = yup.InferType<typeof collectPointSchema>;
 export type UrbanSolidWaste = yup.InferType<typeof urbanSolidWasteSchema>;
+export type UserProfileType = yup.InferType<typeof userProfileSchema>;
 
