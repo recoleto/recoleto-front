@@ -1,5 +1,5 @@
 import { Card } from "@/components/card";
-import { MainLayout } from "@/components/main-layout";
+import { ProfileLayout } from "@/components/profile-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "../../../utils/globals-styles";
 import { router } from "expo-router";
@@ -9,7 +9,7 @@ import { useCategory } from "@/contexts/map-filter-context";
 export default function Home() {
     const { setSelectedCategory } = useCategory();
     return (
-        <MainLayout>
+        <ProfileLayout>
             <View style={styles.carroussel}>
                 <Text style={globalsStyles.title}>Lixo Eletrônico</Text>
                 <View style={styles.cardContainer}>
@@ -62,7 +62,7 @@ export default function Home() {
                 </View>
             </View>
 
-        </MainLayout>
+        </ProfileLayout>
     )
 }
 

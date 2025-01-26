@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native-gesture-handler";
 import ProfileScreen from "../profile";
-import { MainLayout } from "@/components/main-layout";
+import { ProfileLayout } from "@/components/profile-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "@/globals-styles";
 import { Input } from "@/components/input";
@@ -85,7 +85,7 @@ export default function UserProfile() {
 
   return (
     <ScrollView>
-      <MainLayout>
+      <ProfileLayout>
         <Text style={globalsStyles.title}>Informações do usuário</Text>
 
         <View style={profileStyles.formView}>
@@ -224,7 +224,7 @@ export default function UserProfile() {
           onPressAction={handleDisableAccount}
           isOpen={isOpen}
           setIsOpen={handleModal} />
-      </MainLayout>
+      </ProfileLayout>
     </ScrollView>
   );
 }

@@ -7,7 +7,7 @@ import { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { AuthContext } from "api/context/auth";
 import { BaseDialog } from "@/components/dialog";
-import { MainLayout } from "@/components/main-layout";
+import { ProfileLayout } from "@/components/profile-layout";
 import { globalsStyles } from "../../utils/globals-styles";
 
 export default function ProfileScreen() {
@@ -63,7 +63,7 @@ export default function ProfileScreen() {
 
     return (
         <ScrollView>
-            <MainLayout>
+            <ProfileLayout>
                 <Text style={globalsStyles.title}>Informações do usuário:</Text>
                 <EditableInput
                     value={name}
@@ -96,7 +96,7 @@ export default function ProfileScreen() {
                 </View>
                 {error ? <MessageToast message={error} type='error' /> : success ? <MessageToast message={success} type='success' /> : null}
                 <BaseDialog isOpen={isOpen} setIsOpen={handleModal} onPressAction={handleDisableAccount} title="Desativar conta." message="Você tem certeza que deseja desativar sua conta?" />
-            </MainLayout>
+            </ProfileLayout>
         </ScrollView>
     );
 }

@@ -1,5 +1,4 @@
 import { ScrollView } from "react-native-gesture-handler";
-import { MainLayout } from "@/components/main-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "@/globals-styles";
 import { Input } from "@/components/input";
@@ -14,6 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { telNumberMask } from "@/utils/masks";
 import { BaseDialog } from "@/components/dialog";
 import { useGetCompany } from "api/hooks/useGetCompany";
+import { ProfileLayout } from "@/components/profile-layout";
 
 export default function CompanyProfile() {
   const { register, formState: { errors }, handleSubmit, setValue, control, reset } = useForm({
@@ -83,7 +83,7 @@ export default function CompanyProfile() {
 
   return (
     <ScrollView>
-      <MainLayout>
+      <ProfileLayout>
         <Text style={globalsStyles.title}>Informações do usuário</Text>
 
         <View style={profileStyles.formView}>
@@ -208,7 +208,7 @@ export default function CompanyProfile() {
           onPressAction={handleDisableAccount}
           isOpen={isOpen}
           setIsOpen={handleModal} />
-      </MainLayout>
+      </ProfileLayout>
     </ScrollView>
   );
 }

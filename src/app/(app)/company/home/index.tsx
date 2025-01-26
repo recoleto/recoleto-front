@@ -1,5 +1,5 @@
 import { Card } from "@/components/card";
-import { MainLayout } from "@/components/main-layout";
+import { ProfileLayout } from "@/components/profile-layout";
 import { globalsStyles } from "@/utils/globals-styles";
 import { router } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
@@ -8,7 +8,7 @@ import React from 'react';
 export default function Home() {
 
     return (
-        <MainLayout>
+        <ProfileLayout>
             <View style={styles.carroussel}>
                 <Text style={globalsStyles.title}>Pontos de Coleta</Text>
                 <View style={styles.cardContainer}>
@@ -36,7 +36,7 @@ export default function Home() {
                     onPress={() => router.navigate('/(app)/company/home/urban-solid-waste-info')} />
                 </View>
             </View>
-        </MainLayout>
+        </ProfileLayout>
     )
 }
 
