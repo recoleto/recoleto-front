@@ -1,13 +1,12 @@
 import { ScrollView } from "react-native-gesture-handler";
-import ProfileScreen from "../profile";
-import { MainLayout } from "@/components/main-layout";
+import { ProfileLayout } from "@/components/profile-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "@/globals-styles";
 import { Input } from "@/components/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { colors, font } from "@/utils/globals";
 import { PrimaryButton } from "@/components/primary-button";
-import { Address, addressWithUserSchema, User, UserProfileType, userProfileSchema } from "@/utils/types";
+import { UserProfileType, userProfileSchema } from "@/utils/types";
 import { StatusCode } from "api/client/IHttpClient";
 import Toast from "react-native-toast-message";
 import { useGetUser } from "api/hooks/useGetUser";
@@ -64,8 +63,6 @@ export default function UserProfile() {
 
   const onSubmit: SubmitHandler<UserProfileType> = async (data: UserProfileType) => {
     const response = await updateUser(data);
-    console.log('data ', data);
-    console.log('response ', response);
     if (response.statusCode === StatusCode.Ok) {
       Toast.show({
         type: 'success',
@@ -85,7 +82,7 @@ export default function UserProfile() {
 
   return (
     <ScrollView>
-      <MainLayout>
+      <ProfileLayout>
         <Text style={globalsStyles.title}>Informações do usuário</Text>
 
         <View style={profileStyles.formView}>
@@ -224,7 +221,7 @@ export default function UserProfile() {
           onPressAction={handleDisableAccount}
           isOpen={isOpen}
           setIsOpen={handleModal} />
-      </MainLayout>
+      </ProfileLayout>
     </ScrollView>
   );
 }

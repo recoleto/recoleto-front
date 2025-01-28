@@ -1,73 +1,99 @@
-import { colors, font } from "@/utils/globals";
-import { AuthContext } from "api/context/auth";
-import { useGetCompany } from "api/hooks/useGetCompany";
-import { useGetUser } from "api/hooks/useGetUser";
+import { ScrollView } from "react-native-gesture-handler";
+import { StyleSheet, Text, View } from "react-native";
 import { useContext, useEffect } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { AuthContext } from "api/context/auth";
+import { useGetUser } from "api/hooks/useGetUser";
+import { useGetCompany } from "api/hooks/useGetCompany";
+import { colors, font } from "@/utils/globals";
 
 type MainLayoutProps = {
   children: React.ReactNode;
 };
 
 export function MainLayout({ children }: MainLayoutProps) {
-  const { role } = useContext(AuthContext); 
+  const { role } = useContext(AuthContext);
   const { user, fetchUser } = useGetUser();
   const { company, fetchCompany } = useGetCompany();
 
   useEffect(() => {
     if (role === "USUARIO" && !user) {
       fetchUser();
-    } else if (role === "EMPRESA" && !company) {
-      fetchCompany();
-    }
+    } else
+      if (role === "EMPRESA" && !company) {
+        fetchCompany();
+      }
   }, [role, user, company, fetchUser, fetchCompany]);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View style={styles.containerView}>
         <View id="header" style={styles.header}>
-          <Text style={styles.headerText}>Foto de Perfil</Text>
-          <Image source={require("../../assets/images/user-mock.png")} />
           {role === "USUARIO" && user && (
-            <Text style={styles.headerText}>Olá {user.name} </Text>
+            <View style={styles.headerView}>
+              <Text style={styles.headerText}>Olá, {user.name} </Text>
+              <Text style={styles.text}>Você possui:</Text>
+              <View style={styles.pointsView}>
+                <Text style={styles.points}>{user.points}</Text>
+                <Text style={styles.text}>{Number(user.points) === 1 ? "ponto" : "pontos"}</Text>
+              </View>
+            </View>
           )}
           {role === "EMPRESA" && company && (
-            <Text style={styles.headerText}>Bem-vindo, {company.name}</Text>
+            <Text style={styles.headerText}>Olá, {company.name}</Text>
           )}
         </View>
         <View style={styles.content}>{children}</View>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.green200, // Fundo geral (verde escuro)
+  },
+  containerView: {
+    backgroundColor: colors.green200,
   },
   header: {
-    flex: 1, // Proporção maior para o cabeçalho
-    justifyContent: "space-around",
-    alignItems: "center",
+    width: '100%',
     padding: 20,
-  },
-  headerText: {
-    color: colors.white,
-    fontSize: font.size.large,
-    fontFamily: font.family.semiBold,
-  },
-  title: {
-    fontFamily: font.family.semiBold,
-    textDecorationLine: "underline",
-    fontSize: font.size.mediumX,
+    alignItems: "center",
+    marginVertical: 50,
   },
   content: {
-    flex: 3.5, // Proporção para o conteúdo
     backgroundColor: colors.white,
     borderTopLeftRadius: 40, // Borda curva na parte superior
     borderTopRightRadius: 40,
     padding: 20,
     gap: 20,
+    height: '100%',
   },
-});
+  headerText: {
+    color: colors.white,
+    fontSize: font.size.xxlarge,
+    fontFamily: font.family.medium,
+  },
+  pointsView: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 5,
+    alignItems: 'center',
+  },
+  text: {
+    color: colors.white,
+    fontSize: font.size.mediumX,
+    fontFamily: font.family.regular,
+  },
+  points: {
+    color: colors.white,
+    fontSize: font.size.xxlarge,
+    fontFamily: font.family.medium,
+  },
+  headerView: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 5,
+    alignItems: 'center',
+  }
+})

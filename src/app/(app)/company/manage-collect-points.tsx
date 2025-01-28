@@ -1,4 +1,4 @@
-import { MainLayout } from "@/components/main-layout";
+import { ProfileLayout } from "@/components/profile-layout";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalsStyles } from "../../../utils/globals-styles";
 import { Text } from "react-native";
@@ -9,7 +9,7 @@ export default function ManageCollectPointsScreen() {
   const { collectPoints } = useCollectPointRegister();
   return (
     <ScrollView>
-      <MainLayout>
+      <ProfileLayout>
         <Text style={globalsStyles.title}>Pontos de Coleta:</Text>
         <Text> Aqui você pode visualizar e gerenciar todos os seus pontos de coleta</Text>
         {collectPoints && collectPoints.length > 0 ? collectPoints.map((point) => (
@@ -24,7 +24,7 @@ export default function ManageCollectPointsScreen() {
             phone={point.phone}
           />
         )) : <Text>Nenhum ponto de coleta cadastrado.</Text>}
-      </MainLayout>
+      </ProfileLayout>
     </ScrollView>
   );
 }

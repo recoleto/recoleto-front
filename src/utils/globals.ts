@@ -32,7 +32,8 @@ export const font = {
         regular: 14,
         medium: 16,
         mediumX: 20,
-        large: 24
+        large: 24,
+        xxlarge: 32,
     }
 }
 

@@ -1,7 +1,7 @@
-import { MainLayout } from "@/components/main-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "../../../utils/globals-styles";
 import { NotifCard } from "@/components/notif-card";
+import { MainLayout } from "@/components/main-layout";
 
 export default function Notifications() {
     const notif = [

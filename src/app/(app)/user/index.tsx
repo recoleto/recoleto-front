@@ -1,10 +1,11 @@
 import { Card } from "@/components/card";
-import { MainLayout } from "@/components/main-layout";
+import { ProfileLayout } from "@/components/profile-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "../../../utils/globals-styles";
 import { router } from "expo-router";
 import { UrbanSolidWasteCategory } from "@/utils/types";
 import { useCategory } from "@/contexts/map-filter-context";
+import { MainLayout } from "@/components/main-layout";
 
 export default function Home() {
     const { setSelectedCategory } = useCategory();
