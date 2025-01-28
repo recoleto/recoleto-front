@@ -25,7 +25,6 @@ export default function CompanyProfile() {
   const { company, fetchCompany, disableAccount, updateCompany, logOut } = useGetCompany();
 
   useEffect(() => {
-    console.log('company ', company);
     if(company) {
       reset({
         name: company.name,
