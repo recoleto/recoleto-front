@@ -1,7 +1,7 @@
-import { ProfileLayout } from "@/components/profile-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { globalsStyles } from "../../../utils/globals-styles";
 import { NotifCard } from "@/components/notif-card";
+import { MainLayout } from "@/components/main-layout";
 
 export default function Notifications() {
     const notif = [
@@ -83,14 +83,14 @@ export default function Notifications() {
         },
     ]
     return (
-        <ProfileLayout>
+        <MainLayout>
             <View style={styles.notifContainer}>
                 <Text style={globalsStyles.title}>Suas notificações</Text>
                 {notif.filter(n => n.date).map((n, index) => (
                     <NotifCard key={index} status={n.status} title={n.title} message={n.message} date={new Date(n.date)} points={n.points ? Number(n.points) : undefined} />
                 ))}
             </View>
-        </ProfileLayout>
+        </MainLayout>
     )
 }
 

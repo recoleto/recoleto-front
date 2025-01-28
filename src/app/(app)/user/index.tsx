@@ -5,11 +5,12 @@ import { globalsStyles } from "../../../utils/globals-styles";
 import { router } from "expo-router";
 import { UrbanSolidWasteCategory } from "@/utils/types";
 import { useCategory } from "@/contexts/map-filter-context";
+import { MainLayout } from "@/components/main-layout";
 
 export default function Home() {
     const { setSelectedCategory } = useCategory();
     return (
-        <ProfileLayout>
+        <MainLayout>
             <View style={styles.carroussel}>
                 <Text style={globalsStyles.title}>Lixo Eletrônico</Text>
                 <View style={styles.cardContainer}>
@@ -62,7 +63,7 @@ export default function Home() {
                 </View>
             </View>
 
-        </ProfileLayout>
+        </MainLayout>
     )
 }
 

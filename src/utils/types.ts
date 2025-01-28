@@ -116,6 +116,7 @@ export const userProfileSchema = object({
         .email('E-mail inválido.')
         .required('E-mail é obrigatório.'),
     phone: string().required('Telefone é obrigatório.'),
+    points: string(),
     cpf: string()
         .required('CPF é obrigatório.')
         .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido.'),

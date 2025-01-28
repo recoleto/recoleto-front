@@ -1,5 +1,4 @@
 import { ScrollView } from "react-native-gesture-handler";
-import { layoutStyles } from "./profile-layout";
 import { StyleSheet, Text, View } from "react-native";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "api/context/auth";
@@ -19,10 +18,10 @@ export function MainLayout({ children }: MainLayoutProps) {
   useEffect(() => {
     if (role === "USUARIO" && !user) {
       fetchUser();
-    } else 
-    if (role === "EMPRESA" && !company) {
-      fetchCompany();
-    }
+    } else
+      if (role === "EMPRESA" && !company) {
+        fetchCompany();
+      }
   }, [role, user, company, fetchUser, fetchCompany]);
 
   return (
@@ -30,7 +29,14 @@ export function MainLayout({ children }: MainLayoutProps) {
       <View style={styles.containerView}>
         <View id="header" style={styles.header}>
           {role === "USUARIO" && user && (
-            <Text style={styles.headerText}>Olá {user.name} </Text>
+            <View style={styles.headerView}>
+              <Text style={styles.headerText}>Olá, {user.name} </Text>
+              <Text style={styles.text}>Você possui:</Text>
+              <View style={styles.pointsView}>
+                <Text style={styles.points}>{user.points}</Text>
+                <Text style={styles.text}>{Number(user.points) === 1 ? "ponto" : "pontos"}</Text>
+              </View>
+            </View>
           )}
           {role === "EMPRESA" && company && (
             <Text style={styles.headerText}>Olá, {company.name}</Text>
@@ -67,5 +73,27 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: font.size.xxlarge,
     fontFamily: font.family.medium,
+  },
+  pointsView: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 5,
+    alignItems: 'center',
+  },
+  text: {
+    color: colors.white,
+    fontSize: font.size.mediumX,
+    fontFamily: font.family.regular,
+  },
+  points: {
+    color: colors.white,
+    fontSize: font.size.xxlarge,
+    fontFamily: font.family.medium,
+  },
+  headerView: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 5,
+    alignItems: 'center',
   }
 })
