@@ -4,10 +4,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Input } from "@/components/input"
 import { globalsStyles } from "@/globals-styles"
 import { useMemo, useState } from "react"
-import { RadioGroup } from "react-native-radio-buttons-group"
+import { RadioButton, RadioGroup } from "react-native-radio-buttons-group"
 import { PrimaryButton } from "@/components/primary-button"
 import { ScrollView } from "react-native-gesture-handler"
-import { useCollectPointCompany } from "api/hooks/useCollectPointComapny"
+import { useCollectPointCompany } from "api/hooks/useCollectPointCompany"
 import { CollectPoint, collectPointSchema, UrbanSolidWasteCategory } from "@/utils/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { StatusCode } from "api/client/IHttpClient"
@@ -16,6 +16,7 @@ import { router } from "expo-router"
 import { telNumberMask } from "@/utils/masks"
 import { useLocalSearchParams } from "expo-router"
 import { formatUrbanSolidWasteCategory } from "@/utils/utils"
+import { RadioButtonGroupControlled } from "@/components/radio-button-group-controlled"
 
 export default function CollectPointRegister() {
   const { mode, initialData } = useLocalSearchParams();
@@ -33,32 +34,7 @@ export default function CollectPointRegister() {
       resolver: yupResolver(collectPointSchema),
       defaultValues: parsedData
     })
-  const [selectedId, setSelectedId] = useState<string>();
   const { registerCollectPoint, updateCollectPoint } = useCollectPointCompany();
-
-  const radioButtons = useMemo(() => ([
-    {
-      id: '1', // acts as primary key, should be unique and non-empty string
-      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.LIXO_ELETRONICO),
-      value: UrbanSolidWasteCategory.LIXO_ELETRONICO
-    },
-    {
-      id: '2',
-      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.RESIDUOS_CONTAMINANTES),
-      value: UrbanSolidWasteCategory.RESIDUOS_CONTAMINANTES
-    },
-    {
-      id: '3',
-      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.RESIDUOS_CORTANTES),
-      value: UrbanSolidWasteCategory.RESIDUOS_CORTANTES
-    },
-    {
-      id: '4',
-      label: formatUrbanSolidWasteCategory(UrbanSolidWasteCategory.OLEO_DE_COZINHA),
-      value: UrbanSolidWasteCategory.OLEO_DE_COZINHA
-    }
-  ]), []);
-
 
   const onSubmit: SubmitHandler<CollectPoint> = async (data: any) => {
     if (!isEditMode) {
@@ -66,7 +42,7 @@ export default function CollectPointRegister() {
       if (response.statusCode === StatusCode.Created) {
         Toast.show({
           type: 'success',
-          text1: 'Ponto de coleta cadastrado com sucesso.',
+          text1: `${response.resolve}`,
           position: 'top',
           visibilityTime: 2000
         })
@@ -182,24 +158,11 @@ export default function CollectPointRegister() {
 
           <View style={style.inputView}>
             <Text style={globalsStyles.text}>Selecione a categoria de resíduos que o ponto de coleta irá receber.</Text>
-            <Controller
-              name="urbanSolidWaste"
+            <RadioButtonGroupControlled
               control={control}
-              render={({ field: { onChange } }) => (
-                <RadioGroup
-                  radioButtons={radioButtons}
-                  onPress={(selectedId) => {
-                    const selectedRadioButton = radioButtons.find((radioButton) => radioButton.id === selectedId);
-                    setSelectedId(selectedId);
-                    if (selectedRadioButton) {
-                      onChange(selectedRadioButton.value);
-                    }
-                  }}
-                  selectedId={selectedId}
-                  containerStyle={{ alignItems: 'flex-start' }}
-                />
-              )}
-            />
+              name="urbanSolidWaste"
+              error={errors.urbanSolidWaste?.message}
+              radioGroupType="point" />
           </View>
         </View>
 
