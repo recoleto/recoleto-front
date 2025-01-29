@@ -32,4 +32,16 @@ export class CompanyService {
     }
     return response
   }
+
+  async fetchAllCompanies(): Promise<HttpResponse<any>> {
+    const base = '/company/all';
+    const response = await this.client.get({ url: base })
+    if (response.statusCode === StatusCode.Ok) {
+      return {
+        ...response,
+        body: response.body,
+      }
+    }
+    return response;
+  }
 }
