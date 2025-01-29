@@ -14,6 +14,7 @@ export function useCollectPointCompany() {
   const fetchCollectPoints = async () => {
     const response = await service.fetchCollectPoints();
     setCollectPoints(response.body);
+    return response;
   }
 
   const deleteCollectPoint = async (pointUUID: string) => {
@@ -28,7 +29,7 @@ export function useCollectPointCompany() {
 
   useEffect(() => {
     fetchCollectPoints();
-  })
+  }, [])
 
   return {
     registerCollectPoint,

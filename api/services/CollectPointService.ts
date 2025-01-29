@@ -1,5 +1,5 @@
 import { CollectPointType, UrbanSolidWasteCategory } from "@/utils/types";
-import { HttpResponse } from "api/client/IHttpClient";
+import { HttpResponse, StatusCode } from "api/client/IHttpClient";
 import { RecoletoHttpClient } from "api/client/RecoletoHttpClient";
 
 export class CollectPointService {
@@ -12,6 +12,12 @@ export class CollectPointService {
   async createCollectPoint(data: CollectPointType): Promise<HttpResponse<any>> {
     const base = '/collection-point';
     const response = await this.client.post({ url: base, body: data })
+    if(response.statusCode === StatusCode.Created){
+      return {
+        ...response,
+        resolve: 'Ponto de coleta cadastrado com sucesso"'
+      }
+    }
     return response
   }
 

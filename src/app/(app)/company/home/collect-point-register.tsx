@@ -15,7 +15,6 @@ import Toast from "react-native-toast-message"
 import { router } from "expo-router"
 import { telNumberMask } from "@/utils/masks"
 import { useLocalSearchParams } from "expo-router"
-import { formatUrbanSolidWasteCategory } from "@/utils/utils"
 import { RadioButtonGroupControlled } from "@/components/radio-button-group-controlled"
 
 export default function CollectPointRegister() {
@@ -37,6 +36,7 @@ export default function CollectPointRegister() {
   const { registerCollectPoint, updateCollectPoint } = useCollectPointCompany();
 
   const onSubmit: SubmitHandler<CollectPoint> = async (data: any) => {
+    // console.log(data)
     if (!isEditMode) {
       const response = await registerCollectPoint(data);
       if (response.statusCode === StatusCode.Created) {
