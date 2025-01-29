@@ -6,7 +6,7 @@ export function useCollectPointCompany() {
   const service = new CollectPointService();
   const [collectPoints, setCollectPoints] = useState<CollectPointType[]>([]);
 
-  const registerCollectPoint = async (data: CollectPointType) => {
+  const registerCollectPoint = async (data: CollectPointType): Promise<any> => {
     const response = await service.createCollectPoint(data);
     return response;
   }

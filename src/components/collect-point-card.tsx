@@ -4,15 +4,15 @@ import { colors } from "@/utils/globals";
 import { Feather } from "@expo/vector-icons";
 import { CollectPointType } from "@/utils/types";
 import { formatUrbanSolidWasteCategory } from "@/utils/utils";
-import { useCollectPointRegister } from "api/hooks/useCollectPointComapny";
 import { StatusCode } from "api/client/IHttpClient";
 import Toast from "react-native-toast-message";
 import { useState } from "react";
 import { BaseDialog } from "./dialog";
 import { router } from "expo-router";
+import { useCollectPointCompany } from "api/hooks/useCollectPointCompany";
 
 export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum, phone, cep, number }: CollectPointType) {
-  const { deleteCollectPoint, fetchCollectPoints } = useCollectPointRegister();
+  const { deleteCollectPoint, fetchCollectPoints } = useCollectPointCompany();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleModal = () => setIsOpen(!isOpen);
 
@@ -21,21 +21,21 @@ export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum,
     if (response.statusCode === StatusCode.Ok) {
       Toast.show({
         type: 'success',
-        text1: 'Ponto de coleta deletado com sucesso!',
+        text1: `${response.resolve}`,
         position: 'top',
       })
       fetchCollectPoints();
     } else {
       Toast.show({
         type: 'error',
-        text1: 'Erro ao deletar ponto de coleta',
-        position: 'bottom',
+        text1: `${response.reject}`,
+        position: 'top',
       })
     }
   }
 
   async function handleEdit() {
-    router.push({
+    router.navigate({
       pathname: '/company/home/collect-point-register',
       params: {
         mode: 'edit',

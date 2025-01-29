@@ -3,10 +3,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import { globalsStyles } from "../../../utils/globals-styles";
 import { Text } from "react-native";
 import { CollectPointCard } from "@/components/collect-point-card";
-import { useCollectPointRegister } from "api/hooks/useCollectPointComapny";
+import { useCollectPointCompany } from "api/hooks/useCollectPointCompany";
 
 export default function ManageCollectPointsScreen() {
-  const { collectPoints } = useCollectPointRegister();
+  const { collectPoints } = useCollectPointCompany();
   return (
     <ScrollView>
       <ProfileLayout>
