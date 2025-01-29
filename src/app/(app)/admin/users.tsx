@@ -13,7 +13,6 @@ export default function AdminUsers() {
   const handleModal = () => setIsOpen(!isOpen);
 
   const { users } = useGetUsers();
-
   function handleDisableUserAccount() {
 
   }
@@ -23,10 +22,10 @@ export default function AdminUsers() {
       <Text style={globalsStyles.title}>Gerenciar os usuários: </Text>
       <Text style={globalsStyles.text}>Aqui você pode habilitar e desabilitar as contas dos usuários do Recoleto.</Text>
       {users && users.map((user: UserType) => (
-        <View key={user.cpf} style={styles.cardWrapepr}>
-          <View style={styles.userCard}>
-            <Text>Nome: {user.name}</Text>
-            <Text>Sobrenome: {user.lastName}</Text>
+        <View key={user.cpf} style={adminStyles.cardWrapper}>
+          <View style={adminStyles.userCard}>
+            <Text>Nome: {user.name} {user.lastName}</Text>
+            <Text>Contato: {user.phone ? user.phone : 'Sem registro'}</Text>
             <Text>CPF: {user.cpf}</Text>
             <Text>E-mail: {user.email}</Text>
           </View>
@@ -45,8 +44,8 @@ export default function AdminUsers() {
   )
 }
 
-const styles = StyleSheet.create({
-  cardWrapepr: {
+export const adminStyles = StyleSheet.create({
+  cardWrapper: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
