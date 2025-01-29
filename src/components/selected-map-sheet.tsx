@@ -5,16 +5,25 @@ import { StyleSheet } from "react-native";
 import { colors, font } from "@/utils/globals";
 import { formatUrbanSolidWasteCategory, haversine } from "@/utils/utils";
 import { CollectPointMapType } from "@/utils/types";
+import { router } from "expo-router";
 
 type SelectedMapSheetProps = {
     collectPoint: CollectPointMapType | null,
-    userLocation: any
+    userLocation: any;
+    loc: CollectPointMapType;
 }
 
 
-export function SelectedMapSheet({ collectPoint, userLocation, ...props }: SelectedMapSheetProps) {
+export function SelectedMapSheet({ collectPoint, userLocation, loc, ...props }: SelectedMapSheetProps) {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const [distance, setDistance] = useState<number | null>(null);
+
+    function handlePress() {
+        router.navigate({
+            params: { loc: JSON.stringify(loc) },
+            pathname: '/(app)/user/collect-point/discard-request'
+        });
+    }
 
     useEffect(() => {
         if (collectPoint && userLocation) {
@@ -38,7 +47,7 @@ export function SelectedMapSheet({ collectPoint, userLocation, ...props }: Selec
                             <Text style={MapsheetStyle.text}>Contato:{collectPoint.phone}</Text>
                         </View>
 
-                        <TouchableOpacity style={MapsheetStyle.button}>
+                        <TouchableOpacity onPress={handlePress} style={MapsheetStyle.button}>
                             <Text style={MapsheetStyle.buttonText}> SOLICITAR DESCARTE </Text>
                         </TouchableOpacity>
                     </View>

@@ -8,6 +8,7 @@ import { UrbanSolidWasteCategory } from "@/utils/types";
 import Toast from "react-native-toast-message";
 import { MapFilterChip } from "@/components/map-filter-chip";
 import { useCategory } from "@/contexts/map-filter-context";
+import React from "react";
 
 export default function PontosDeColeta() {
     const [location, setLocation] = useState<LocationObject | null>(null);
@@ -15,6 +16,7 @@ export default function PontosDeColeta() {
     const { selectedCategory } = useCategory();
     const [loading, setLoading] = useState<boolean>(false);
     const { filteredCollectPoints, fetchCollectPointsByCategory, fetchAllCollectPoints } = useCollectPointsUser();
+
     async function getLocation() {
         const { granted } = await requestForegroundPermissionsAsync();
         if (granted) {
@@ -69,16 +71,22 @@ export default function PontosDeColeta() {
                     }}>
                     {filteredCollectPoints && filteredCollectPoints.length > 0 ? filteredCollectPoints.map((loc, index) => (
                         <Marker
+                            key={loc.pointUUID}
                             onPress={() => setSelectedLocation(loc)}
-                            key={index}
-                            image={require('../../../../assets/icons/marker.png')}
+                            image={require('../../../../../assets/icons/marker.png')}
                             coordinate={{
                                 latitude: Number(loc.latitude),
                                 longitude: Number(loc.longitude)
-                            }}
-                        />)) : null}
+                            }} />
+                    )) : null}
                 </MapView>}
-            <SelectedMapSheet userLocation={location} collectPoint={selectedLocation} />
+            {selectedLocation && (
+                <SelectedMapSheet
+                    loc={selectedLocation}
+                    userLocation={location}
+                    collectPoint={selectedLocation}
+                />
+            )}
             <MapFilterChip />
         </View>
     )
