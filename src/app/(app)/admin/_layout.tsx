@@ -14,6 +14,10 @@ export default function AdminLayout() {
             title: 'Companies',
             tabBarIcon: ({ color, size }) => <Feather name="briefcase" style={{ color, fontSize: size }} />
         }} name="companies" />
+        <Tabs.Screen options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => <Feather name="user" style={{ color, fontSize: size }} />
+        }} name="profile" />
       </Tabs>
     </View>
   )
