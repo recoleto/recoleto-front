@@ -25,8 +25,7 @@ export default function CompanyLayout() {
                         tabBarIcon: ({ color, size }) => (
                             <MaterialIcons name="person" size={size} color={color} />
                         ),
-                    }}
-                />
+                    }} />
             </Tabs>
         </View>
     )
