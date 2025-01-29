@@ -41,6 +41,9 @@ export function MainLayout({ children }: MainLayoutProps) {
           {role === "EMPRESA" && company && (
             <Text style={styles.headerText}>Olá, {company.name}</Text>
           )}
+          {role === "ADMIN" && (
+            <Text style={styles.headerText}>Olá, Administrador</Text>
+          )}
         </View>
         <View style={styles.content}>{children}</View>
       </View>
