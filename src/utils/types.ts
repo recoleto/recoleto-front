@@ -46,6 +46,11 @@ export type UrbanSolidWasteType = {
   type: UrbanSolidWasteCategory;
 }
 
+export type UrbanSolidWasteRequest = {
+  name: UrbanSolidWasteType['name']
+  points: UrbanSolidWasteType['points']
+}
+
 export enum UrbanSolidWasteCategory {
   TODOS = 'TODOS',
   OLEO_DE_COZINHA = 'OLEO_DE_COZINHA',
