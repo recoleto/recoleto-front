@@ -1,4 +1,4 @@
-import { UrbanSolidWasteType } from "@/utils/types";
+import { UrbanSolidWasteCategory, UrbanSolidWasteType } from "@/utils/types";
 import { StatusCode } from "api/client/IHttpClient";
 import { UrbanSolidWasteService } from "api/services/UrbanSolidWasteService";
 import { useEffect, useState } from "react";
@@ -10,6 +10,8 @@ export function useUrbanSolidWaste() {
     const [groupedUrbanSolidWastes, setGroupedUrbanSolidWastes] = useState<
         { title: string; data: UrbanSolidWasteType[] }[]
     >([]);
+
+    const [filteredUrbanSolidWastes, setFilteredUrbanSolidWastes] = useState<UrbanSolidWasteType[]>([]);
 
     async function registerUrbanSolidWaste(data: UrbanSolidWasteType) {
         return service.registerUrbanSolidWaste(data);
@@ -46,6 +48,16 @@ export function useUrbanSolidWaste() {
         }
     }
 
+    const fetchFilteredUrbanSolidWastes = async (type: UrbanSolidWasteCategory) => {
+        const response = await service.fetchUrbanSolidWasteById(type);
+        if (response.statusCode === StatusCode.Ok) {
+            const wastes = response.body as UrbanSolidWasteType[];
+            setFilteredUrbanSolidWastes(wastes);
+        } else {
+            setFilteredUrbanSolidWastes([]);
+        }
+    }
+
     useEffect(() => {
         getUrbanSolidWastes();
     }, []); // Sem dependência para evitar loop infinito
@@ -54,6 +66,8 @@ export function useUrbanSolidWaste() {
         registerUrbanSolidWaste,
         getUrbanSolidWastes,
         urbanSolidWastes,
-        groupedUrbanSolidWastes, // Dados já agrupados
+        groupedUrbanSolidWastes, 
+        filteredUrbanSolidWastes,
+        fetchFilteredUrbanSolidWastes
     };
 }
