@@ -48,7 +48,7 @@ export type UrbanSolidWasteType = {
 
 export type UrbanSolidWasteRequest = {
   name: UrbanSolidWasteType['name']
-  points: UrbanSolidWasteType['points']
+  quantity: number;
 }
 
 export enum UrbanSolidWasteCategory {

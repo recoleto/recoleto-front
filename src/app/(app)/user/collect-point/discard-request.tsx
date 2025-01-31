@@ -17,7 +17,6 @@ export default function DiscardRequest() {
   const { control } = useForm();
   const { loc } = useLocalSearchParams();
   const parsedLoc: CollectPointMapType = typeof loc === 'string' ? JSON.parse(loc) : loc;
-  const [selected, setSelected] = useState<string>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [wastes, setWastes] = useState<UrbanSolidWasteRequest[]>([])
   const handleModal = () => setIsOpen(!isOpen);
@@ -49,7 +48,6 @@ export default function DiscardRequest() {
         </View>
       </ScrollView>
       {isOpen && <DiscardResidue
-        setSelected={(val: string) => setSelected(val)}
         urbanSolidWasteEnum={parsedLoc.urbanSolidWasteEnum}
         isOpen={isOpen}
         handleModal={handleModal} />}
