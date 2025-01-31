@@ -148,5 +148,4 @@ const styles = StyleSheet.create({
   residuesView: {
     gap: 10
   },
-  },
 })
