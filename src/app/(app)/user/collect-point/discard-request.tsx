@@ -4,22 +4,63 @@ import { globalsStyles } from "@/globals-styles";
 import { border, colors, font } from "@/utils/globals";
 import { CollectPointMapType, UrbanSolidWasteRequest } from "@/utils/types";
 import { formatUrbanSolidWasteCategory } from "@/utils/utils";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { StyleSheet } from "react-native";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { RadioButton } from "react-native-radio-buttons-group";
-import React
-  from "react";
+import React from "react";
+import { WasteCard } from "@/components/waste-card";
+import Toast from "react-native-toast-message";
+import { useUrbanSolidWaste } from "api/hooks/useUrbanSolidWaste";
+import { StatusCode } from "api/client/IHttpClient";
+
 export default function DiscardRequest() {
-  const { control } = useForm();
   const { loc } = useLocalSearchParams();
   const parsedLoc: CollectPointMapType = typeof loc === 'string' ? JSON.parse(loc) : loc;
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [wastes, setWastes] = useState<UrbanSolidWasteRequest[]>([])
+  const [wasteData, setWasteData] = useState<{ waste: UrbanSolidWasteRequest[] }>({ waste: [], })
+  const { urbanSolidWasteRequest } = useUrbanSolidWaste();
+
   const handleModal = () => setIsOpen(!isOpen);
+
+  const removeWaste = (indexToRemove: number) => {
+    setWasteData((prevState) => ({
+      waste: prevState.waste.filter((_, index) => index !== indexToRemove),
+    }));
+    Toast.show({
+      type: 'info',
+      text1: 'Resíduo removido.',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+    })
+  };
+
+  async function handleSubmit() {
+    const response = await urbanSolidWasteRequest({ pointId: parsedLoc.pointUUID, data: wasteData });
+    if (response.statusCode === StatusCode.Created) {
+      Toast.show({
+        type: 'success',
+        text1: `${response.resolve}`,
+        position: 'bottom',
+        visibilityTime: 2000,
+        autoHide: true,
+      })
+
+      setTimeout(() => {
+        router.back();
+      }, 1000);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: `${response.reject}`,
+        position: 'bottom',
+        visibilityTime: 2000,
+        autoHide: true,
+      })
+    }
+  }
 
   return (
     <>
@@ -43,13 +84,34 @@ export default function DiscardRequest() {
               label={formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWasteEnum)}
               containerStyle={{ margin: 0 }} />
 
-            <PrimaryButton title="Adicionar Resíduo" onPress={handleModal} />
+            <View style={styles.residuesView}>
+              <Text style={globalsStyles.text}>Resíduos:</Text>
+              {wasteData.waste.length === 0 ?
+                <Text>Nenhum resíduo adicionado.</Text>
+                : wasteData.waste.map((waste, index) => (
+                  <WasteCard
+                    {...waste}
+                    key={index}
+                    onRemove={() => removeWaste(index)}
+                  />
+                ))}
+            </View>
+            <View style={styles.residuesView}>
+              <PrimaryButton title="Adicionar Resíduo" onPress={handleModal} />
+              <PrimaryButton title="Concluir" onPress={handleSubmit} />
+            </View>
+            <View style={styles.residuesView}>
+              <PrimaryButton title="Adicionar Resíduo" onPress={handleModal} />
+              <PrimaryButton title="Concluir" onPress={handleSubmit} />
+            </View>
           </View>
         </View>
       </ScrollView>
       {isOpen && <DiscardResidue
+        wastes={wasteData.waste}
         urbanSolidWasteEnum={parsedLoc.urbanSolidWasteEnum}
         isOpen={isOpen}
+        setWastes={(newWastes) => setWasteData({ waste: newWastes })}
         handleModal={handleModal} />}
     </>
   )
@@ -82,5 +144,8 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: font.size.large,
     fontFamily: font.family.bold
-  }
+  },
+  residuesView: {
+    gap: 10
+  },
 })

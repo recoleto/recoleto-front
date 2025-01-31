@@ -1,4 +1,5 @@
-import { UrbanSolidWasteCategory } from "@/utils/types";
+import { UrbanSolidWasteCategory, UrbanSolidWasteRequest } from "@/utils/types";
+import { StatusCode } from "api/client/IHttpClient";
 import { RecoletoHttpClient } from "api/client/RecoletoHttpClient";
 
 export class UrbanSolidWasteService {
@@ -19,9 +20,20 @@ export class UrbanSolidWasteService {
         return this.client.post({ url: base, body: data });
     }
 
-    async fetchUrbanSolidWasteById(type: UrbanSolidWasteCategory) {4
+    async fetchUrbanSolidWasteById(type: UrbanSolidWasteCategory) {
         const base = `/usw/type/${type}`;
         const response = await this.client.get({ url: base });
         return response;
+    }
+
+    async createUSWRequest({ pointId, data }: { pointId: string, data: { waste: UrbanSolidWasteRequest[] } }) {
+        const base = `/request/${pointId}`;
+        const response = await this.client.post({ url: base, body: data })
+        if(response.statusCode === StatusCode.Created) {
+            return {
+                ...response,
+                resolve: 'Solicitação de descarte realizada com sucesso.'
+            }
+        } else return response;
     }
 }

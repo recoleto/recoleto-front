@@ -1,4 +1,4 @@
-import { UrbanSolidWasteCategory, UrbanSolidWasteType } from "@/utils/types";
+import { UrbanSolidWasteCategory, UrbanSolidWasteRequest, UrbanSolidWasteType } from "@/utils/types";
 import { StatusCode } from "api/client/IHttpClient";
 import { UrbanSolidWasteService } from "api/services/UrbanSolidWasteService";
 import { useEffect, useState } from "react";
@@ -17,13 +17,16 @@ export function useUrbanSolidWaste() {
         return service.registerUrbanSolidWaste(data);
     }
 
+    async function urbanSolidWasteRequest({ pointId, data }: { pointId: string; data: { waste: UrbanSolidWasteRequest[] } }) {
+        return service.createUSWRequest({pointId, data});
+    }
+
     async function getUrbanSolidWastes() {
         const response = await service.fetchUrbanSolidWastes();
         if (response.statusCode === StatusCode.Ok) {
             const wastes = response.body as UrbanSolidWasteType[];
             setUrbanSolidWastes(wastes);
 
-            // Agrupar os resíduos por categoria
             const groupedData = wastes.reduce((acc, waste) => {
                 const category = formatUrbanSolidWasteCategory(waste.type);
                 if (category && !acc[category]) {
@@ -35,7 +38,6 @@ export function useUrbanSolidWaste() {
                 return acc;
             }, {} as Record<string, UrbanSolidWasteType[]>);
 
-            // Converter os grupos em um formato compatível com SectionList
             const sections = Object.keys(groupedData).map((category) => ({
                 title: category,
                 data: groupedData[category],
@@ -60,14 +62,15 @@ export function useUrbanSolidWaste() {
 
     useEffect(() => {
         getUrbanSolidWastes();
-    }, []); // Sem dependência para evitar loop infinito
+    }, []);
 
     return {
         registerUrbanSolidWaste,
         getUrbanSolidWastes,
         urbanSolidWastes,
-        groupedUrbanSolidWastes, 
+        groupedUrbanSolidWastes,
         filteredUrbanSolidWastes,
-        fetchFilteredUrbanSolidWastes
+        fetchFilteredUrbanSolidWastes,
+        urbanSolidWasteRequest,
     };
 }
