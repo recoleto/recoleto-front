@@ -1,5 +1,5 @@
-import { PrimaryButton } from '@/globals/primary-button';
-import { RelativePathString } from 'expo-router';
+import { PrimaryButton } from '@/components/primary-button';
+import { RelativePathString, router } from 'expo-router';
 import React from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native';
 
@@ -12,8 +12,8 @@ export default function Index() {
             </View>
             <View style={styles.buttons} id='button-view'>
                 <PrimaryButton href={'/login' as RelativePathString} title='Entrar'></PrimaryButton>
-                <PrimaryButton href={'/signup-company' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
-                <PrimaryButton href={'/' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
+                <PrimaryButton href={'/company-register' as RelativePathString} title='Cadastro de Empresa'></PrimaryButton>
+                <PrimaryButton href={'/user-register' as RelativePathString} title='Cadastro de Usuário'></PrimaryButton>
             </View>
         </View>
     );
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
         width: '100%',
         display: 'flex',
         justifyContent: 'space-around',
+        paddingHorizontal: 24
     },
     image: {
         width: 200,
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Teachers-SemiBold'
     },
     buttons: {
-        marginTop: 200,
         display: 'flex',
         gap: 20,
     }

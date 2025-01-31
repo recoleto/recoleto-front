@@ -27,9 +27,13 @@ export const font = {
         semiBold: 'Teachers-SemiBold'
     },
     size: {
+        xsmall: 10,
         small: 12,
+        regular: 14,
         medium: 16,
-        large: 24
+        mediumX: 20,
+        large: 24,
+        xxlarge: 32,
     }
 }
 
