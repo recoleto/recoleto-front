@@ -100,6 +100,10 @@ export default function DiscardRequest() {
               <PrimaryButton title="Adicionar Resíduo" onPress={handleModal} />
               <PrimaryButton title="Concluir" onPress={handleSubmit} />
             </View>
+            <View style={styles.residuesView}>
+              <PrimaryButton title="Adicionar Resíduo" onPress={handleModal} />
+              <PrimaryButton title="Concluir" onPress={handleSubmit} />
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -143,5 +147,6 @@ const styles = StyleSheet.create({
   },
   residuesView: {
     gap: 10
+  },
   },
 })
