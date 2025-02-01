@@ -51,12 +51,49 @@ export type UrbanSolidWasteRequest = {
   quantity: number;
 }
 
+export type UrbanSolidWasteRequestCompanyType = {
+  requestId: string;
+  userName: string;
+  collectionPointName: string;
+  solicitationNumber: number;
+  waste: UrbanSolidWasteRequest[];
+  points: number;
+  status: UrbanSolidWasteRequestStatus;
+}
+
+// {
+//   "requestId": "4b8455a6-682b-45a0-b093-4089c802546c",
+//   "userId": "9272fc8a-853f-44d8-a666-34c540b8e441",
+//   "userName": "Mayara",
+//   "companyName": "Jejdjdhd",
+//   "collectionPointName": "Ponto de Coleta 6",
+//   "collectionPointId": "239db576-f5fe-410f-bd4c-42471db9c273",
+//   "companyId": "ed733f89-da1d-4c0a-95e6-f0f0eea3ef5b",
+//   "solicitationNumber": 2,
+//   "waste": [
+//       {
+//           "name": "TESTE 2",
+//           "quantity": 5
+//       }
+//   ],
+//   "points": 75,
+//   "status": "PENDENTE"
+// },
+
 export enum UrbanSolidWasteCategory {
   TODOS = 'TODOS',
   OLEO_DE_COZINHA = 'OLEO_DE_COZINHA',
   LIXO_ELETRONICO = 'LIXO_ELETRONICO',
   RESIDUOS_CONTAMINANTES = 'RESIDUOS_CONTAMINANTES',
   RESIDUOS_CORTANTES = 'RESIDUOS_CORTANTES',
+}
+
+export enum UrbanSolidWasteRequestStatus {
+    PENDENTE = 'PENDENTE',
+    RECUSADO = 'REPROVADO',
+    APROVADO = 'APROVADO',
+    CANCELADO = 'CANCELADO',
+    RECEBIDO = 'RECEBIDO',
 }
 
 // Schemas Base
