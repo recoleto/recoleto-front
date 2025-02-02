@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Input } from "@/components/input"
 import { globalsStyles } from "@/globals-styles"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { RadioButton, RadioGroup } from "react-native-radio-buttons-group"
 import { PrimaryButton } from "@/components/primary-button"
 import { ScrollView } from "react-native-gesture-handler"
@@ -16,6 +16,8 @@ import { router } from "expo-router"
 import { telNumberMask } from "@/utils/masks"
 import { useLocalSearchParams } from "expo-router"
 import { RadioButtonGroupControlled } from "@/components/radio-button-group-controlled"
+import { watch } from "fs"
+import axios from "axios"
 
 export default function CollectPointRegister() {
   const { mode, initialData } = useLocalSearchParams();
@@ -27,6 +29,7 @@ export default function CollectPointRegister() {
     setValue,
     handleSubmit,
     register,
+    watch,
     control } = useForm<CollectPoint>({
       mode: 'all',
       reValidateMode: 'onChange',
@@ -36,7 +39,6 @@ export default function CollectPointRegister() {
   const { registerCollectPoint, updateCollectPoint } = useCollectPointCompany();
 
   const onSubmit: SubmitHandler<CollectPoint> = async (data: any) => {
-    // console.log(data)
     if (!isEditMode) {
       const response = await registerCollectPoint(data);
       if (response.statusCode === StatusCode.Created) {
@@ -82,6 +84,34 @@ export default function CollectPointRegister() {
     }
   }
 
+  const cep = watch('cep');
+
+  const fetchAddressByCEP = async (cep: string) => {
+    if (cep.length === 8) {
+      try {
+        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+        setValue("street", response.data.logradouro);
+      } catch (error) {
+        Toast.show({
+          autoHide: true,
+          type: "error",
+          text1: "CEP inválido",
+          text2: "Verifique o CEP e tente novamente.",
+          position: "top",
+          visibilityTime: 2000,
+        })
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (cep && cep.length === 8) {
+      fetchAddressByCEP(cep);
+    } else if (cep && cep.length < 8) {
+      setValue('street', '');
+    }
+  }, [cep]);
+
   return (
     <ScrollView>
       <View style={style.container}>
@@ -116,6 +146,20 @@ export default function CollectPointRegister() {
           </View>
 
           <View style={style.inputView}>
+            <Text style={globalsStyles.text}>CEP:</Text>
+            <Input
+              {...register('cep')}
+              error={errors.cep?.message}
+              theme="light"
+              inputProps={{
+                onChangeText: (text) => setValue('cep', text),
+                placeholder: '00000-000',
+                keyboardType: 'phone-pad'
+              }}
+              formProps={{ name: 'cep', control: control as any }} />
+          </View>
+
+          <View style={style.inputView}>
             <Text style={globalsStyles.text}>Logradouro:</Text>
             <Input
               {...register('street')}
@@ -140,20 +184,6 @@ export default function CollectPointRegister() {
                 keyboardType: 'phone-pad'
               }}
               formProps={{ name: 'number', control: control as any }} />
-          </View>
-
-          <View style={style.inputView}>
-            <Text style={globalsStyles.text}>CEP:</Text>
-            <Input
-              {...register('cep')}
-              error={errors.cep?.message}
-              theme="light"
-              inputProps={{
-                onChangeText: (text) => setValue('cep', text),
-                placeholder: '00000-000',
-                keyboardType: 'phone-pad'
-              }}
-              formProps={{ name: 'cep', control: control as any }} />
           </View>
 
           <View style={style.inputView}>
