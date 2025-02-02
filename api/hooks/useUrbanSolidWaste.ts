@@ -60,6 +60,10 @@ export function useUrbanSolidWaste() {
         }
     }
 
+    const updateUrbanSolidWaste = async (id: UrbanSolidWasteType['id'], data: UrbanSolidWasteType) => {
+        return service.editUrbanSolidWaste({ id, data });
+    }
+
     useEffect(() => {
         getUrbanSolidWastes();
     }, []);
@@ -72,5 +76,6 @@ export function useUrbanSolidWaste() {
         filteredUrbanSolidWastes,
         fetchFilteredUrbanSolidWastes,
         urbanSolidWasteRequest,
+        updateUrbanSolidWaste
     };
 }
