@@ -14,15 +14,44 @@ import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { telNumberMask } from "@/utils/masks";
 import { BaseDialog } from "@/components/dialog";
+import axios from "axios";
 
 export default function UserProfile() {
   const { logOut, disableAccount, updateUser, user, fetchUser } = useGetUser();
-  const { register, formState: { errors }, handleSubmit, setValue, control, reset } = useForm({
+  const { register, formState: { errors }, handleSubmit, setValue, control, reset, watch } = useForm({
     mode: 'all',
     reValidateMode: 'onChange',
     resolver: yupResolver(userProfileSchema),
     defaultValues: user
   });
+
+  const cep = watch('cep');
+
+  const fetchAddressByCEP = async (cep: string) => {
+    if (cep.length === 8) {
+      try {
+        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+        setValue("street", response.data.logradouro);
+      } catch (error) {
+        Toast.show({
+          autoHide: true,
+          type: "error",
+          text1: "CEP inválido",
+          text2: "Verifique o CEP e tente novamente.",
+          position: "top",
+          visibilityTime: 2000,
+        })
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (cep && cep.length === 8) {
+      fetchAddressByCEP(cep);
+    } else if (cep && cep.length < 8) {
+      setValue('street', '');
+    }
+  }, [cep]);
 
   useEffect(() => {
     if (user) {
