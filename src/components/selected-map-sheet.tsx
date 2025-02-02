@@ -23,7 +23,6 @@ export function SelectedMapSheet({ collectPoint, userLocation, loc, ...props }: 
       pathname: '/(app)/user/collect-point/discard-request'
     });
   }
-
   useEffect(() => {
     if (collectPoint && userLocation && bottomSheetRef.current) {
       setDistance(haversine(userLocation.coords.latitude, userLocation.coords.longitude, collectPoint.latitude, collectPoint.longitude));
@@ -45,6 +44,7 @@ export function SelectedMapSheet({ collectPoint, userLocation, loc, ...props }: 
               </View>
               <Text style={MapsheetStyle.address}>{collectPoint.street}, {collectPoint.number} - {collectPoint.cep}</Text>
               <Text style={MapsheetStyle.text}>Categoria: {formatUrbanSolidWasteCategory(collectPoint.urbanSolidWaste)}</Text>
+              <Text style={MapsheetStyle.text}>Empresa responsável: {collectPoint.companyName}</Text>
               <Text style={MapsheetStyle.text}>Contato:{collectPoint.phone}</Text>
             </View>
 
