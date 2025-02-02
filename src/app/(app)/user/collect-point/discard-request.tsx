@@ -74,14 +74,14 @@ export default function DiscardRequest() {
             <View style={styles.collectPointInfoView}>
               <Text style={styles.collectPointInfoTitle}>{parsedLoc.name}</Text>
               <Text style={styles.collectPointAddress}>{parsedLoc.street}, {parsedLoc.number} - {parsedLoc.cep}</Text>
-              <Text style={styles.collectPointInfoText}>Categoria: {formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWaste)}</Text>
+              <Text style={styles.collectPointInfoText}>Categoria: {formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWasteEnum)}</Text>
               <Text style={styles.collectPointInfoText}>Contato: {parsedLoc.phone}</Text>
             </View>
             <Text style={globalsStyles.text}>Categoria:</Text>
 
             <RadioButton selected
               id="1"
-              label={formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWaste)}
+              label={formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWasteEnum)}
               containerStyle={{ margin: 0 }} />
 
             <View style={styles.residuesView}>
@@ -105,7 +105,7 @@ export default function DiscardRequest() {
       </ScrollView>
       {isOpen && <DiscardResidue
         wastes={wasteData.waste}
-        urbanSolidWaste={parsedLoc.urbanSolidWaste}
+        urbanSolidWasteEnum={parsedLoc.urbanSolidWasteEnum}
         isOpen={isOpen}
         setWastes={(newWastes) => setWasteData({ waste: newWastes })}
         handleModal={handleModal} />}

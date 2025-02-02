@@ -20,7 +20,7 @@ export default function ManageCollectPointsScreen() {
             street={point.street}
             number={point.number}
             cep={point.cep}
-            urbanSolidWaste={point.urbanSolidWaste}
+            urbanSolidWasteEnum={point.urbanSolidWasteEnum}
             phone={point.phone}
           />
         )) : <Text>Nenhum ponto de coleta cadastrado.</Text>}
