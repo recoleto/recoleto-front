@@ -29,7 +29,7 @@ export type CollectPointType = {
   street: string;
   number: number;
   cep: string;
-  urbanSolidWasteEnum: UrbanSolidWasteCategory;
+  urbanSolidWaste: UrbanSolidWasteCategory;
 }
 
 export type CollectPointMapType = {

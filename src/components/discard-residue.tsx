@@ -13,14 +13,14 @@ import { Feather } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 type DiscardResidueProps = {
-    urbanSolidWasteEnum: UrbanSolidWasteCategory;
+    urbanSolidWaste: UrbanSolidWasteCategory;
     isOpen: boolean;
     handleModal: () => void;
     setWastes: (wastes: UrbanSolidWasteRequest[]) => void;
     wastes: UrbanSolidWasteRequest[];
 }
 
-export function DiscardResidue({ urbanSolidWasteEnum, isOpen, handleModal, setWastes, wastes }: DiscardResidueProps) {
+export function DiscardResidue({ urbanSolidWaste, isOpen, handleModal, setWastes, wastes }: DiscardResidueProps) {
     const [_selected, setSelected] = useState<string>('');
     const { fetchFilteredUrbanSolidWastes, filteredUrbanSolidWastes } = useUrbanSolidWaste();
     const { control, setValue, handleSubmit, formState: { errors }, resetField } = useForm<UrbanSolidWasteRequest>({
@@ -29,8 +29,8 @@ export function DiscardResidue({ urbanSolidWasteEnum, isOpen, handleModal, setWa
     });
 
     useEffect(() => {
-        fetchFilteredUrbanSolidWastes(urbanSolidWasteEnum);
-    }, [urbanSolidWasteEnum]);
+        fetchFilteredUrbanSolidWastes(urbanSolidWaste);
+    }, [urbanSolidWaste]);
 
     const selectionData = filteredUrbanSolidWastes.map((usw) => ({
         label: usw.name,
