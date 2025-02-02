@@ -44,7 +44,7 @@ export function SelectedMapSheet({ collectPoint, userLocation, loc, ...props }: 
                 <Text style={MapsheetStyle.distance}>{distance}km</Text>
               </View>
               <Text style={MapsheetStyle.address}>{collectPoint.street}, {collectPoint.number} - {collectPoint.cep}</Text>
-              <Text style={MapsheetStyle.text}>Categoria: {formatUrbanSolidWasteCategory(collectPoint.urbanSolidWaste)}</Text>
+              <Text style={MapsheetStyle.text}>Categoria: {formatUrbanSolidWasteCategory(collectPoint.urbanSolidWasteEnum)}</Text>
               <Text style={MapsheetStyle.text}>Contato:{collectPoint.phone}</Text>
             </View>
 
