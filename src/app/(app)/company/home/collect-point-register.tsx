@@ -189,6 +189,7 @@ export default function CollectPointRegister() {
           <View style={style.inputView}>
             <Text style={globalsStyles.text}>Selecione a categoria de resíduos que o ponto de coleta irá receber.</Text>
             <RadioButtonGroupControlled
+              defaultValue={parsedData?.urbanSolidWaste}
               control={control}
               name="urbanSolidWaste"
               error={errors.urbanSolidWaste?.message}
