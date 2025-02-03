@@ -8,7 +8,7 @@ export function useUswRequestsCompany() {
 
 
   async function fetchRequests() {
-    const response = await service.fetchUSWRequestsByCompant();
+    const response = await service.fetchUSWRequestsByCompany();
     setRequests(response.body);
     return response
   }

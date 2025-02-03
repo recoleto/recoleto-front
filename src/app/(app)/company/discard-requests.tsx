@@ -8,11 +8,7 @@ import { ActivityIndicator, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function DiscardRequests() {
-  const { requests, fetchRequests } = useUswRequestsCompany();
-
-  useEffect(() => {
-    fetchRequests();
-  }, [requests]);
+  const { requests } = useUswRequestsCompany();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">

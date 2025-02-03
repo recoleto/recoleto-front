@@ -37,7 +37,7 @@ export class UrbanSolidWasteService {
     } else return response;
   }
 
-  async fetchUSWRequestsByCompant(): Promise<HttpResponse<any>> {
+  async fetchUSWRequestsByCompany(): Promise<HttpResponse<any>> {
     const base = '/request/company/all';
     return this.client.get({ url: base });
   }

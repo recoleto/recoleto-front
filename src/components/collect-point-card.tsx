@@ -35,7 +35,7 @@ export function CollectPointCard({ pointUUID, name, street, urbanSolidWaste, pho
   }
 
   async function handleEdit() {
-    router.navigate({
+    router.replace({
       pathname: '/company/home/collect-point-register',
       params: {
         mode: 'edit',

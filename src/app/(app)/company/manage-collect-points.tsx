@@ -7,6 +7,7 @@ import { useCollectPointCompany } from "api/hooks/useCollectPointCompany";
 
 export default function ManageCollectPointsScreen() {
   const { collectPoints } = useCollectPointCompany();
+
   return (
     <ScrollView>
       <ProfileLayout>
