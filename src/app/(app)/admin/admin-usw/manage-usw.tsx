@@ -104,6 +104,7 @@ export default function ManageUrbanSolidWaste() {
         <View>
           <Text style={globalsStyles.text}>Categoria do resíduo:</Text>
           <RadioButtonGroupControlled
+            defaultValue={urbanSolidWasteToEdit?.type}
             error={errors.type?.message as string}
             radioGroupType="urban-solid-waste"
             control={control}
