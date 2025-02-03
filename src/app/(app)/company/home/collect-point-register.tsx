@@ -1,14 +1,12 @@
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet"
 import { StyleSheet, Text, View } from "react-native"
-import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { Input } from "@/components/input"
 import { globalsStyles } from "@/globals-styles"
-import { useEffect, useMemo, useState } from "react"
-import { RadioButton, RadioGroup } from "react-native-radio-buttons-group"
+import { useEffect } from "react"
 import { PrimaryButton } from "@/components/primary-button"
 import { ScrollView } from "react-native-gesture-handler"
 import { useCollectPointCompany } from "api/hooks/useCollectPointCompany"
-import { CollectPoint, collectPointSchema, UrbanSolidWasteCategory } from "@/utils/types"
+import { CollectPoint, collectPointSchema } from "@/utils/types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { StatusCode } from "api/client/IHttpClient"
 import Toast from "react-native-toast-message"
@@ -16,7 +14,6 @@ import { router } from "expo-router"
 import { telNumberMask } from "@/utils/masks"
 import { useLocalSearchParams } from "expo-router"
 import { RadioButtonGroupControlled } from "@/components/radio-button-group-controlled"
-import { watch } from "fs"
 import axios from "axios"
 
 export default function CollectPointRegister() {
@@ -152,7 +149,10 @@ export default function CollectPointRegister() {
               error={errors.cep?.message}
               theme="light"
               inputProps={{
-                onChangeText: (text) => setValue('cep', text),
+                onChangeText: (text) => {
+                  setValue('cep', text);
+                  fetchAddressByCEP(text);
+                },
                 placeholder: '00000-000',
                 keyboardType: 'phone-pad'
               }}
