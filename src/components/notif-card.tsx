@@ -1,114 +1,102 @@
 import { colors, font } from "@/utils/globals";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { NotificationType, UrbanSolidWasteRequestStatus } from "@/utils/types";
 
-type NotifCardProps = {
-    status: string;
-    title: string;
-    message: string;
-    date: Date;
-    points?: number
-}
+export function NotifCard({ status, createdAt, points, requestNumber, userName }: NotificationType) {
 
-export function NotifCard({ status, title, message, date, points }: NotifCardProps) {
-    function dateToString(date: Date) {
-        return date.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' });
-    }
+  function dateToString(dateString: Date | string) {
+    if (!dateString) return '';
+    const date = new Date(dateString); // Converter string para Date
+    if (isNaN(date.getTime())) return ''; // Verifica se é uma data válida
+    return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })
+  }
 
-    return (
-        <View style={styles.card}>
-            <View style={styles.textView}>
-                {status === 'cancelled' && <Image style={styles.icon} source={require('../../assets/icons/cancelled-filled.png')} />}
-                {status === 'approved' && <Image style={styles.icon} source={require('../../assets/icons/completed-filled.png')} />}
-                {status === 'pending' && <Image style={styles.icon} source={require('../../assets/icons/warning-filled.png')} />}
-                {status === 'rejected' && <Image style={styles.icon} source={require('../../assets/icons/error-filled.png')} />}
-                <View>
-                    <View style={styles.titleWrapper}>
-                        <Text style={styles.title}>{title}</Text>
-                        {points &&
-                            <View style={styles.points}>
-                                <Image source={require('../../assets/icons/plus-simple.png')} />
-                                <Text style={styles.pointsText}>{points} pontos</Text>
-                            </View>
-                        }
-                    </View>
-                    <Text style={styles.text}>{message}</Text>
-                </View>
-            </View>
-            <View style={styles.dateView}>
-                <MaterialIcons color={colors.grey300} name="update" />
-                <Text style={styles.date}>{dateToString(date)}</Text>
-            </View>
+  return (
+    <View style={styles.notificationContainer}>
+      <View style={styles.textView}>
+        {status === UrbanSolidWasteRequestStatus.CANCELADO && <Image style={styles.icon} source={require('../../assets/icons/cancelled-filled.png')} />}
+        {status === UrbanSolidWasteRequestStatus.APROVADO && <Image style={styles.icon} source={require('../../assets/icons/completed-filled.png')} />}
+        {status === UrbanSolidWasteRequestStatus.PENDENTE && <Image style={styles.icon} source={require('../../assets/icons/warning-filled.png')} />}
+        {status === UrbanSolidWasteRequestStatus.RECUSADO && <Image style={styles.icon} source={require('../../assets/icons/error-filled.png')} />}
+
+        <View style={styles.textContainer}>
+          <Text style={[styles.title]}>{`DESCARTE ${status}`}</Text>
+          {status !== UrbanSolidWasteRequestStatus.PENDENTE ?
+            <Text style={styles.description}>{`${userName}, sua solicitação nº${requestNumber} foi ${status} no ponto de coleta`}</Text> :
+            <Text>{`${userName}, sua solicitação nº${requestNumber} está pendente para aceite ou recusa no ponto de coleta`}</Text>}
+          <Text style={styles.date}>{dateToString(createdAt)}</Text>
         </View>
-    )
+        {points ? <Text style={styles.points}>{`+ ${points} pontos`}</Text> : null}
+      </View>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-    card: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 3,
-        backgroundColor: 'white',
-        padding: 10,
-        borderRadius: 8,
-        shadowColor: colors.black,
-        shadowOffset: {
-            width: 0,
-            height: 12,
-        },
-        shadowOpacity: 0,
-        shadowRadius: 1,
-
-        elevation: 2,
-    },
-    textView: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 10,
-        flex: 1
-    },
-    text: {
-        fontFamily: font.family.regular,
-        overflow: 'hidden',
-        flexWrap: 'wrap',
-        maxWidth: '90%',
-        fontSize: font.size.regular
-    },
-    date: {
-        color: colors.grey300,
-        fontSize: font.size.xsmall,
-    },
-    dateView: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 3
-    },
-    title: {
-        textTransform: 'uppercase',
-        fontFamily: font.family.medium
-    },
-    icon: {
-        width: 35,
-        height: 35
-    },
-    points: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 3,
-        paddingRight: 5
-    },
-    pointsText: {
-        color: colors.lemon100,
-        fontFamily: font.family.medium,
-        fontSize: font.size.regular,
-    },
-    titleWrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    }
+  textView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1
+  },
+  text: {
+    fontFamily: font.family.regular,
+    overflow: 'hidden',
+    flexWrap: 'wrap',
+    maxWidth: '90%',
+    fontSize: font.size.regular
+  },
+  date: {
+    color: colors.grey300,
+    fontSize: font.size.xsmall,
+  },
+  dateView: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3
+  },
+  title: {
+    textTransform: 'uppercase',
+    fontFamily: font.family.medium
+  },
+  icon: {
+    width: 35,
+    height: 35
+  },
+  points: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingRight: 5
+  },
+  pointsText: {
+    color: colors.lemon100,
+    fontFamily: font.family.medium,
+    fontSize: font.size.regular,
+  },
+  titleWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  notificationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    marginBottom: 10,
+    elevation: 3,
+  },
+  textContainer: {
+    flex: 1,
+  },
+  description: {
+    fontSize: 14,
+    color: '#6c757d',
+  },
 })

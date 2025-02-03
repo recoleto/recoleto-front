@@ -62,11 +62,11 @@ export type UrbanSolidWasteRequestCompanyType = {
 }
 
 export type NotificationType = {
-  date: Date;
-  message: string;
-  status: string;
-  title: string;
+  createdAt: Date;
+  status: UrbanSolidWasteRequestStatus;
   points?: number;
+  userName: string;
+  requestNumber: number;
 }
 
 export enum UrbanSolidWasteCategory {
