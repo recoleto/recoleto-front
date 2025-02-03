@@ -51,6 +51,16 @@ export type UrbanSolidWasteRequest = {
   quantity: number;
 }
 
+export type UrbanSolidWasteRequestCompanyType = {
+  requestId: string;
+  userName: string;
+  collectionPointName: string;
+  solicitationNumber: number;
+  waste: UrbanSolidWasteRequest[];
+  points: number;
+  status: UrbanSolidWasteRequestStatus;
+}
+
 export type NotificationType = {
   date: Date;
   message: string;
@@ -65,6 +75,14 @@ export enum UrbanSolidWasteCategory {
   LIXO_ELETRONICO = 'LIXO_ELETRONICO',
   RESIDUOS_CONTAMINANTES = 'RESIDUOS_CONTAMINANTES',
   RESIDUOS_CORTANTES = 'RESIDUOS_CORTANTES',
+}
+
+export enum UrbanSolidWasteRequestStatus {
+    PENDENTE = 'PENDENTE',
+    RECUSADO = 'REPROVADO',
+    APROVADO = 'APROVADO',
+    CANCELADO = 'CANCELADO',
+    RECEBIDO = 'RECEBIDO',
 }
 
 // Schemas Base

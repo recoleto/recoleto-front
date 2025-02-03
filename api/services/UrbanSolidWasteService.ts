@@ -1,4 +1,4 @@
-import { UrbanSolidWasteCategory, UrbanSolidWasteRequest, UrbanSolidWasteType } from "@/utils/types";
+import { UrbanSolidWasteCategory, UrbanSolidWasteRequest, UrbanSolidWasteType, UrbanSolidWasteRequestCompanyType } from "@/utils/types";
 import { HttpResponse, StatusCode } from "api/client/IHttpClient";
 import { RecoletoHttpClient } from "api/client/RecoletoHttpClient";
 
@@ -9,7 +9,7 @@ export class UrbanSolidWasteService {
     this.client = new RecoletoHttpClient();
   }
 
-  async fetchUrbanSolidWastes() {
+  async fetchUrbanSolidWastes(): Promise<HttpResponse<any>> {
     const base = '/usw';
     const response = await this.client.get({ url: base });
     return response;
@@ -37,6 +37,22 @@ export class UrbanSolidWasteService {
     } else return response;
   }
 
+  async fetchUSWRequestsByCompant(): Promise<HttpResponse<any>> {
+    const base = '/request/company/all';
+    return this.client.get({ url: base });
+  }
+
+  async companyUpdateRequest({ requestId, status }: { requestId: UrbanSolidWasteRequestCompanyType['requestId'], status: UrbanSolidWasteRequestCompanyType['status'] }): Promise<HttpResponse<any>> {
+    const base = `request/update/company/${requestId}/${status}`;
+    const response = await this.client.put({ url: base });
+    if (response.statusCode === StatusCode.Ok) {
+      return {
+        ...response,
+        resolve: 'Solicitação atualizada com sucesso.'
+      }
+    }
+    return response;
+  }
   async editUrbanSolidWaste({ id, data }: { id: UrbanSolidWasteType['id'], data: UrbanSolidWasteType }): Promise<HttpResponse<any>> {
     const base = `/usw/admin/update/${id}`;
     return this.client.put({ url: base, body: data });

@@ -32,119 +32,119 @@ export function DiscardResidue({ urbanSolidWaste, isOpen, handleModal, setWastes
         fetchFilteredUrbanSolidWastes(urbanSolidWaste);
     }, [urbanSolidWaste]);
 
-    const selectionData = filteredUrbanSolidWastes.map((usw) => ({
-        label: usw.name,
-        value: usw.name,
-        key: usw.type
-    }));
+  const selectionData = filteredUrbanSolidWastes.map((usw) => ({
+    label: usw.name,
+    value: usw.name,
+    key: usw.type
+  }));
 
-    const onSubmit: SubmitHandler<UrbanSolidWasteRequest> = (data) => {
-        setWastes([...wastes, data]);
-        Toast.show({
-            type: 'info',
-            text1: 'Resíduo adicionado.',
-            position: 'top',
-            visibilityTime: 2000,
-            autoHide: true,
-        })
-        setTimeout(() => {
-            handleModal();
-            resetField('name');
-            resetField('quantity');
-        }, 500);
-    }
-    return (
-        <View style={styles.centeredView}>
-            <Modal
-                style={styles.centeredView}
-                isOpen={isOpen}
-                animationType="fade"
-                onRequestClose={handleModal}
-                transparent={true}>
-                <View style={styles.modalView}>
-                    <View>
-                        <View style={styles.titleView}>
-                            <Text style={globalsStyles.titlePrimary}>ADICIONAR RESÍDUO</Text>
-                            <Feather style={styles.icon} name="x" size={24} color={colors.black} onPress={handleModal} />
-                        </View>
-                        <Text style={globalsStyles.text}>Adicione o resíduo na sua lista para o descarte</Text>
-                    </View>
-                    <View>
-                        <Text style={globalsStyles.text}>Resíduo:</Text>
-                    </View>
+  const onSubmit: SubmitHandler<UrbanSolidWasteRequest> = (data) => {
+    setWastes([...wastes, data]);
+    Toast.show({
+      type: 'info',
+      text1: 'Resíduo adicionado.',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+    })
+    setTimeout(() => {
+      handleModal();
+      resetField('name');
+      resetField('quantity');
+    }, 500);
+  }
+  return (
+    <View style={styles.centeredView}>
+      <Modal
+        style={styles.centeredView}
+        isOpen={isOpen}
+        animationType="fade"
+        onRequestClose={handleModal}
+        transparent={true}>
+        <View style={styles.modalView}>
+          <View>
+            <View style={styles.titleView}>
+              <Text style={globalsStyles.titlePrimary}>ADICIONAR RESÍDUO</Text>
+              <Feather style={styles.icon} name="x" size={24} color={colors.black} onPress={handleModal} />
+            </View>
+            <Text style={globalsStyles.text}>Adicione o resíduo na sua lista para o descarte</Text>
+          </View>
+          <View>
+            <Text style={globalsStyles.text}>Resíduo:</Text>
+          </View>
 
-                    <Controller
-                        name="name"
-                        control={control}
-                        rules={{ required: 'Campo obrigatório' }}
-                        render={({ field }) => (
-                            <SelectList
-                                setSelected={(val: string) => {
-                                    setValue('name', val);
-                                    setSelected(val);
-                                }}
-                                fontFamily={font.family.regular}
-                                data={selectionData}
-                                save="value"
-                                notFoundText="Nenhum resíduo encontrado."
-                                searchPlaceholder="Buscar um resíduo."
-                                placeholder="Selecione um resíduo."
-                                maxHeight={200} />
-                        )} />
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: 'Campo obrigatório' }}
+            render={({ field }) => (
+              <SelectList
+                setSelected={(val: string) => {
+                  setValue('name', val);
+                  setSelected(val);
+                }}
+                fontFamily={font.family.regular}
+                data={selectionData}
+                save="value"
+                notFoundText="Nenhum resíduo encontrado."
+                searchPlaceholder="Buscar um resíduo."
+                placeholder="Selecione um resíduo."
+                maxHeight={200} />
+            )} />
 
-                    <View style={{ gap: 8 }}>
-                        <Text style={globalsStyles.text}>Quantidade:</Text>
-                        <Input
-                            error={errors.quantity?.message}
-                            formProps={{ control: control as any, name: 'quantity' }}
-                            inputProps={{
-                                onChangeText: (text) => setValue('quantity', Number(text)),
-                                keyboardType: 'phone-pad'
-                            }} />
-                    </View>
-                    <PrimaryButton title="ADICIONAR" onPress={handleSubmit(onSubmit)} />
-                </View>
-            </Modal>
+          <View style={{ gap: 8 }}>
+            <Text style={globalsStyles.text}>Quantidade:</Text>
+            <Input
+              error={errors.quantity?.message}
+              formProps={{ control: control as any, name: 'quantity' }}
+              inputProps={{
+                onChangeText: (text) => setValue('quantity', Number(text)),
+                keyboardType: 'phone-pad'
+              }} />
+          </View>
+          <PrimaryButton title="ADICIONAR" onPress={handleSubmit(onSubmit)} />
         </View>
-    )
+      </Modal>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1, // Ocupa toda a tela disponível
-        justifyContent: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: "100%",
-        height: "100%",
+  centeredView: {
+    flex: 1, // Ocupa toda a tela disponível
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: "100%",
+    height: "100%",
+  },
+  modalView: {
+    backgroundColor: colors.white,
+    marginTop: 150,
+    width: '90%',
+    alignSelf: "center",
+    justifyContent: "center",
+    gap: 12,
+    padding: 20,
+    borderRadius: border.radius.medium,
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    modalView: {
-        backgroundColor: colors.white,
-        marginTop: 150,
-        width: '90%',
-        alignSelf: "center",
-        justifyContent: "center",
-        gap: 12,
-        padding: 20,
-        borderRadius: border.radius.medium,
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    titleView: {
-        alignItems: "center",
-        position: "relative",
-    },
-    icon: {
-        position: "absolute",
-        right: 0,
-    }
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  titleView: {
+    alignItems: "center",
+    position: "relative",
+  },
+  icon: {
+    position: "absolute",
+    right: 0,
+  }
 })

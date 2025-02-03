@@ -7,10 +7,11 @@ type PrimaryButtonType = ComponentProps<typeof TouchableOpacity> & {
   title: string;
   href?: RelativePathString;
   onPress?: () => void;
+  textStyles?: any;
 }
 
 
-export const PrimaryButton = ({ title, href, onPress }: PrimaryButtonType) => {
+export const PrimaryButton = ({ title, href, onPress, textStyles }: PrimaryButtonType) => {
   function redirectTo(href: RelativePathString) {
     router.navigate(href);
   }
@@ -25,7 +26,7 @@ export const PrimaryButton = ({ title, href, onPress }: PrimaryButtonType) => {
 
   return (
     <TouchableOpacity id='button' style={styles.button} onPress={handlePress} >
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[styles.text, textStyles]}>{title}</Text>
     </TouchableOpacity>
   )
 }
