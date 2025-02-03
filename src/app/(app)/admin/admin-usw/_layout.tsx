@@ -8,7 +8,6 @@ export default function AdminUswLayout() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="manage-usw" options={{ headerShown: true, headerTitle: '', headerBackVisible: true, headerTransparent: true }}
         />
-        
       </Stack>
     </View>
   )

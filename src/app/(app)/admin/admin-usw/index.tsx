@@ -26,28 +26,26 @@ export default function UrbanSolidWasteAdminInfo() {
     setUrbanSolidWasteToEdit(waste);
     if (urbanSolidWasteToEdit) {
       router.navigate({
-        pathname: '/admin',
+        pathname: '/admin/admin-usw/manage-usw',
         params: { urbanSolidWaste: JSON.stringify(urbanSolidWasteToEdit) },
       });
     }
   };
 
   return (
-    <MainLayout>
+<MainLayout>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={globalsStyles.title}>Resíduos Sólidos Urbanos:</Text>
           <Text style={globalsStyles.text}>Gerencie aqui os resíduos cadastrados ou crie um novo.</Text>
         </View>
-        <FlatList
-          data={flatData}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={true}
-          renderItem={({ item, index }) => {
+        
+        <View>
+          {flatData.map((item, index) => {
             const isFirstItemInSection = index === 0 || flatData[index - 1].category !== item.category;
 
             return (
-              <>
+              <View key={item.id}>
                 {isFirstItemInSection && <Text style={styles.sectionHeader}>{item.category}</Text>}
                 <View style={styles.wasteView}>
                   <View>
@@ -59,9 +57,10 @@ export default function UrbanSolidWasteAdminInfo() {
                     <Feather name="edit" size={24} color="black" />
                   </TouchableOpacity>
                 </View>
-              </>);
-          }}
-        />
+              </View>
+            );
+          })}
+        </View>
       </View>
     </MainLayout>
   );
