@@ -45,4 +45,9 @@ export class UserService {
     return response;
   }
 
+  async fetchNotifications(): Promise<HttpResponse<any>> {
+    const base = '/notification/user';
+    return this.client.get({ url: base })
+  }
+
 }

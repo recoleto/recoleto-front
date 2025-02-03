@@ -40,7 +40,7 @@ export type CollectPointMapType = {
 } & CollectPointType;
 
 export type UrbanSolidWasteType = {
-  id: string; 
+  id: string;
   name: string;
   points: number;
   type: UrbanSolidWasteCategory;
@@ -49,6 +49,14 @@ export type UrbanSolidWasteType = {
 export type UrbanSolidWasteRequest = {
   name: UrbanSolidWasteType['name']
   quantity: number;
+}
+
+export type NotificationType = {
+  date: Date;
+  message: string;
+  status: string;
+  title: string;
+  points?: number;
 }
 
 export enum UrbanSolidWasteCategory {
@@ -115,35 +123,35 @@ export const urbanSolidWasteSchema = object({
 })
 
 export const userProfileSchema = object({
-    name: string().required('Nome é obrigatório.'),
-    lastName: string().required('Sobrenome é obrigatório.'),
-    email: string()
-        .email('E-mail inválido.')
-        .required('E-mail é obrigatório.'),
-    phone: string().required('Telefone é obrigatório.'),
-    points: string(),
-    cpf: string()
-        .required('CPF é obrigatório.')
-        .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido.'),
-    street: string().required('Logradouro é obrigatório.'),
-    number: string().required('Número é obrigatório.'),
-    cep: string()
-        .required('CEP é obrigatório.')
-        .matches(/^\d{8}$/, 'CEP inválido.'),
+  name: string().required('Nome é obrigatório.'),
+  lastName: string().required('Sobrenome é obrigatório.'),
+  email: string()
+    .email('E-mail inválido.')
+    .required('E-mail é obrigatório.'),
+  phone: string().required('Telefone é obrigatório.'),
+  points: string(),
+  cpf: string()
+    .required('CPF é obrigatório.')
+    .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, 'CPF inválido.'),
+  street: string().required('Logradouro é obrigatório.'),
+  number: string().required('Número é obrigatório.'),
+  cep: string()
+    .required('CEP é obrigatório.')
+    .matches(/^\d{8}$/, 'CEP inválido.'),
 })
 
 export const companyProfileSchema = object({
-    name: string().required('Nome é obrigatório.'),
-    phone: string().required('Telefone é obrigatório.'),
-    email: string().email('E-mail inválido.').required('E-mail é obrigatório.'),
-    cnpj: string()
-        .required('CNPJ é obrigatório.')
-        .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.'),
-    street: string().required('Logradouro é obrigatório.'),
-    number: string().required('Número é obrigatório.'),
-    cep: string()
-        .required('CEP é obrigatório.')
-        .matches(/^\d{8}$/, 'CEP inválido.'),
+  name: string().required('Nome é obrigatório.'),
+  phone: string().required('Telefone é obrigatório.'),
+  email: string().email('E-mail inválido.').required('E-mail é obrigatório.'),
+  cnpj: string()
+    .required('CNPJ é obrigatório.')
+    .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.'),
+  street: string().required('Logradouro é obrigatório.'),
+  number: string().required('Número é obrigatório.'),
+  cep: string()
+    .required('CEP é obrigatório.')
+    .matches(/^\d{8}$/, 'CEP inválido.'),
 })
 
 export const addressWithUserSchema = userSchema.concat(addressBaseSchema);
