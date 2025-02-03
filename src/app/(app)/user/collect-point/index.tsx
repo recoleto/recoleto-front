@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync, LocationObject } from 'expo-location';
 import { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ export default function PontosDeColeta() {
 
     return (
         <View style={{ flex: 1 }}>
-            {location &&
+            {location ?
                 <MapView
                     showsUserLocation
                     followsUserLocation
@@ -79,7 +79,9 @@ export default function PontosDeColeta() {
                                 longitude: Number(loc.longitude)
                             }} />
                     )) : null}
-                </MapView>}
+                </MapView> : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size='large' color='#000' />
+                </View>}
             {selectedLocation && (
                 <SelectedMapSheet
                     loc={selectedLocation}

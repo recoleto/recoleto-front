@@ -1,4 +1,4 @@
-import { UrbanSolidWasteCategory, UrbanSolidWasteRequest, UrbanSolidWasteRequestCompanyType } from "@/utils/types";
+import { UrbanSolidWasteCategory, UrbanSolidWasteRequest, UrbanSolidWasteType, UrbanSolidWasteRequestCompanyType } from "@/utils/types";
 import { HttpResponse, StatusCode } from "api/client/IHttpClient";
 import { RecoletoHttpClient } from "api/client/RecoletoHttpClient";
 
@@ -15,7 +15,7 @@ export class UrbanSolidWasteService {
     return response;
   }
 
-  async registerUrbanSolidWaste(data: any): Promise<HttpResponse<any>> {
+  async registerUrbanSolidWaste(data: UrbanSolidWasteType): Promise<HttpResponse<any>> {
     const base = '/usw';
     return this.client.post({ url: base, body: data });
   }
@@ -52,5 +52,9 @@ export class UrbanSolidWasteService {
       }
     }
     return response;
+  }
+  async editUrbanSolidWaste({ id, data }: { id: UrbanSolidWasteType['id'], data: UrbanSolidWasteType }): Promise<HttpResponse<any>> {
+    const base = `/usw/admin/update/${id}`;
+    return this.client.put({ url: base, body: data });
   }
 }

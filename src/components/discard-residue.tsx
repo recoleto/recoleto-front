@@ -13,24 +13,24 @@ import { Feather } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 type DiscardResidueProps = {
-  urbanSolidWasteEnum: UrbanSolidWasteCategory;
-  isOpen: boolean;
-  handleModal: () => void;
-  setWastes: (wastes: UrbanSolidWasteRequest[]) => void;
-  wastes: UrbanSolidWasteRequest[];
+    urbanSolidWaste: UrbanSolidWasteCategory;
+    isOpen: boolean;
+    handleModal: () => void;
+    setWastes: (wastes: UrbanSolidWasteRequest[]) => void;
+    wastes: UrbanSolidWasteRequest[];
 }
 
-export function DiscardResidue({ urbanSolidWasteEnum, isOpen, handleModal, setWastes, wastes }: DiscardResidueProps) {
-  const [_selected, setSelected] = useState<string>('');
-  const { fetchFilteredUrbanSolidWastes, filteredUrbanSolidWastes } = useUrbanSolidWaste();
-  const { control, setValue, handleSubmit, formState: { errors }, resetField } = useForm<UrbanSolidWasteRequest>({
-    mode: 'all',
-    reValidateMode: 'onChange'
-  });
+export function DiscardResidue({ urbanSolidWaste, isOpen, handleModal, setWastes, wastes }: DiscardResidueProps) {
+    const [_selected, setSelected] = useState<string>('');
+    const { fetchFilteredUrbanSolidWastes, filteredUrbanSolidWastes } = useUrbanSolidWaste();
+    const { control, setValue, handleSubmit, formState: { errors }, resetField } = useForm<UrbanSolidWasteRequest>({
+        mode: 'all',
+        reValidateMode: 'onChange'
+    });
 
-  useEffect(() => {
-    fetchFilteredUrbanSolidWastes(urbanSolidWasteEnum);
-  }, [urbanSolidWasteEnum]);
+    useEffect(() => {
+        fetchFilteredUrbanSolidWastes(urbanSolidWaste);
+    }, [urbanSolidWaste]);
 
   const selectionData = filteredUrbanSolidWastes.map((usw) => ({
     label: usw.name,

@@ -55,6 +55,7 @@ export const Input = forwardRef<TextInput, InputType>(
                 placeholderTextColor={
                   !isEditable ? colors.grey400 : isDark ? colors.grey300 : colors.grey400
                 }
+                value={field.value && field.value?.toString()}
                 {...inputProps} />
             </View>
             {error && <Text style={styles.error}>{error}</Text>}
