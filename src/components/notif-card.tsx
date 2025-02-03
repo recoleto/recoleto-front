@@ -6,8 +6,8 @@ export function NotifCard({ status, createdAt, points, requestNumber, userName }
 
   function dateToString(dateString: Date | string) {
     if (!dateString) return '';
-    const date = new Date(dateString); // Converter string para Date
-    if (isNaN(date.getTime())) return ''; // Verifica se é uma data válida
+    const date = new Date(dateString); 
+    if (isNaN(date.getTime())) return ''; 
     return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })
   }
 
@@ -22,8 +22,8 @@ export function NotifCard({ status, createdAt, points, requestNumber, userName }
         <View style={styles.textContainer}>
           <Text style={[styles.title]}>{`DESCARTE ${status}`}</Text>
           {status !== UrbanSolidWasteRequestStatus.PENDENTE ?
-            <Text style={styles.description}>{`${userName}, sua solicitação nº${requestNumber} foi ${status} no ponto de coleta`}</Text> :
-            <Text>{`${userName}, sua solicitação nº${requestNumber} está pendente para aceite ou recusa no ponto de coleta`}</Text>}
+            <Text style={styles.description}>{`${userName}, sua solicitação nº${requestNumber} foi ${status} no ponto de coleta`}.</Text> :
+            <Text>{`${userName}, sua solicitação nº${requestNumber} está pendente para aceite ou recusa no ponto de coleta`}.</Text>}
           <Text style={styles.date}>{dateToString(createdAt)}</Text>
         </View>
         {points ? <Text style={styles.points}>{`+ ${points} pontos`}</Text> : null}
