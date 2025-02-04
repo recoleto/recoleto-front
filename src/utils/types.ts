@@ -120,7 +120,8 @@ export const companySchema = userBaseSchema.shape({
   phone: string().required('Telefone é obrigatório.'),
   cnpj: string()
     .required('CNPJ é obrigatório.')
-    .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.'),
+    .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.')
+    .max(18, 'CNPJ inválido.'),
 });
 
 export const collectPointSchema = object({
