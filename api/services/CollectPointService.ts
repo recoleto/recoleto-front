@@ -33,6 +33,12 @@ export class CollectPointService {
     return response
   }
 
+  async fetchAllCollectPoints(): Promise<HttpResponse<any>> {
+    const base = '/collection-point/all';
+    const response = await this.client.get({ url: base })
+    return response
+  }
+
   async fetchCollectPointsByCategory(category: UrbanSolidWasteCategory): Promise<HttpResponse<any>> {
     const base = `/collection-point/usw/${category}`;
     const response = await this.client.get({ url: base })
