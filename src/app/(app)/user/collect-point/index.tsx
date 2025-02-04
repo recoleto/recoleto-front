@@ -16,7 +16,6 @@ export default function PontosDeColeta() {
   const { selectedCategory } = useCategory();
   const [loading, setLoading] = useState<boolean>(false);
   const { filteredCollectPoints = [], fetchCollectPointsByCategory, fetchAllCollectPoints } = useCollectPointsUser();
-  const [region, setRegion] = useState<any>();
 
   async function getLocation() {
     try {
