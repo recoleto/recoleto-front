@@ -19,7 +19,6 @@ export default function Home() {
                             router.replace('/(app)/user/collect-point');
                             setSelectedCategory(UrbanSolidWasteCategory.LIXO_ELETRONICO);
                         }} />
-                    <Card type={'info'} />
                 </View>
             </View>
 
@@ -32,7 +31,6 @@ export default function Home() {
                             router.replace('/(app)/user/collect-point');
                             setSelectedCategory(UrbanSolidWasteCategory.RESIDUOS_CONTAMINANTES);
                         }} />
-                    <Card type={'info'} />
                 </View>
             </View>
 
@@ -45,7 +43,6 @@ export default function Home() {
                             router.replace('/(app)/user/collect-point');
                             setSelectedCategory(UrbanSolidWasteCategory.RESIDUOS_CORTANTES);
                         }} />
-                    <Card type={'info'} />
                 </View>
             </View>
 
@@ -58,7 +55,6 @@ export default function Home() {
                             router.replace('/(app)/user/collect-point');
                             setSelectedCategory(UrbanSolidWasteCategory.OLEO_DE_COZINHA);
                         }} />
-                    <Card type={'info'} />
                 </View>
             </View>
 
