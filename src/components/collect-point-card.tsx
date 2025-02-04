@@ -11,7 +11,7 @@ import { BaseDialog } from "./dialog";
 import { router } from "expo-router";
 import { useCollectPointCompany } from "api/hooks/useCollectPointCompany";
 
-export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum, phone, cep, number }: CollectPointType) {
+export function CollectPointCard({ pointUUID, name, street, urbanSolidWaste, phone, cep, number }: CollectPointType) {
   const { deleteCollectPoint, fetchCollectPoints } = useCollectPointCompany();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleModal = () => setIsOpen(!isOpen);
@@ -35,11 +35,11 @@ export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum,
   }
 
   async function handleEdit() {
-    router.navigate({
+    router.replace({
       pathname: '/company/home/collect-point-register',
       params: {
         mode: 'edit',
-        initialData: JSON.stringify({ pointUUID, name, street, urbanSolidWasteEnum, phone, cep, number }),
+        initialData: JSON.stringify({ pointUUID, name, street, urbanSolidWaste, phone, cep, number }),
         pointUUID: pointUUID
       }
     })
@@ -50,7 +50,7 @@ export function CollectPointCard({ pointUUID, name, street, urbanSolidWasteEnum,
       <View style={styles.collectPointCard}>
         <Text style={MapsheetStyle.title}>{name}</Text>
         <Text style={MapsheetStyle.address}>{street}, {number} - {cep}</Text>
-        <Text style={MapsheetStyle.text}>Categoria: {formatUrbanSolidWasteCategory(urbanSolidWasteEnum)}</Text>
+        <Text style={MapsheetStyle.text}>Categoria: {formatUrbanSolidWasteCategory(urbanSolidWaste)}</Text>
         <Text style={MapsheetStyle.text}>Contato: {phone}</Text>
       </View>
 

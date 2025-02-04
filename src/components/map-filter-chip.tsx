@@ -47,7 +47,6 @@ export function MapFilterChip() {
                         styles.chip,
                         selectedCategory === item.name && { backgroundColor: colors.lemon100 }]}
                     onPress={() => {
-                        console.log(item.name);
                         setSelectedCategory(item.name === undefined ? UrbanSolidWasteCategory.TODOS : item.name)
                     }}>
 

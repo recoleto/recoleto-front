@@ -14,9 +14,10 @@ import { telNumberMask } from "@/utils/masks";
 import { BaseDialog } from "@/components/dialog";
 import { useGetCompany } from "api/hooks/useGetCompany";
 import { ProfileLayout } from "@/components/profile-layout";
+import axios from "axios";
 
 export default function CompanyProfile() {
-  const { register, formState: { errors }, handleSubmit, setValue, control, reset } = useForm({
+  const { register, formState: { errors }, handleSubmit, setValue, control, reset, watch } = useForm({
     mode: 'all',
     reValidateMode: 'onChange',
     resolver: yupResolver(companyProfileSchema),
@@ -25,7 +26,7 @@ export default function CompanyProfile() {
   const { company, fetchCompany, disableAccount, updateCompany, logOut } = useGetCompany();
 
   useEffect(() => {
-    if(company) {
+    if (company) {
       reset({
         name: company.name,
         phone: company.phone,
@@ -37,6 +38,34 @@ export default function CompanyProfile() {
       });
     }
   }, [company, reset]);
+
+  const cep = watch('cep');
+
+  const fetchAddressByCEP = async (cep: string) => {
+    if (cep.length === 8) {
+      try {
+        const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+        setValue("street", response.data.logradouro);
+      } catch (error) {
+        Toast.show({
+          autoHide: true,
+          type: "error",
+          text1: "CEP inválido",
+          text2: "Verifique o CEP e tente novamente.",
+          position: "top",
+          visibilityTime: 2000,
+        })
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (cep && cep.length === 8) {
+      fetchAddressByCEP(cep);
+    } else if (cep && cep.length < 8) {
+      setValue('street', '');
+    }
+  }, [cep]);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleModal = () => setIsOpen(!isOpen);
@@ -151,6 +180,21 @@ export default function CompanyProfile() {
           <Text style={globalsStyles.title}>Informações de endereço</Text>
 
           <View style={profileStyles.inputView}>
+            <Text style={globalsStyles.text}>CEP:</Text>
+            <Input
+              {...register('cep')}
+              error={errors.cep?.message}
+              inputProps={{
+                onChangeText: (text) => setValue('cep', text),
+                placeholder: 'Digite seu CEP'
+              }}
+              formProps={{
+                control: control as any,
+                name: 'cep'
+              }} />
+          </View>
+
+          <View style={profileStyles.inputView}>
             <Text style={globalsStyles.text}>Logradouro:</Text>
             <Input
               {...register('street')}
@@ -177,21 +221,6 @@ export default function CompanyProfile() {
               formProps={{
                 control: control as any,
                 name: 'number'
-              }} />
-          </View>
-
-          <View style={profileStyles.inputView}>
-            <Text style={globalsStyles.text}>CEP:</Text>
-            <Input
-              {...register('cep')}
-              error={errors.cep?.message}
-              inputProps={{
-                onChangeText: (text) => setValue('cep', text),
-                placeholder: 'Digite seu CEP'
-              }}
-              formProps={{
-                control: control as any,
-                name: 'cep'
               }} />
           </View>
         </View>

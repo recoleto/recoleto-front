@@ -1,76 +1,115 @@
-import { Input } from "@/components/input";
+import { DiscardResidue } from "@/components/discard-residue";
 import { PrimaryButton } from "@/components/primary-button";
 import { globalsStyles } from "@/globals-styles";
 import { border, colors, font } from "@/utils/globals";
-import { CollectPointMapType } from "@/utils/types";
+import { CollectPointMapType, UrbanSolidWasteRequest } from "@/utils/types";
 import { formatUrbanSolidWasteCategory } from "@/utils/utils";
-import { useUrbanSolidWaste } from "api/hooks/useUrbanSolidWaste";
-import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { StyleSheet } from "react-native";
-import { Text, View } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
+import { Text, View, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { RadioButton } from "react-native-radio-buttons-group";
+import React from "react";
+import { WasteCard } from "@/components/waste-card";
+import Toast from "react-native-toast-message";
+import { useUrbanSolidWaste } from "api/hooks/useUrbanSolidWaste";
+import { StatusCode } from "api/client/IHttpClient";
 
 export default function DiscardRequest() {
-  const { control } = useForm();
   const { loc } = useLocalSearchParams();
   const parsedLoc: CollectPointMapType = typeof loc === 'string' ? JSON.parse(loc) : loc;
-  const [selected, setSelected] = useState<string>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [wasteData, setWasteData] = useState<{ waste: UrbanSolidWasteRequest[] }>({ waste: [], })
+  const { urbanSolidWasteRequest } = useUrbanSolidWaste();
 
-  const { fetchFilteredUrbanSolidWastes, filteredUrbanSolidWastes } = useUrbanSolidWaste();
+  const handleModal = () => setIsOpen(!isOpen);
 
-  useEffect(() => {
-    fetchFilteredUrbanSolidWastes(parsedLoc.urbanSolidWasteEnum);
-  }, [parsedLoc.urbanSolidWasteEnum]);
+  const removeWaste = (indexToRemove: number) => {
+    setWasteData((prevState) => ({
+      waste: prevState.waste.filter((_, index) => index !== indexToRemove),
+    }));
+    Toast.show({
+      type: 'info',
+      text1: 'Resíduo removido.',
+      position: 'top',
+      visibilityTime: 2000,
+      autoHide: true,
+    })
+  };
 
-  const selectionData = filteredUrbanSolidWastes.map((usw) => ({
-    label: usw.name,
-    value: usw.name,
-    key: usw.type
-  }));
+  async function handleSubmit() {
+    const response = await urbanSolidWasteRequest({ pointId: parsedLoc.pointUUID, data: wasteData });
+    if (response.statusCode === StatusCode.Created) {
+      Toast.show({
+        type: 'success',
+        text1: `${response.resolve}`,
+        position: 'bottom',
+        visibilityTime: 2000,
+        autoHide: true,
+      })
+
+      setTimeout(() => {
+        router.back();
+      }, 1000);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: `${response.reject}`,
+        position: 'bottom',
+        visibilityTime: 2000,
+        autoHide: true,
+      })
+    }
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.requestView}>
-        <View>
-          <Text style={globalsStyles.titlePrimary}>SOLICITAÇÃO DE DESCARTE</Text>
-          <Text style={globalsStyles.text}>Preencha os campos abaixo para solicitar o descarte de resíduos no ponto de coleta selecionado.</Text>
-        </View>
-        <View style={styles.collectPointInfoView}>
-          <Text style={styles.collectPointInfoTitle}>{parsedLoc.name}</Text>
-          <Text style={styles.collectPointAddress}>{parsedLoc.street}, {parsedLoc.number} - {parsedLoc.cep}</Text>
-          <Text style={styles.collectPointInfoText}>Categoria: {formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWasteEnum)}</Text>
-          <Text style={styles.collectPointInfoText}>Contato: {parsedLoc.phone}</Text>
-        </View>
-        <Text style={globalsStyles.text}>Categoria:</Text>
-        <RadioButton id="1" label={formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWasteEnum)} selected containerStyle={{ margin: 0 }} />
-        <View style={{ gap: 12 }}>
+    <>
+      <ScrollView style={{ marginBottom: 20 }}>
+        <View style={styles.container}>
+          <View style={styles.requestView}>
+            <View>
+              <Text style={globalsStyles.titlePrimary}>SOLICITAÇÃO DE DESCARTE</Text>
+              <Text style={globalsStyles.text}>Preencha os campos abaixo para solicitar o descarte de resíduos no ponto de coleta selecionado.</Text>
+            </View>
+            <View style={styles.collectPointInfoView}>
+              <Text style={styles.collectPointInfoTitle}>{parsedLoc.name}</Text>
+              <Text style={styles.collectPointAddress}>{parsedLoc.street}, {parsedLoc.number} - {parsedLoc.cep}</Text>
+              <Text style={styles.collectPointInfoText}>Categoria: {formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWaste)}</Text>
+              <Text style={styles.collectPointInfoText}>Contato: {parsedLoc.phone}</Text>
+            </View>
+            <Text style={globalsStyles.text}>Categoria:</Text>
 
-          <View>
-            <Text style={globalsStyles.text}>Itens:</Text>
-            <SelectList
-              data={selectionData}
-              setSelected={(val: string) => setSelected(val)}
-              save="value"
-              notFoundText="Nenhum resíduo encontrado."
-              searchPlaceholder="Buscar um resíduo."
-              maxHeight={200} />
-          </View>
+            <RadioButton selected
+              id="1"
+              label={formatUrbanSolidWasteCategory(parsedLoc.urbanSolidWaste)}
+              containerStyle={{ margin: 0 }} />
 
-          <View style={{ gap: 8 }}>
-            <Text style={globalsStyles.text}>Quantidade:</Text>
-            <Input
-              formProps={{ control, name: 'name' }}
-              inputProps={{
-                keyboardType: 'phone-pad'
-              }} />
+            <View style={styles.residuesView}>
+              <Text style={globalsStyles.text}>Resíduos:</Text>
+              {wasteData.waste.length === 0 ?
+                <Text>Nenhum resíduo adicionado.</Text>
+                : wasteData.waste.map((waste, index) => (
+                  <WasteCard
+                    {...waste}
+                    key={index}
+                    onRemove={() => removeWaste(index)}
+                  />
+                ))}
+            </View>
+            <View style={styles.residuesView}>
+              <PrimaryButton title="Adicionar Resíduo" onPress={handleModal} />
+              <PrimaryButton title="Concluir" onPress={handleSubmit} />
+            </View>
           </View>
-          <PrimaryButton title="Adicionar Resíduo" onPress={() => { }} />
         </View>
-      </View>
-    </View>
+      </ScrollView>
+      {isOpen && <DiscardResidue
+        wastes={wasteData.waste}
+        urbanSolidWaste={parsedLoc.urbanSolidWaste}
+        isOpen={isOpen}
+        setWastes={(newWastes) => setWasteData({ waste: newWastes })}
+        handleModal={handleModal} />}
+    </>
   )
 }
 
@@ -80,7 +119,7 @@ const styles = StyleSheet.create({
   },
   requestView: {
     paddingHorizontal: 20,
-    gap: 12
+    gap: 12,
   },
   collectPointInfoView: {
     backgroundColor: colors.green300,
@@ -101,5 +140,8 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: font.size.large,
     fontFamily: font.family.bold
-  }
+  },
+  residuesView: {
+    gap: 10
+  },
 })

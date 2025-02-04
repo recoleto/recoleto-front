@@ -7,6 +7,7 @@ import { useCollectPointCompany } from "api/hooks/useCollectPointCompany";
 
 export default function ManageCollectPointsScreen() {
   const { collectPoints } = useCollectPointCompany();
+
   return (
     <ScrollView>
       <ProfileLayout>
@@ -20,7 +21,7 @@ export default function ManageCollectPointsScreen() {
             street={point.street}
             number={point.number}
             cep={point.cep}
-            urbanSolidWasteEnum={point.urbanSolidWasteEnum}
+            urbanSolidWaste={point.urbanSolidWaste}
             phone={point.phone}
           />
         )) : <Text>Nenhum ponto de coleta cadastrado.</Text>}
