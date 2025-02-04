@@ -63,11 +63,30 @@ export type UrbanSolidWasteRequestCompanyType = {
 
 export type NotificationType = {
   createdAt: Date;
+  requestId: string;
   status: UrbanSolidWasteRequestStatus;
   points?: number;
   userName: string;
+  companyName: CompanyType['name'];
   requestNumber: number;
+  waste: UrbanSolidWasteRequest[];
 }
+
+// [{ 
+//   "collectionPointId": "21ccce7c-7c66-4c91-90b4-91c57be6611b", 
+//   "collectionPointName": "Ponto de Coleta 3", 
+//   "companyId": "ed733f89-da1d-4c0a-95e6-f0f0eea3ef5b", 
+//   "companyName": "Jejdjdhd", 
+//   "createdAt": "2025-02-04T18:51:57.899606", 
+//   "notificationId": "2ba512c5-271b-4ccc-b1c4-f1b6560f8d64", 
+//   "points": 50, 
+//   "requestId": "32366417-0d21-4a0a-ab07-1cc4dca1ba43", 
+//   "requestNumber": 8, 
+// "status": "APROVADO", 
+// "urbanSolidWaste": "RESIDUOS_CONTAMINANTES", 
+// "userName": "Mayarinha", 
+//   "waste": [[Object]] 
+//}]
 
 export enum UrbanSolidWasteCategory {
   TODOS = 'TODOS',
@@ -78,11 +97,11 @@ export enum UrbanSolidWasteCategory {
 }
 
 export enum UrbanSolidWasteRequestStatus {
-    PENDENTE = 'PENDENTE',
-    RECUSADO = 'REPROVADO',
-    APROVADO = 'APROVADO',
-    CANCELADO = 'CANCELADO',
-    RECEBIDO = 'RECEBIDO',
+  PENDENTE = 'PENDENTE',
+  RECUSADO = 'REPROVADO',
+  APROVADO = 'APROVADO',
+  CANCELADO = 'CANCELADO',
+  RECEBIDO = 'RECEBIDO',
 }
 
 // Schemas Base
