@@ -23,12 +23,6 @@ export default function UrbanSolidWasteCategoryInfo() {
   return (
     <View style={styles.container}>
       <Text style={globalsStyles.titlePrimary}>RESÍDUOS SÓLIDOS URBANOS CADASTRADOS</Text>
-      {/* <TextInput
-                style={styles.searchBar}
-                placeholder="Pesquisar RSU..."
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-            /> */}
       <Input
         icon="search"
         formProps={{
