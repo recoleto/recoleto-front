@@ -1,4 +1,4 @@
-import { UserProfileType, UserType } from "@/utils/types";
+import { NotificationType, UserProfileType } from "@/utils/types";
 import { HttpResponse, StatusCode } from "api/client/IHttpClient";
 import { RecoletoHttpClient } from "api/client/RecoletoHttpClient";
 
@@ -43,6 +43,18 @@ export class UserService {
       }
     }
     return response;
+  }
+
+  async cancelRequest(requestId: NotificationType['requestId'], status: NotificationType['status']): Promise<HttpResponse<any>> {
+    const base = `/request/update/user/${requestId}/${status}`;
+    const response = await this.client.put({ url: base })
+    if (response.statusCode === StatusCode.Ok) {
+      return {
+        statusCode: StatusCode.Ok,
+        resolve: 'Solicitação cancelada com sucesso!',
+      }
+    }
+    return response
   }
 
   async fetchNotifications(): Promise<HttpResponse<any>> {

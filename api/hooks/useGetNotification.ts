@@ -12,9 +12,13 @@ export function useGetNotification() {
     return response;
   }
 
+  const cancelRequest = async (requestId: NotificationType['requestId'], status : NotificationType['status']) => {
+    return await service.cancelRequest(requestId, status);
+  }
+
   useEffect(() => {
     fetchNotifications();
   }, []);
 
-  return { notifications }
+  return { notifications, cancelRequest, fetchNotifications }
 }

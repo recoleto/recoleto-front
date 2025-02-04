@@ -1,14 +1,47 @@
 import { colors, font } from "@/utils/globals";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NotificationType, UrbanSolidWasteRequestStatus } from "@/utils/types";
+import { Feather } from '@expo/vector-icons';
+import { useState } from "react";
+import { RequestDiscardModal } from "./request-discard-modal";
+import { useGetNotification } from "api/hooks/useGetNotification";
+import { StatusCode } from "api/client/IHttpClient";
+import Toast from "react-native-toast-message";
 
-export function NotifCard({ status, createdAt, points, requestNumber, userName }: NotificationType) {
+type NotifCardProps = NotificationType & {
+  handleRefetch: () => void;
+};
+export function NotifCard({ status, createdAt, points, requestNumber, userName, companyName, waste, requestId, handleRefetch }: NotifCardProps) {
+  const [seeDetails, setSeeDetails] = useState<boolean>(false);
+  const handleSeeDetails = () => setSeeDetails(!seeDetails);
+  const { cancelRequest } = useGetNotification();
 
   function dateToString(dateString: Date | string) {
     if (!dateString) return '';
-    const date = new Date(dateString); 
-    if (isNaN(date.getTime())) return ''; 
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
     return date.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })
+  }
+
+  async function handleCancelRequest() {
+    const response = await cancelRequest(requestId, UrbanSolidWasteRequestStatus.CANCELADO);
+    if (response.statusCode === StatusCode.Ok) {
+      Toast.show({
+        type: 'success',
+        text1: `${response.resolve}`,
+        position: 'top',
+        visibilityTime: 3000,
+      })
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: `${response.reject}`,
+        position: 'top',
+        visibilityTime: 3000,
+      })
+
+      handleRefetch();
+    }
   }
 
   return (
@@ -20,14 +53,41 @@ export function NotifCard({ status, createdAt, points, requestNumber, userName }
         {status === UrbanSolidWasteRequestStatus.RECUSADO && <Image style={styles.icon} source={require('../../assets/icons/error-filled.png')} />}
 
         <View style={styles.textContainer}>
-          <Text style={[styles.title]}>{`DESCARTE ${status}`}</Text>
-          {status !== UrbanSolidWasteRequestStatus.PENDENTE ?
-            <Text style={styles.description}>{`${userName}, sua solicitação nº${requestNumber} foi ${status} no ponto de coleta`}.</Text> :
-            <Text>{`${userName}, sua solicitação nº${requestNumber} está pendente para aceite ou recusa no ponto de coleta`}.</Text>}
-          <Text style={styles.date}>{dateToString(createdAt)}</Text>
+          <Text style={styles.title}>{`DESCARTE ${status}`}</Text>
+          <Text>
+
+            <Text style={styles.description}>
+              {status === UrbanSolidWasteRequestStatus.APROVADO ? `${userName}, o descarte de resíduos nº ${requestNumber} no ponto de coleta ${companyName} foi aceito.` :
+                status === UrbanSolidWasteRequestStatus.RECUSADO ? `${userName}, o descarte de resíduos nº ${requestNumber} solicitado no ponto de coleta ${companyName} foi recusado.` :
+                  status === UrbanSolidWasteRequestStatus.CANCELADO ? `${userName}, o descarte de resíduos nº ${requestNumber} solicitado no ponto de coleta ${companyName} foi cancelado.` :
+                  status === UrbanSolidWasteRequestStatus.RECEBIDO ? `${userName}, o descarte de resíduos nº ${requestNumber} solicitado no ponto de coleta ${companyName} foi recebido.` :
+                    `${userName}, sua solicitação nº${requestNumber} está pendente para aceite ou recusa no ponto de coleta ${companyName}`
+              }
+            </Text>
+            <TouchableOpacity onPress={handleSeeDetails}>
+              <Text style={styles.underlineText}>Ver detalhes.</Text>
+            </TouchableOpacity>
+          </Text>
+          <View style={styles.dateView}>
+            <Feather name="clock" size={14} color={colors.grey300} />
+            <Text style={styles.date}>{dateToString(createdAt)}</Text>
+          </View>
         </View>
-        {points ? <Text style={styles.points}>{`+ ${points} pontos`}</Text> : null}
+        {/* {status === UrbanSolidWasteRequestStatus.APROVADO || status === UrbanSolidWasteRequestStatus.PENDENTE ?
+          <TouchableOpacity onPress={handleCancelRequest}>
+            <Feather name="x" size={30} color={colors.black} />
+          </TouchableOpacity>
+          : null} */}
+        {status === UrbanSolidWasteRequestStatus.RECEBIDO && <Text style={styles.pointsText}>{`+ ${points} pontos`}</Text>}
       </View>
+      {seeDetails &&
+        <RequestDiscardModal
+          key={requestNumber}
+          isOpen={seeDetails}
+          onClose={handleSeeDetails}
+          request={waste}
+          solicitationNumber={requestNumber} />
+      }
     </View>
   )
 }
@@ -45,11 +105,11 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     flexWrap: 'wrap',
     maxWidth: '90%',
-    fontSize: font.size.regular
+    fontSize: font.size.medium
   },
   date: {
     color: colors.grey300,
-    fontSize: font.size.xsmall,
+    fontSize: font.size.small,
   },
   dateView: {
     display: 'flex',
@@ -59,18 +119,12 @@ const styles = StyleSheet.create({
   },
   title: {
     textTransform: 'uppercase',
-    fontFamily: font.family.medium
+    fontFamily: font.family.medium,
+    fontSize: font.size.mediumX,
   },
   icon: {
     width: 35,
     height: 35
-  },
-  points: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 3,
-    paddingRight: 5
   },
   pointsText: {
     color: colors.lemon100,
@@ -94,9 +148,15 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    gap: 3
   },
   description: {
     fontSize: 14,
     color: '#6c757d',
   },
+  underlineText: {
+    textDecorationLine: 'underline',
+    fontFamily: font.family.medium,
+    marginLeft: 5,
+  }
 })

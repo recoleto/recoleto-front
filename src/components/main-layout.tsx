@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, Text, View } from "react-native";
-import { useContext, useEffect } from "react";
+import { ReactElement, useContext, useEffect } from "react";
 import { AuthContext } from "api/context/auth";
 import { useGetUser } from "api/hooks/useGetUser";
 import { useGetCompany } from "api/hooks/useGetCompany";
@@ -8,9 +8,10 @@ import { colors, font } from "@/utils/globals";
 
 type MainLayoutProps = {
   children: React.ReactNode;
+  refreshControl?: ReactElement;
 };
 
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout({ children, refreshControl }: MainLayoutProps) {
   const { role } = useContext(AuthContext);
   const { user, fetchUser } = useGetUser();
   const { company, fetchCompany } = useGetCompany();
@@ -25,7 +26,9 @@ export function MainLayout({ children }: MainLayoutProps) {
   }, [role, user, company, fetchUser, fetchCompany]);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      refreshControl={refreshControl}
+      style={styles.container}>
       <View style={styles.containerView}>
         <View id="header" style={styles.header}>
           {role === "USUARIO" && user && (
