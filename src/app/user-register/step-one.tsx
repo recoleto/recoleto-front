@@ -105,7 +105,7 @@ export default function RegisterUserStepOne() {
                             value: watch('phone'),
                             keyboardType: 'phone-pad'
                         }}
-                        formProps={{ name: 'telNumber', control: control as any }} />
+                        formProps={{ name: 'phone', control: control as any }} />
 
                     <Input
                         label="Senha"
