@@ -46,7 +46,7 @@ export default function CollectPointRegister() {
           visibilityTime: 2000
         })
         setTimeout(() => {
-          router.back()
+          router.replace('/company/manage-collect-points');
         }, 2000)
       } else {
         Toast.show({
@@ -67,7 +67,7 @@ export default function CollectPointRegister() {
             visibilityTime: 2000
           })
           setTimeout(() => {
-            router.back()
+            router.replace('/company/manage-collect-points');
           }, 2000)
         } else {
           Toast.show({
