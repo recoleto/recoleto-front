@@ -86,7 +86,7 @@ export default function RegisterCompanyStepTwo() {
                 autoHide: true,
                 type: "error",
                 text1: "Erro ao cadastrar",
-                text2: "Verifique os dados e tente novamente.",
+                text2: `${response.reject}`,
                 position: "top",
                 visibilityTime: 2000,
             })

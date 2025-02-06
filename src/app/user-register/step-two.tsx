@@ -28,7 +28,6 @@ export default function RegisterUserStepTwo() {
     });
 
     const cep = watch("cep");
-
     const fetchAddressByCEP = async (cep: string) => {
         if (cep.length === 8) {
             try {
@@ -67,8 +66,8 @@ export default function RegisterUserStepTwo() {
             cep: rest.cep,
             street: rest.street,
             number: rest.number,
-        });
-
+          });
+          
         const response = await registerUser({ ...registerFormData } as UserType);
         if (response.statusCode === 201) {
             Toast.show({
@@ -77,7 +76,7 @@ export default function RegisterUserStepTwo() {
                 text1: "Cadastro realizado com sucesso!",
                 text2: "Você será redirecionado para a tela de login.",
                 position: "top",
-                visibilityTime: 200
+                visibilityTime: 2000
             })
             setTimeout(() => {
                 router.replace("/");
@@ -92,7 +91,6 @@ export default function RegisterUserStepTwo() {
                 visibilityTime: 2000,
             })
         }
-
     };
 
     return (

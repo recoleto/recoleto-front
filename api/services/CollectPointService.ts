@@ -28,6 +28,12 @@ export class CollectPointService {
   }
 
   async fetchCollectPoints(): Promise<HttpResponse<any>> {
+    const base = '/collection-point/company';
+    const response = await this.client.get({ url: base })
+    return response
+  }
+
+  async fetchAllCollectPoints(): Promise<HttpResponse<any>> {
     const base = '/collection-point/all';
     const response = await this.client.get({ url: base })
     return response

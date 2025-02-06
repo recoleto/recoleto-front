@@ -11,9 +11,13 @@ import { useState } from "react";
 import { RequestDiscardModal } from "./request-discard-modal";
 import React from 'react';
 
-export function DiscardRequestCard({ collectionPointName, requestId, solicitationNumber, status, userName, waste, points }: UrbanSolidWasteRequestCompanyType) {
+type DiscardRequestCardProps = {
+  handleRefresh: () => void;
+} & UrbanSolidWasteRequestCompanyType;
+
+export function DiscardRequestCard({ collectionPointName, requestId, solicitationNumber, status, userName, waste, points, handleRefresh }: DiscardRequestCardProps) {
   const [showDetails, setShowDetails] = useState<boolean>(false);
-  const { updateRequest, fetchRequests } = useUswRequestsCompany();
+  const { updateRequest } = useUswRequestsCompany();
   const handleShowDetails = () => setShowDetails(!showDetails);
 
   async function handleUpdateRequest(status: UrbanSolidWasteRequestStatus) {
@@ -24,7 +28,7 @@ export function DiscardRequestCard({ collectionPointName, requestId, solicitatio
         text1: `${response.resolve}`,
         visibilityTime: 3000,
       })
-      fetchRequests();
+      handleRefresh();
     } else {
       Toast.show({
         type: 'error',

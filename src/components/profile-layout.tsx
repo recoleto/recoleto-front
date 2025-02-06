@@ -2,17 +2,19 @@ import { colors, font } from "@/utils/globals";
 import { AuthContext } from "api/context/auth";
 import { useGetCompany } from "api/hooks/useGetCompany";
 import { useGetUser } from "api/hooks/useGetUser";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { RefreshControl } from "react-native-gesture-handler";
 
 type MainLayoutProps = {
   children: React.ReactNode;
 };
 
 export function ProfileLayout({ children }: MainLayoutProps) {
-  const { role } = useContext(AuthContext); 
+  const { role } = useContext(AuthContext);
   const { user, fetchUser } = useGetUser();
   const { company, fetchCompany } = useGetCompany();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     if (role === "USUARIO" && !user) {
@@ -22,8 +24,18 @@ export function ProfileLayout({ children }: MainLayoutProps) {
     }
   }, [role, user, company, fetchUser, fetchCompany]);
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    if (role === "USUARIO") fetchUser();
+    else fetchCompany();
+    setRefreshing(false);
+  }
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={layoutStyles.container}>
         <View id="header" style={layoutStyles.header}>
           <Text style={layoutStyles.headerText}>Foto de Perfil</Text>

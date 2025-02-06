@@ -91,12 +91,13 @@ export function DiscardResidue({ urbanSolidWaste, isOpen, handleModal, setWastes
                 placeholder="Selecione um resíduo."
                 maxHeight={200} />
             )} />
+           {errors.name && <Text style={globalsStyles.error}>{errors.name.message}</Text>}
 
           <View style={{ gap: 8 }}>
             <Text style={globalsStyles.text}>Quantidade:</Text>
             <Input
               error={errors.quantity?.message}
-              formProps={{ control: control as any, name: 'quantity' }}
+              formProps={{ control: control as any, name: 'quantity', rules: { required: 'Campo obrigatório' } }}
               inputProps={{
                 onChangeText: (text) => setValue('quantity', Number(text)),
                 keyboardType: 'phone-pad'

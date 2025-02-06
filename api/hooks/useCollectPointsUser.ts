@@ -13,7 +13,7 @@ export function useCollectPointsUser() {
     }
 
     const fetchAllCollectPoints = async () => {
-        const response = await service.fetchCollectPoints();
+        const response = await service.fetchAllCollectPoints();
         setFilteredCollectPoints(response.body);
         return response;
     }
